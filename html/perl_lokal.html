@@ -1,0 +1,416 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Variablen und Symboltabellen  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Variablen und Symboltabellen</h1>
+  <table align="center"><tr>
+  <td><a href="perl_modul.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Symboltabellen
+von Packages</a></li>
+<li><a href="#abs2">Globale Variablen und <code>our()</code></a></li>
+<li><a href="#abs3">Lexikalische Variablen mittels <code>my()</code></a></li>
+<li><a href="#abs4">Dynamische Variablen mittels <code>local()</code></a></li>
+<li><a href="#abs5">Unterschiede zwischen <code>my()</code> und <code>local()</code></a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Symboltabellen
+von Packages</h2>
+  <hr>
+  <p>
+
+Wie im Abschnitt <a href="perl_modul.html#abs1">Packages</a>
+beschrieben, gibt es in Perl Namensr&auml;ume (<i>Packages</i>), die
+jeweils ihre eigenen Variablen besitzen. Diese Variablen sind in
+sogenannten Symboltabellen gespeichert. Die Tabelle eines jeden
+Package ist in Form eines Hash abgelegt; um darauf zuzugreifen
+stellt man dem Package-Namen ein "<code>%</code>" voran und
+h&auml;ngt zwei Doppelpunkte "<code>::</code>" an.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl<br><br><font color="#006600">###&nbsp;Package&nbsp;"main"</font><br><br>$main_var1;<br>@main_var2&nbsp;=&nbsp;(2,3);<br><br>package&nbsp;<font color="#0000cc">hallo</font>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;Package&nbsp;"hallo"</font><br><br>$hallo_var;<br><br>package&nbsp;<font color="#0000cc">main</font>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;wieder&nbsp;zur&uuml;ck&nbsp;in&nbsp;"main"</font><br><br>foreach&nbsp;$v&nbsp;(keys&nbsp;<font color="#0000cc">%hallo::</font>)&nbsp;{&nbsp;print&nbsp;"hallo&gt;&nbsp;$v\n"&nbsp;}&nbsp;<br>foreach&nbsp;$v&nbsp;(keys&nbsp;<font color="#0000cc">%main::</font>)&nbsp;{&nbsp;print&nbsp;"main&gt;&nbsp;$v\n"&nbsp;}&nbsp;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die erzeugte Ausgabe ist recht umfangreich, da auch alle vordefinierten
+Variablen in der Symboltabelle von <code>main</code> enthalten sind.
+Man beachte, da&szlig; in <code>%main::</code> (man kann hier stattdessen
+auch die Kurzform <code>%::</code> verwenden) nur der jeweilige Name
+einer Variablen erscheint; ein Pr&auml;fix (wie etwa "<code>$</code>")
+wird weggelassen.
+  </p>
+  <p>
+
+Hier ein Ausschnitt der Programmausgabe:
+  </p>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>hallo&gt;&nbsp;hallo_var<br>main&gt;&nbsp;main_var1<br>main&gt;&nbsp;main_var2<br>main&gt;&nbsp;v<br>main&gt;&nbsp;hallo::<br>main&gt;&nbsp;0<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die Symboltabelle des Packages <code>hallo</code> enth&auml;lt
+nur die Variable <code>$hallo_var</code>, w&auml;hrend sich in <code>main</code>
+neben den explizit verwendeten Variablen <code>$main_var1</code>,
+<code>@main_var2</code> und <code>$v</code> auch der Name der
+neuen Symboltabelle <code>%hallo::</code> findet. Au&szlig;erdem
+stehen dort vordefinierte Variablen wie <code>$0</code>, welche
+den Namen des gerade ausgef&uuml;hrten Skripts beinhaltet.
+  </p>
+<p align="right"><a href="perl_lokal.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Globale Variablen und <code>our()</code></h2>
+  <hr>
+  <p>
+
+Wie im obigen Abschnitt schon gezeigt wurde, kann auf Variablen, die "einfach 
+so" deklariert oder verwendet werden, innerhalb des jeweiligen Packages 
+direkt zugegriffen werden. Solche Variablen werden <i>global</i> genannt, da
+sie an jeder Stelle des Programms zur Verf&uuml;gung stehen; selbst wenn
+sie in einem Unterprogramm deklariert werden.
+  </p>
+  <p>
+
+Oft sind globale Variablen zwar praktisch, sie k&ouml;nnen ein
+Programm aber auch schnell un&uuml;bersichtlich machen. Deswegen
+empfiehlt es sich, globale Variablen nur dort zu verwenden, wo sie
+notwendig sind. Damit man nicht versehentlich globale Variablen
+einf&uuml;hrt, sollte man immer das Pragma <code>use&nbsp;strict</code> verwenden.
+  </p>
+  <p>
+
+Benutzt man <code>use&nbsp;strict</code>, so mu&szlig; man bei jeder
+Variable angeben, welchen G&uuml;ltigkeitsbereich sie haben soll.
+Globale Variablen markiert man ab Perl&nbsp;5.6.x mit der Deklaration
+<code>our()</code>. 
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>use&nbsp;5.6.0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;"our"&nbsp;funktioniert</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;erst&nbsp;ab&nbsp;Perl&nbsp;5.6.0</font><br><br><font color="#0000cc">our</font>&nbsp;$var&nbsp;=&nbsp;123;<br><br>sub&nbsp;routine&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000cc">our</font>&nbsp;$vr&nbsp;=&nbsp;"Hallo";<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"$vr\n";<br>}&nbsp;&nbsp;&nbsp;&nbsp;<br><br>routine();<br><br>print&nbsp;"$var\n";<br>print&nbsp;"$<font color="#0000cc">main::</font>vr\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Hallo<br>123<br>Hallo<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Auf eine mit <code>our</code> deklarierte Variable kann man innerhalb
+des umschlie&szlig;enden Blocks, der Datei oder dem Argument der
+Funktion <code>eval()</code> zugreifen, ohne einen Packagenamen
+angeben zu m&uuml;ssen. Im obigen Beispiel ist der G&uuml;ltigkeitsbereich
+von <code>$var</code> die gesamte Datei, w&auml;hrend der "einfache"
+Zugriff auf <code>$vr</code> nur innerhalb des Unterprogramms
+<code>routine</code> (in diesem Falle der umschlie&szlig;ende Block)
+m&ouml;glich ist. Allerdings kann man mit Hilfe des
+Packagenamens auch au&szlig;erhalb der Subroutine auf <code>$vr</code>
+zugreifen.
+  </p>
+  <p>
+
+Eine <code>our</code>-Variable ist u.U. sogar &uuml;ber Package-Grenzen
+hinweg sichtbar, es kann jedoch jedes Package jeweils eigene Variablen
+mittels <code>our</code> deklarieren.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>use&nbsp;5.6.0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;"our"&nbsp;funktioniert</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;erst&nbsp;ab&nbsp;Perl&nbsp;5.6.0</font><br><br><font color="#0000cc">our</font>($v1,$v2);<br><br>$v1&nbsp;=&nbsp;1;<br>$v2&nbsp;=&nbsp;2;<br><br>package&nbsp;name;<br><br>print&nbsp;"$v1&nbsp;$v2\n";<br><br><font color="#0000cc">our</font>&nbsp;$v2&nbsp;=&nbsp;9;<br><br>print&nbsp;"$v1&nbsp;$v2&nbsp;$main::v2\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>1&nbsp;2<br>1&nbsp;9&nbsp;2<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die Variable <code>$v1</code> ist in der ganzen Datei einfach &uuml;ber
+ihren Namen verf&uuml;gbar, w&auml;hrend es von <code>$v2</code>
+zwei Exemplare gibt. Nach der Deklaration im Package 
+<code>name</code> kann auf die in <code>main</code> deklarierte
+Variable &uuml;ber den Package-Namen zugegriffen
+werden. Ohne Angabe des Packages wird die zuletzt deklarierte
+<code>our</code>-Variable verwendet (unabh&auml;ngig vom aktuell 
+g&uuml;ltigen Package).
+  </p>
+  <p>
+
+F&uuml;r &auml;ltere Perl-Versionen (<&nbsp;5.6.0) deklariert man
+globale Variablen au&szlig;erhalb von Bl&ouml;cken mit Hilfe von
+<code>my()</code> (siehe <a href="#abs3">folgenden Abschnitt</a>).
+  </p>
+<p align="right"><a href="perl_lokal.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Lexikalische Variablen mittels <code>my()</code></h2>
+  <hr>
+  <p>
+
+Jede Variable, die mit <code>our</code> deklariert oder 
+auch "einfach so" ohne eine Deklaration verwendet wird, wird in die Symboltabelle
+des jeweils aktuellen Packages aufgenommen.
+  </p>
+  <p>
+
+Deklariert man dagegen eine Variable mit dem Operator <code>my</code>,
+so wird die entsprechende Variable in einer anderen Tabelle
+abgelegt, auf die kein expliziter Zugriff m&ouml;glich ist.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>use&nbsp;5.6.0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;"our"&nbsp;funktioniert</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;erst&nbsp;ab&nbsp;Perl&nbsp;5.6.0</font><br><br>our&nbsp;$var_1;<br><font color="#0000cc">my</font>&nbsp;$var_2;<br><br>$var_1&nbsp;=&nbsp;42;<br>$var_2&nbsp;=&nbsp;"Perl";<br><br>foreach&nbsp;$v&nbsp;(keys&nbsp;%::)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;Symboltabelle&nbsp;von&nbsp;"main"</font><br>&nbsp;&nbsp;&nbsp;&nbsp;if($v&nbsp;=~&nbsp;/^var/)&nbsp;{&nbsp;print&nbsp;"$v\n"&nbsp;}<br>}<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Hier erscheint in der Programmausgabe nur "<code>$var_1</code>", nicht
+aber "<code>$var_2</code>".
+  </p>
+  <p>
+
+Neben der Tatsache, da&szlig; <code>my</code>-Variablen in einer
+eigenen Tabelle verwaltet werden, ist von besonderer Bedeutung, da&szlig;
+sie nur einen recht beschr&auml;nkten G&uuml;ltigkeitsbereich
+besitzen. Eine durch
+<code>my</code> erzeugte Variable steht nur in dem aktuellen Block (definiert
+durch geschweifte Klammern "<code>{...}</code>"), der aktuellen Datei
+oder innerhalb eines Arguments von <code>eval()</code> zur Verf&uuml;gung.
+Au&szlig;erhalb davon existieren diese Variablen nicht, es
+ist also (im Gegensatz zu <code>our</code>-Variablen)
+auch mit Hilfe des Package-Namens dort kein Zugriff m&ouml;glich
+  </p>
+  <p>
+
+Es kann in einem Package durchaus zwei Variablen gleichen
+Namens geben: eine in der Symboltabelle und eine, die durch
+einen Aufruf von <code>my</code> entstanden ist. In einem solchen
+Falle wird bei einfacher Verwendung des Bezeichners auf die
+<code>my</code>-Variable zugegriffen.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>use&nbsp;5.6.0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;"our"&nbsp;funktioniert</font><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;erst&nbsp;ab&nbsp;Perl&nbsp;5.6.0</font><br><br>our&nbsp;$ab&nbsp;=&nbsp;"main";<br><font color="#0000cc">{</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000cc">my</font>&nbsp;$ab;<br>&nbsp;&nbsp;&nbsp;&nbsp;$ab&nbsp;=&nbsp;"Block";<br><br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"$ab\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;"Block"</font><br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"$main::ab\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;"main"</font><br><font color="#0000cc">}</font><br>print&nbsp;"$ab\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;"main"</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Im Block in der Mitte des Programms existiert neben "<code>$ab</code>"
+der Symboltabelle von <code>main</code> (Zugriff &uuml;ber voll 
+qualifizierten Namen "<code>$main::ab</code>" m&ouml;glich) auch
+eine <code>my</code>-Variable gleichen Namens. Letztere verschwindet
+aber wieder, sobald der umschlie&szlig;ende Block verlassen wird.
+  </p>
+  <p>
+
+Es ist &uuml;brigens durchaus m&ouml;glich, <code>my</code>-Deklarationen
+zu "schachteln":
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br><font color="#0000cc">my</font>&nbsp;$ab&nbsp;=&nbsp;"main";<br><font color="#0000cc">{</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000cc">my</font>&nbsp;$ab;<br>&nbsp;&nbsp;&nbsp;&nbsp;$ab&nbsp;=&nbsp;"Block";<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"$ab\n";&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;"Block"</font><br><font color="#0000cc">}</font><br>print&nbsp;"$ab\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;"main"</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Man bezeichnet solche Variablen als <i>lexikalisch</i>, weil
+deren G&uuml;ltigkeitsbereich schon alleine durch Untersuchung
+des Programmcodes feststellbar ist.
+  </p>
+  <p>
+
+Ben&ouml;tigt man in einem Perl-Programm eine lokale Variable,
+so sollte man im allgemeinen <code>my</code> verwenden. Lediglich
+in speziellen Situationen ist es angebracht, stattdessen
+<code>local</code> (siehe <a href="#abs4">n&auml;chsten Abschnitt</a>)
+zu benutzen.
+  </p>
+<p align="right"><a href="perl_lokal.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">Dynamische Variablen mittels <code>local()</code></h2>
+  <hr>
+  <p>
+
+Auch der Operator <code>local</code> schr&auml;nkt den
+G&uuml;ltigkeitsbereich einer Variablen ein. Allerdings
+unterscheidet sich der Mechanismus grundlegend von dem
+des Operators <code>my</code>.
+  </p>
+  <p>
+
+Wird eine Variable durch <code>local</code> deklariert,
+so wird der aktuelle Wert dieser Variablen (sofern vorhanden)
+gesichert. Anschlie&szlig;end k&ouml;nnen dieser Variablen
+neue Werte zugewisen werden. Wird der Block, in dem die
+<code>local</code>-Deklaration erfolgte, verlassen, so wird
+der urspr&uuml;ngliche (gesicherte) Wert wiederhergestellt.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>$ab&nbsp;=&nbsp;123;<br>print&nbsp;"Main:&nbsp;&nbsp;$ab\n";<br><br>{<br>&nbsp;&nbsp;&nbsp;<font color="#0000cc">local</font>&nbsp;$ab;<br>&nbsp;&nbsp;&nbsp;$ab&nbsp;=&nbsp;456;<br>&nbsp;&nbsp;&nbsp;print&nbsp;"Block:&nbsp;$ab\n";<br>}<br><br>print&nbsp;"Main:&nbsp;&nbsp;$ab\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Main:&nbsp;&nbsp;123<br>Block:&nbsp;456<br>Main:&nbsp;&nbsp;123<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Bei der Deklaration mit <code>local</code> wird <i>keine</i>
+neue Variable auf irgendeinem Stack erzeugt (wie bei <code>my</code>),
+sondern es wird nur der Inhalt neu zur Verf&uuml;gung gestellt.
+Die entsprechende Variable ist also nach wie vor global zug&auml;nglich.
+  </p>
+  <p>
+
+Da&szlig; die Variable nach wie vor eine globale Variable ist, erkennt
+man auch im folgenden Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>$x&nbsp;=&nbsp;'x&nbsp;(main)';<br>print&nbsp;"Main:&nbsp;\$x&nbsp;=&nbsp;$x\n";<br><br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000cc">local</font>&nbsp;$x&nbsp;=&nbsp;'x&nbsp;(local)';<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"Block:&nbsp;\$x&nbsp;=&nbsp;$x\n";<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"Symboltabelle:&nbsp;\$::x&nbsp;=&nbsp;$::x\n";<br>&nbsp;&nbsp;&nbsp;&nbsp;unterpr();<br>}<br><br>print&nbsp;"Main:&nbsp;\$x&nbsp;=&nbsp;$x\n";<br><br>sub&nbsp;unterpr&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"unterpr():&nbsp;\$x&nbsp;=&nbsp;$x\n";<br>}<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Main:&nbsp;$x&nbsp;=&nbsp;x&nbsp;(main)<br>Block:&nbsp;$x&nbsp;=&nbsp;x&nbsp;(local)<br><font color="#0000cc">Symboltabelle:&nbsp;$::x&nbsp;=&nbsp;x&nbsp;(local)<br>unterpr():&nbsp;$x&nbsp;=&nbsp;x&nbsp;(local)</font><br>Main:&nbsp;$x&nbsp;=&nbsp;x&nbsp;(main)<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Sowohl in der (globalen) Symboltabelle als
+auch in der Subroutine <code>unterpr()</code>, die sich, betrachtet
+man den Quell-Code des Programms, au&szlig;erhalb des Blockes mit
+der <code>local</code>-Deklaration befindet, wird f&uuml;r
+<code>$x</code> der Wert "<code>x&nbsp;(local)</code>"
+ausgegeben. Der urspr&uuml;ngliche Wert wird erst wiederhergestellt,
+wenn in der Folge des Programmablaufs der Block verlassen wird, in
+dem die <code>local</code>-Deklaration stattfand.
+  </p>
+  <p>
+
+Da die G&uuml;ltigkeit von <code>local</code>-Variablen somit
+durch den Programmablauf bestimmt wird, spricht man auch
+von <i>Laufzeit-</i> oder <i>dynamischen</i> Variablen.
+  </p>
+<p align="right"><a href="perl_lokal.html">[Seitenanfang]</a></p>
+  <a name="abs5"></a><hr>
+  <h2 align="center">Unterschiede zwischen <code>my()</code> und <code>local()</code></h2>
+  <hr>
+  <p>
+
+Die folgende Tabelle zeigt noch einmal schematisch den Unterschied
+zwischen <code>my</code> und <code>local</code>.
+<font color="#cc0000"><b>Markiert</b></font> sind diejenigen Werte,
+die ein "<code>print&nbsp;$v;</code>" an der entsprechenden
+Stelle im Code ausgeben w&uuml;rde.
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr bgcolor="#aaffaa">
+    <th>Zeile</th>
+    <th>Code</th>
+    <th>Symboltabelle<br>von <code>main</code></th>
+    <th><code>local</code>-Stack</th>
+    <th>Tabelle f&uuml;r<br><code>my</code>-Variablen</th>
+   </tr>
+   <tr bgcolor="#ffffcc">
+    <td>1</td>
+    <td><code>$v = 42;</code></td>
+    <td>v = <font color="#cc0000"><b>42</b></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+   </tr>
+   <tr bgcolor="#ffffcc">
+    <td>2</td>
+    <td><code>{<br>&nbsp;&nbsp;local&nbsp;$v&nbsp;=&nbsp;100;</code></td>
+    <td>v = <font color="#cc0000"><b>100</b></font></td>
+    <td>v = 42</td>
+    <td>&nbsp;</td>
+   </tr>
+   <tr bgcolor="#ffffcc">
+    <td>3</td>
+    <td><code>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;my $v = 7;</code></td>
+    <td>v = 100</td>
+    <td>v = 42</td>
+    <td>v = <font color="#cc0000"><b>7</b></font></td>
+   </tr>
+   <tr bgcolor="#ffffcc">
+    <td>4</td>
+    <td><code>&nbsp;&nbsp;}</code></td>
+    <td>v = <font color="#cc0000"><b>100</b></font></td>
+    <td>v = 42</td>
+    <td>&nbsp;</td>
+   </tr>
+   <tr bgcolor="#ffffcc">
+    <td>5</td>
+    <td><code>}</code></td>
+    <td>v = <font color="#cc0000"><b>42</b></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+In Zeile&nbsp;1 wird eine globale Variable "<code>$v</code>"
+angelegt und mit dem Wert 42 belegt. Wird eine <code>local</code>-Variable
+erzeugt (Zeile&nbsp;2), so &uuml;berdeckt der neue Wert den alten;
+letzterer wird auf einem internen "Stapel" (<i>stack</i>) gesichert.
+Unabh&auml;ngig davon k&ouml;nnen mit Hilfe von "<code>my</code>"
+lexikalische Variablen erzeugt werden (Zeile&nbsp;3), die in einer eigenen
+internen Tabelle verwaltet werden. Die G&uuml;ltigkeit der
+<code>my</code>-Variable endet mit der schlie&szlig;enden Klammer in
+Zeile&nbsp;4. Mit dem Blockende in Zeile&nbsp;5 wird der
+G&uuml;ltigkeitsbereich der <code>local</code>-Variable verlassen und
+der urspr&uuml;ngliche Wert wird vom Stack wiederhergestellt.
+  </p>
+  <p>
+
+Auf die Variable in der Symboltabelle kann in diesem Beispiel immer mittels
+"<code>$main::v</code>" zugegriffen werden. Existiert zus&auml;tzlich
+eine <code>my</code>-Variable, so bezieht sich "<code>$v</code>"
+(ohne "<code>main::</code>") immer
+auf diese (nicht auf das globale "<code>$v</code>"). Ein Zugriff auf den
+<code>local</code>-Stack ist hingegen nicht m&ouml;glich.
+  </p>
+  <p>
+
+Eine Situation, in der lokale Variablen <i>nicht</i> mittels <code>my</code>
+erzeugt werden k&ouml;nnen, sind die speziellen in Perl vordefinierten
+Variablen, wie etwa <code>$"</code> (Zeichen, das die
+Elemente eines Arrays voneinander trennt, wenn es innerhalb von doppelten
+Anf&uuml;hrungszeichen interpoliert wird). Man kann wie folgt in einem
+Programmblock eine Neudefinition einer globalen Variable
+vornehmen, ohne den urspr&uuml;nglichen Wert explizit sichern und
+am Ende wieder zur&uuml;cksetzen zu m&uuml;ssen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br><font color="#0000cc">$"</font>&nbsp;=&nbsp;',';<br>@a&nbsp;=&nbsp;(10,20,30);<br>print&nbsp;"@a\n";<br><br>{<br>&nbsp;&nbsp;<font color="#0000cc">local&nbsp;$"</font>&nbsp;=&nbsp;'&nbsp;-&nbsp;';<br>&nbsp;&nbsp;print&nbsp;"@a\n";<br>}<br><br>print&nbsp;"@a\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>10,20,30<br>10&nbsp;-&nbsp;20&nbsp;-&nbsp;30<br>10,20,30<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_lokal.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_modul.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

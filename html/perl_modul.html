@@ -1,0 +1,323 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Module  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Module</h1>
+  <table align="center"><tr>
+  <td><a href="perl_perl.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_lokal.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Packages</a></li>
+<li><a href="#abs2">Module</a></li>
+<li><a href="#abs3">Exportieren von Namen</a></li>
+<li><a href="#abs4">Standardmodule</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Packages</h2>
+  <hr>
+  <p>
+
+In einem Unterprogramm k&ouml;nnen mit Hilfe von
+<code>local()</code> oder <code>my()</code> lokale
+Variablen definiert werden, die dann nur einen entsprechend
+eingeschr&auml;nkten G&uuml;ltigkeitsbereich besitzen.
+Etwas &auml;hnliches gilt auch f&uuml;r Variablen, die
+au&szlig;erhalb von Subroutinen (im "Hauptprogramm")
+verwendet werden: Sie sind eigentlich nicht wirklich globale
+Variablen, sondern gelten nur innerhalb eines sogenannten
+Packages. Wird kein solches Package deklariert, nimmt Perl das
+Standardpackage "main" an.
+  </p>
+  <p>
+
+Tritt bei der Programmausf&uuml;hrung eine
+<code>package</code>-Anweisung auf, so gilt ab dort der Namensraum
+des entsprechenden Packages mit eigenen Variablen. Das hei&szlig;t,
+jede Variable ist an ein bestimmtes Package gebunden. Wichtige Ausnahmen
+hiervon sind Variablen, die mit <code>my</code> deklariert werden,
+sowie spezielle Variablen wie <code>$_</code> oder <code>@ARGV</code>.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>$v&nbsp;=&nbsp;123;<br>print&nbsp;$v."\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;(1)</font><br><br><font color="#006600">###&nbsp;Ab&nbsp;hier&nbsp;gilt&nbsp;ein&nbsp;neuer&nbsp;Namensraum.</font><br><font color="#0000cc">package&nbsp;p;</font><br>print&nbsp;$v."\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;(2)</font><br>print&nbsp;$main::v."\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;(3)</font><br>print&nbsp;$::v."\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;(4)</font><br>$w&nbsp;=&nbsp;456;<br>print&nbsp;$w."\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;(5)</font><br>print&nbsp;$p::w."\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;(6)</font><br><br><font color="#006600">###&nbsp;Hier&nbsp;kehren&nbsp;wir&nbsp;wieder&nbsp;zu&nbsp;"main"&nbsp;zur&uuml;ck.</font><br><font color="#0000cc">package&nbsp;main;</font><br>print&nbsp;$v."\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;(7)</font><br>print&nbsp;$w."\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;(8)</font><br>print&nbsp;$p::w."\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;(9)</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Anmerkungen hierzu:
+  </p>
+  <blockquote>
+  <table border="0" cellpadding="5">
+   <tr>
+    <td VALIGN="top"><b>(1)</b></td>
+    <td>Gibt wie gewohnt den Inhalt von <code>$v</code> aus ("123").</td>
+   </tr>
+   <tr>
+    <td VALIGN="top"><b>(2)</b></td>
+    <td>Dies f&uuml;hrt zu einer Fehlermeldung, da <code>$v</code>
+      in "main" angelegt wurde, und daher im Package "p" nicht bekannt ist.</td>
+   </tr>
+   <tr>
+    <td VALIGN="top"><b>(3)</b></td>
+    <td>So kann &uuml;ber den Package-Namen auch in "p" auf
+	  <code>$v</code> zugegriffen werden.</td>
+   </tr>
+   <tr>
+    <td VALIGN="top"><b>(4)</b></td>
+    <td>F&uuml;r main-Variablen kann der explizite Package-Name
+	  auch weggelassen werden.</td>
+   </tr>
+   <tr>
+    <td VALIGN="top"><b>(5)</b></td>
+    <td>Gibt den Inhalt der Variablen <code>$w</code> aus (zum Package
+	  "p" geh&ouml;rend!).</td>
+   </tr>
+   <tr>
+    <td VALIGN="top"><b>(6)</b></td>
+    <td>Wie (5), nur mit Package-Namen</td>
+   </tr>
+   <tr>
+    <td VALIGN="top"><b>(7)</b></td>
+    <td>Da hier wieder der Namensraum von "main" gilt, gibt es diesmal
+	  keine Fehlermeldung (vgl. (2)).</td>
+   </tr>
+   <tr>
+    <td VALIGN="top"><b>(8)</b></td>
+    <td>Da <code>$w</code> in "p" angelegt wurde, darf sie nicht
+	  ohne weiteres in "main" verwendet werden, d.h., hier erfolgt
+	  eine Fehlermeldung.</td>
+   </tr>
+   <tr>
+    <td VALIGN="top"><b>(9)</b></td>
+    <td>So kann in "main" auf Variablen eines anderen Packages
+	  zugegriffen werden.</td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+Die Zeilen (3), (4), (6) und (9) zeigen, wie man eine (skalare) Variable
+vollst&auml;ndig beschreibt:
+  </p>
+  <blockquote>
+  <blockquote>
+
+<code>$</code><i>Package-Name</i><code>::</code><i>Variablenname</i>
+  </blockquote>
+  </blockquote>
+  <p>
+
+Man beachte, da&szlig; das Dollarzeichen dabei ganz vorne steht (und nicht
+etwa unmittelbar vor dem Variablennamen).
+  </p>
+  <p>
+
+Wie schon weiter oben erw&auml;hnt, sind <code>my</code>-Variablen nicht an
+ein Package gebunden, daher wird bei folgendem Beispiel keine
+Fehlermeldung ausgegeben:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br><font color="#0000cc">my</font>&nbsp;$v&nbsp;=&nbsp;123;<br>print&nbsp;$v."\n";<br><br>package&nbsp;p;<br>print&nbsp;$v."\n";<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_modul.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Module</h2>
+  <hr>
+  <p>
+
+In Perl wird ein Package, das in einer eigenen Datei abgelegt wird,
+und &uuml;blicherweise von anderen Programmen mittels
+<code>use</code>
+eingebunden wird, als Modul bezeichnet. Dabei ist der Dateiname
+gleich dem Package-Namen, erg&auml;nzt um die Endung "<code>.pm</code>".
+Wie schon bereits beim <a href="perl_perl.html">Einbinden von
+Perl-Code</a> beschrieben, mu&szlig; der R&uuml;ckgabewert beim
+Importieren von Code aus einem Modul <i>wahr</i> sein, daher die
+Zeile "<code>1;</code>" am Ende.
+  </p>
+  <p>
+
+Ein Modul in der Datei <b><tt>hallo.pm</tt></b> k&ouml;nnte beispielweise
+so aussehen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>package&nbsp;hallo;<br><br>sub&nbsp;sag_hallo&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"Hallo,&nbsp;Welt!\n";<br>}<br><br>1;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Es kann dann in einem Perl-Programm so verwendet werden:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><font color="#0000cc">use&nbsp;hallo;</font><br><br>&amp;<font color="#0000cc">hallo::</font>sag_hallo();<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Hallo,&nbsp;Welt!<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Da die Subroutine <code>sag_hallo</code> in einem eigenen Package
+definiert wird (n&auml;mlich "hallo"), mu&szlig; beim Aufruf des
+Unterprogramms auch der Package-Name mit angegeben werden.
+  </p>
+<p align="right"><a href="perl_modul.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Exportieren von Namen</h2>
+  <hr>
+  <p>
+
+Damit beim Einbinden eines Moduls nicht bei jedem Aufruf einer Funktion
+der Package-Name mit angegeben werden mu&szlig;, kann man Namen
+(skalare Variablen, Arrays, Subroutinen,...) aus einem
+Modul heraus exportieren. Jene Variablen werden dann beim
+Aufruf von <code>use</code>
+ins Hauptprogramm importiert, d.h., sie k&ouml;nnen dann dort
+so verwendet werden, als w&auml;ren sie im Hauptprogramm
+deklariert worden.
+  </p>
+  <p>
+
+Dazu gibt es ein Modul namens "Exporter", das
+diese Aufgabe &uuml;bernimmt. Es definiert zum einen einige
+Arrays, die dem Exportieren von Namen dienen. Die beiden
+wichtigsten sind <code>@EXPORT</code>
+und <code>@EXPORT_OK</code>.
+Au&szlig;erdem wird die bei der Beschreibung von
+<code>use</code> erw&auml;hnte
+Routine <code>import()</code> definiert. Da sich die Routine
+<code>import()</code> nicht im Modul selbst befindet (sondern in
+"Exporter"), mu&szlig; man den Perl-Interpreter durch das
+<code>@ISA</code>-Array darauf hinweisen:
+  </p>
+  <blockquote>
+<code>
+@ISA = ( 'Exporter' );
+</code>  </blockquote>
+  <p>
+
+Genauer gesagt wird damit das aktuelle Modul wie eine von
+<code>Exporter</code> abgeleitete Klasse
+im Sinne objektorientierter Programmierung betrachtet, worauf hier aber
+nicht weiter eingegangen werden soll.
+  </p>
+  <p>
+
+Alle Namen in <code>@EXPORT</code>
+werden automatisch in das aufrufende Programm exportiert, w&auml;hrend
+diejenigen Namen, die in <code>@EXPORT_OK</code> stehen, nur auf Verlangen
+exportiert werden. Namen, die sich nicht in einem der beiden genannten
+Arrays befinden, k&ouml;nnen nur zusammen mit dem Package-Namen
+verwendet werden.
+  </p>
+  <p>
+
+Beispiel eines Moduls in der Datei <b><tt>modul.pm</tt></b>:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>package&nbsp;modul;<br><br><font color="#0000cc">use&nbsp;Exporter;</font><br><font color="#0000cc">@ISA&nbsp;=&nbsp;('Exporter');</font><br><br><font color="#0000cc">@EXPORT</font>&nbsp;=&nbsp;(&nbsp;'routine_1'&nbsp;);<br><font color="#0000cc">@EXPORT_OK</font>&nbsp;=&nbsp;(&nbsp;'routine_2'&nbsp;);<br><br>sub&nbsp;routine_1&nbsp;{&nbsp;print&nbsp;"Routine&nbsp;Nr.1\n"&nbsp;}<br>sub&nbsp;routine_2&nbsp;{&nbsp;print&nbsp;"Routine&nbsp;Nr.2\n"&nbsp;}<br>sub&nbsp;routine_3&nbsp;{&nbsp;print&nbsp;"Routine&nbsp;Nr.3\n"&nbsp;}<br><br>1;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+So werden nur die Namen aus <code>@EXPORT</code> importiert,
+alle anderen ben&ouml;tigen den Package-Namen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><font color="#0000cc">use&nbsp;modul;</font><br><br>routine_1();<br>&amp;modul::routine_2();<br>&amp;modul::routine_3();<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Hier werden die Namen aus <code>@EXPORT_OK</code>
+explizit importiert:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><font color="#0000cc">use&nbsp;modul&nbsp;'routine_2';</font><br><br>&amp;modul::routine_1();<br>routine_2();<br>&amp;modul::routine_3();<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+So importiert man beide exportierten Funktionen, <code>routine_3</code>
+kann allerdings nicht importiert werden:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><font color="#0000cc">use&nbsp;modul&nbsp;'routine_1','routine_2';</font><br><br>routine_1();<br>routine_2();<br>&amp;modul::routine_3();<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Weitere Informationen enth&auml;lt die Manual Page von "Exporter", die
+beispielsweise durch "<code>perldoc&nbsp;Exporter</code>"
+ausgegeben wird.
+  </p>
+<p align="right"><a href="perl_modul.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">Standardmodule</h2>
+  <hr>
+  <p>
+
+Bei der Perl-Distribution wird schon eine Reihe von Modulen
+mitgeliefert, wie beispielsweise das oben erw&auml;hnte Modul
+"Exporter". Um herauszufinden, welche Module wo installiert sind,
+betrachte man das Array <code>@INC</code>, das eine Liste
+von Pfaden enth&auml;lt, in denen Perl bei Bedarf nach Modulen
+sucht.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>foreach&nbsp;my&nbsp;$pfad&nbsp;(&nbsp;<font color="#0000cc">@INC</font>&nbsp;)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"$pfad\n";<br>}<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die Dokumentation eines Moduls erh&auml;lt man (zumindest bei einem
+gut geschriebenen Modul) durch den Aufruf von "<code>perldoc</code>"
+mit dem Namen der Moduldatei als Argument oder (unter MacOS) durch
+&Ouml;ffnen der Moduldatei mit Hilfe des Programms "<code>Shuck</code>".
+  </p>
+  <p>
+
+Es lohnt sich auf jeden Fall, einen Blick in die Bibliothek
+der Standardmodule zu werfen, da sie viele Funktionen bereitstellen,
+die oft ben&ouml;tigt werden, wie das Lesen von Kommandozeilenoptionen,
+das Arbeiten mit Dateib&auml;umen, das Kopieren von Dateien und
+vieles mehr.
+  </p>
+  <p>
+
+Eine gro&szlig;e Sammlung weiterer Module f&uuml;r die verschiedensten
+Aufgaben findet sich im
+<a href="perl_internet.html#abs3"><i>Comprehensive Perl Archive Network</i>
+(CPAN)</a>.
+  </p>
+<p align="right"><a href="perl_modul.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_perl.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_lokal.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

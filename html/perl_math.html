@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Mathematik  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Mathematik</h1>
+  <table align="center"><tr>
+  <td><a href="perl_op.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_string.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Arithmetik</a></li>
+<li><a href="#abs2">Vergleichsoperatoren</a></li>
+<li><a href="#abs3">Funktionen</a></li>
+<li><a href="#abs4">Zufallszahlen</a></li>
+  </ul>
+  <hr>
+  <p>
+
+Auch wenn Perl eigentlich keine Sprache f&uuml;r numerische Berechnungen
+ist, steht doch eine Reihe von mathematischen Operatoren und Funktionen
+zur Verf&uuml;gung.
+  </p>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Arithmetik</h2>
+  <hr>
+  <ul>
+   <li>
+"<code>+</code>"  positives Vorzeichen (un&auml;r)   </li>
+   <li>
+"<code>-</code>"  negatives Vorzeichen (un&auml;r)   </li>
+   <li>
+"<code>+</code>"  Addition (bin&auml;r)   </li>
+   <li>
+"<code>-</code>"  Subtraktion (bin&auml;r)   </li>
+   <li>
+"<code>*</code>"  Multiplikation   </li>
+   <li>
+"<code>/</code>"  Division   </li>
+   <li>
+"<code>%</code>"  Rest einer Division (Modulo)   </li>
+   <li>
+"<code>**</code>" Potenzbildung   </li>
+   <li>
+"<code>++</code>" Inkrement   </li>
+   <li>
+"<code>--</code>" Dekrement   </li>
+  </ul>
+  <p>
+
+Der In-(De-)krement-Operator erh&ouml;ht (verringert) den Wert
+des Operanden um 1. Steht der Operator vor der Variablen, so wird
+zuerst die Inkrementierung (Dekrementierung) und anschlie&szlig;end
+die Auswertung der Variablen durchgef&uuml;hrt, umgekehrt ist es,
+wenn der Operator hinter der Variablen steht.
+  </p>
+  <p>
+
+Beispiel :
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@array&nbsp;=&nbsp;(10,20,30);<br>my&nbsp;$i&nbsp;=&nbsp;1;<br>print&nbsp;"$array[<font color="#0000cc">++$i</font>]\n";<br>$i&nbsp;=&nbsp;1;<br>print&nbsp;"$array[<font color="#0000cc">$i++</font>]\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>30<br>20<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_math.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Vergleichsoperatoren</h2>
+  <hr>
+  <p>
+
+Operatoren, die ihre Operanden in irgendeiner Weise miteinander vergleichen,
+liefern im allgemeinen einen Wahrheitswert (oft als <i>boolean</i> bezeichnet)
+zur&uuml;ck. Ein solcher hat die beiden m&ouml;glichen Werte "wahr"
+(<i>true</i>) und "falsch" (<i>false</i>). Perl kennt, im Gegensatz zu
+einigen anderen Programmiersprachen, hierf&uuml;r keinen eigenen
+Datentyp, sondern setzt "<code>1</code>" (Ziffer&nbsp;1) als
+"wahren" Wert und "" (Leerstring) als "falschen" Wert.
+  </p>
+  <ul>
+   <li>
+"<code>==</code>"  liefert <i>wahr</i> bei Gleichheit   </li>
+   <li>
+"<code>!=</code>"  liefert <i>wahr</i> bei Ungleichheit   </li>
+   <li>
+"<code>&gt;</code>"   liefert <i>wahr</i>, falls linkes Argument 
+                         gr&ouml;&szlig;er als rechtes Argument   </li>
+   <li>
+"<code>&lt;</code>"   liefert <i>wahr</i>, falls linkes Argument 
+                         kleiner als rechtes Argument   </li>
+   <li>
+"<code>&gt;=</code>"  liefert <i>wahr</i>, falls
+                         linkes Argument 
+                         gr&ouml;&szlig;er oder gleich rechtem Argument   </li>
+   <li>
+"<code>&lt;=</code>"  liefert <i>wahr</i>, falls
+                         linkes Argument 
+                         kleiner oder gleich rechtem Argument   </li>
+   <li>
+"<code>&lt;=&gt;</code>" liefert -1, 0 oder 1 je
+                         nachdem, ob linkes Argument 
+                         kleiner, gleich oder gr&ouml;&szlig;er als
+                         rechtem Argument   </li>
+  </ul>
+  <p>
+
+<b>Achtung:</b> Diese Vergleiche gelten nur im numerischen Kontext,
+d.h., wenn zwei Zahlen verglichen werden. Zum
+<a href="perl_string.html#abs2">Vergleich von Zeichenketten</a>
+sehen die Operatoren anders aus.
+  </p>
+<p align="right"><a href="perl_math.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Funktionen</h2>
+  <hr>
+  <ul>
+   <li>
+<code>abs($x)</code>    <p>
+
+      Absolutwert von <code>$x</code>
+          </p>
+   </li>
+   <li>
+<code>atan2($x,$y)</code>    <p>
+
+      Arcustangens von <code>$x/$y</code> (zwischen <i>-pi</i> und
+      <i>+pi</i>, wobei <i>pi=3,14159...</i>)
+          </p>
+   </li>
+   <li>
+<code>cos($x)</code>    <p>
+
+      Cosinus von <code>$x</code> (im Bogenma&szlig;)
+          </p>
+   </li>
+   <li>
+<code>exp($x)</code>    <p>
+
+      Exponentialfunktion ("<i>e</i> hoch <code>$x</code>", wobei
+      <i>e=2,71828...</i>)
+          </p>
+   </li>
+   <li>
+<code>log($x)</code>    <p>
+
+      Nat&uuml;rlicher Logarithmus von <code>$x</code>     
+      (Achtung: <code>$x</code> mu&szlig; positiv sein. Au&szlig;erdem gilt:
+      <code>$x&nbsp;==&nbsp;log(exp($x))</code> f&uuml;r alle
+      <code>$x</code>)
+          </p>
+   </li>
+   <li>
+<code>sin($x)</code>    <p>
+
+      Sinus-Funktion von <code>$x</code> (im Bogenma&szlig;)
+          </p>
+   </li>
+   <li>
+<code>sqrt($x)</code>    <p>
+
+      Quadratwurzel aus <code>$x</code>
+      (Achtung: <code>$x</code> mu&szlig; positiv sein)
+          </p>
+   </li>
+  </ul>
+  <p>
+
+Mit Ausnahme von <code>atan2()</code> k&ouml;nnen die Funktionen auch ohne
+explizites Argument geschrieben werden; sie werden dann auf den
+jeweiligen Wert von <a href="perl_spevar.html#abs2"><code>$_</code></a>
+angewandt.
+  </p>
+  <p>
+
+Anmerkung: Weitere mathematische Funktionen finden sich im sogenannten
+POSIX-Modul, das zur Standard-Bibliothek von Perl
+geh&ouml;rt. Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br><font color="#0000cc">use&nbsp;POSIX;</font><br><br>print&nbsp;<font color="#0000cc">log10(1000)</font>,"\n";&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">##&nbsp;Logarithmus&nbsp;zur&nbsp;Basis&nbsp;10</font><br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_math.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">Zufallszahlen</h2>
+  <hr>
+  <p>
+
+(Pseudo-)Zufallszahlen werden in Perl mit der Funktion
+<code>rand()</code> erzeugt.
+Ohne Argument liefert sie Werte zwischen
+0 und 1, ansonsten (Gleitkomma-) Zahlen zwischen 0 und dem Wert des
+Arguments. Um nicht jedesmal die gleiche Zahlenreihe zu erhalten,
+wird die Funktion <code>srand()</code> eingesetzt, die den
+Zufallszahlengenerator mit einer Zahl (Funktionsargument)
+initialisiert. Ohne Argument wird <code>srand(time)</code>
+ausgef&uuml;hrt, d.h. als Initialisierung dient die Zahl der
+Sekunden seit dem 1.1.1970.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>for(my&nbsp;$i&nbsp;=&nbsp;0;$i&nbsp;&lt;&nbsp;3;$i++)&nbsp;{<br>&nbsp;&nbsp;print&nbsp;"(1)".<font color="#0000cc">rand()</font>."\n"<br>}<br>print&nbsp;"\n";<br><br><font color="#0000cc">srand(12345678)</font>;<br>for(my&nbsp;$i&nbsp;=&nbsp;0;$i&nbsp;&lt;&nbsp;3;$i++)&nbsp;{<br>&nbsp;&nbsp;&nbsp;print&nbsp;"(2)".<font color="#0000cc">rand(0.6)</font>."\n"<br>}<br>print&nbsp;"\n";<br><br><font color="#0000cc">srand()</font>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;srand(time);</font><br>for(my&nbsp;$i&nbsp;=&nbsp;0;$i&nbsp;&lt;&nbsp;3;$i++)&nbsp;{<br>&nbsp;&nbsp;&nbsp;print&nbsp;"(3)".<font color="#0000cc">rand(150)</font>."\n"<br>}<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>(1)0.1558837890625<br>(1)0.480255126953125<br>(1)0.754150390625<br><br>(2)0.0451620008307167<br>(2)0.445994871769363<br>(2)0.139236410776795<br><br>(3)142.277526855469<br>(3)71.8826293945312<br>(3)148.493957519531<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Bei mehrmaligem Abarbeiten des Skriptes ergeben sich nur bei den
+Zahlen der Gruppe <code>(2)</code> jeweils die gleichen Werte.
+  </p>
+<p align="right"><a href="perl_math.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_op.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_string.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

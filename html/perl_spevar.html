@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Spezielle Variablen  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Spezielle Variablen</h1>
+  <table align="center"><tr>
+  <td><a href="perl_eval.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_ref.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Einf&uuml;hrung</a></li>
+<li><a href="#abs2">Die Variable <code>$_</code></a></li>
+<li><a href="#abs3">Allgemeine Informationen</a></li>
+<li><a href="#abs4">PID,UID,GID</a></li>
+<li><a href="#abs5">Fehlermeldungen</a></li>
+<li><a href="#abs6">Weitere spezielle Variablen</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Einf&uuml;hrung</h2>
+  <hr>
+  <p>
+
+Es gibt in Perl einige reservierte Variablen, die Informationen &uuml;ber
+aktuelle Einstellungen geben und die auch dazu verwendet werden k&ouml;nnen,
+einige dieser Einstellungen zu ver&auml;ndern, indem die Variablen
+entsprechend gesetzt werden.
+  </p>
+  <p>
+
+Verwendet man das Modul <code>English</code> der Standard-Bibliothek
+("<code>use English;</code>"), so stehen auch begriffliche Namen dieser
+Variablen zur Verf&uuml;gung (sie sind in der folgenden Liste in Klammern
+angegeben).
+  </p>
+  <p>
+
+Anmerkung: Einige der Variablen liefern auf Nicht-UNIX-Betriebssystemen nicht
+unbedingt sinnvolle Werte (wenn &uuml;berhaupt), falls die jeweils
+zugrundeliegende Funktion (z.B. Verwendung von Benutzer-IDs) nicht zur
+Verf&uuml;gung steht.
+  </p>
+<p align="right"><a href="perl_spevar.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Die Variable <code>$_</code></h2>
+  <hr>
+  <p>
+
+Wenn beispielsweise bei einem Funktionsaufruf der R&uuml;ckgabewert
+nicht explizit einer Variablen zugewiesen wird, so wird er oft doch
+gespeichert, und zwar in der Variablen "<code>$_</code>". Auch k&ouml;nnen
+eine Reihe von Funktionen (die eigentlich ein Argument erwarten) 
+ohne Argument aufgerufen werden - es wird dann stillschweigend 
+der Inhalt von <code>$_</code> &uuml;bergeben. <code>$_</code> ist also
+so etwas wie eine Variable, die tempor&auml;r Daten aufnimmt, und
+es daher erlaubt, Funktionsaufrufe miteinander zu verketten, ohne
+jedesmal explizit Zuweisungen an Variablen vornehmen zu m&uuml;ssen,
+die sonst nirgendwo im Programm gebraucht werden.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$string&nbsp;=&nbsp;'Hallo';<br>chop($string);<br>print&nbsp;$string;<br>print&nbsp;"\n";<br><br><font color="#0000cc">$_</font>&nbsp;=&nbsp;'Hallo';<br>chop(<font color="#0000cc">$_</font>);<br>print&nbsp;$_;<br>print&nbsp;"\n";<br><br><font color="#0000cc">$_</font>&nbsp;=&nbsp;'Hallo';<br>chop;<br>print;<br>print&nbsp;"\n";</code></td></tr></table>
+</td></tr></table>
+  <p>
+
+W&auml;hrend im ersten Teil eine Variable namens <code>$string</code> verwendet
+wird, um den Text zu speichern und die anschlie&szlig;enden
+Funktionsaufrufe durchzuf&uuml;hren, zeigt das zweite Beispiel, da&szlig;
+man als Variable genausogut <code>$_</code> verwenden kann. Der dritte Teil
+demonstriert, wie bei Aufruf der Funktion
+<code>chop()</code> ohne
+Argument standardm&auml;&szlig;ig der Inhalt von <code>$_</code>
+&uuml;bergeben wird und das Ergebnis wiederum in <code>$_</code> landet.
+Schlie&szlig;lich wird der Inhalt von <code>$_</code> mit der Funktion
+<code>print()</code> (ebenso ohne Argument) ausgegeben.
+  </p>
+  <p>
+
+Auch wenn im obigen Beispiel <code>$_</code> wie eine
+normale Variable verwendet wird, gibt es ein doch ein paar Unterschiede;
+so ist <code>$_</code> eine "echte" globale Variable,
+und sie l&auml;&szlig;t sich auch nicht mit <code>my()</code>
+in einer Subroutine lokalisieren.
+  </p>
+  <p>
+
+Ein weiteres Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@array&nbsp;=&nbsp;('a',&nbsp;'b',&nbsp;'c');<br><br>foreach&nbsp;(@array)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;tr/a-z/A-Z/;<br>&nbsp;&nbsp;&nbsp;&nbsp;print;<br>}</code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>ABC<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Da hier bei <code>foreach</code> keine Laufvariable angegeben ist,
+wird <code>$_</code> angenommen. <code>$_</code> erh&auml;lt also nacheinander
+die Werte "a", "b" und "c". Im Inneren der Schleife
+wird die Funktion <code>tr</code> auf <code>$_</code> angewandt
+(ausf&uuml;hrlich: <code>$_&nbsp;=~&nbsp;tr/a-z/A-Z/;</code>), die
+hier die Kleinbuchstaben von a bis z durch die entsprechenden
+Gro&szlig;buchstaben ersetzt.
+  </p>
+<p align="right"><a href="perl_spevar.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Allgemeine Informationen</h2>
+  <hr>
+  <ul>
+   <li>
+<code>$0</code> (<code>$PROGRAM_NAME</code>)    <p>
+
+      Name des gerade laufenden Programms
+          </p>
+   </li>
+   <li>
+<code>$]</code> <i>(veraltet, siehe $^V ab Version 5.6!)</i>    <p>
+
+      Version des Perl-Interpreters (z.B. <code>5.008002</code> in Perl 5.8.2)
+          </p>
+   </li>
+   <li>
+<code>$^V</code> (<code>$PERL_VERSION</code>)    <p>
+
+      Version des Perl-Interpreters (Achtung: <code>$^V</code> setzt sich aus
+      den Symbolen mit den ASCII-Code-Werten der Versionsnummer zusammen,
+      z.B. <i>chr(5)chr(8)chr(2)</i> in Perl 5.8.2)
+          </p>
+   </li>
+   <li>
+<code>$^O</code> (<code>$OSNAME</code>)    <p>
+
+      Name des Betriebssystems
+          </p>
+   </li>
+   <li>
+<code>$^X</code> (<code>$EXECUTABLE_NAME</code>)    <p>
+
+      Name des Perl-Interpreters
+          </p>
+   </li>
+   <li>
+<code>$^W</code> (<code>$WARNING</code>)    <p>
+
+      Zeigt an, ob Warnungen ausgegeben werden sollen (z.B. durch
+      die Option "<code>-w</code>").
+          </p>
+   </li>
+   <li>
+<code>$^T</code> (<code>$BASETIME</code>)    <p>
+
+      Zeitpunkt, an dem das aktuelle Skript gestartet wurde (unter UNIX: Anzahl
+      der Sekunden seit dem 1.1.1970)
+          </p>
+   </li>
+  </ul>
+<p align="right"><a href="perl_spevar.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">PID,UID,GID</h2>
+  <hr>
+  <ul>
+   <li>
+<code>$$</code> (<code>$PROCESS_ID</code>)    <p>
+
+      Proze&szlig;-Nummer von Perl
+          </p>
+   </li>
+   <li>
+<code>$&lt;</code> (<code>$REAL_USER_ID</code>,<code>$UID</code>)    <p>
+
+      Benutzer-ID, unter der der Proze&szlig; gestartet wurde
+          </p>
+   </li>
+   <li>
+<code>$&gt;</code> (<code>$EFFECTIVE_USER_ID</code>,<code>$EUID</code>)    <p>
+
+      Benutzer-ID, unter der der Proze&szlig; aktuell l&auml;uft (verschieden
+      von <code>$&lt;</code> im Falle von "Setuid"-Programmen)
+          </p>
+   </li>
+   <li>
+<code>$(</code> (<code>$REAL_GROUP_ID</code>,<code>$GID</code>)    <p>
+
+      Liste der Gruppen
+      des Benutzers, unter dem der Proze&szlig; gestartet wurde
+          </p>
+   </li>
+   <li>
+<code>$)</code> (<code>$EFFECTIVE_GROUP_ID</code>,<code>$EGID</code>)    <p>
+
+      aktuelle Liste der Gruppen des Benutzers (verschieden von
+      <code>$(</code> im Falle von "Setgid"-Programmen)
+          </p>
+   </li>
+  </ul>
+<p align="right"><a href="perl_spevar.html">[Seitenanfang]</a></p>
+  <a name="abs5"></a><hr>
+  <h2 align="center">Fehlermeldungen</h2>
+  <hr>
+  <ul>
+   <li>
+<code>$?</code> (<code>$CHILD_ERROR</code>)    <p>
+
+      Status-Nummer des letzten Systemaufrufs
+          </p>
+   </li>
+   <li>
+<code>$!</code> (<code>$OS_ERROR</code>,<code>$ERRNO</code>)    <p>
+
+      Fehlerummer oder -meldung (je nach Kontext) des letzten Systemaufrufs
+          </p>
+   </li>
+   <li>
+<code>$@</code> (<code>$EVAL_ERROR</code>)    <p>
+
+      Fehlermeldung des letzten <code>eval()</code>-Aufrufs
+          </p>
+   </li>
+  </ul>
+<p align="right"><a href="perl_spevar.html">[Seitenanfang]</a></p>
+  <a name="abs6"></a><hr>
+  <h2 align="center">Weitere spezielle Variablen</h2>
+  <hr>
+  <ul>
+   <li>
+<code>@_</code>    <p>
+
+	  Dieses Array enth&auml;lt die an ein Unterprogramm
+	  &uuml;bergebenen Argumente.
+	      </p>
+   </li>
+   <li>
+<code>$[</code>    <p>
+
+      Index des ersten Elements eines Arrays (Standardwert: 0)
+	      </p>
+    <p>
+
+	  Diese Variable sollte (insbesondere ab Perl Version 5) nicht
+	  mehr verwendet werden, da dies bei Programmen, die aus
+	  mehreren Dateien (Modulen) bestehen, zu Problemen f&uuml;hren kann.
+	      </p>
+   </li>
+  </ul>
+<p align="right"><a href="perl_spevar.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_eval.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_ref.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

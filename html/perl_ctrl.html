@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Schleifen und Verzweigungen  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Schleifen und Verzweigungen</h1>
+  <table align="center"><tr>
+  <td><a href="perl_end.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_io.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1"><code>while</code> und
+<code>until</code></a></li>
+<li><a href="#abs2"><code>for</code> und
+<code>foreach</code></a></li>
+<li><a href="#abs3">Bedingte Verzweigung mit <code>if</code>
+und <code>unless</code></a></li>
+<li><a href="#abs4">Beeinflussen des Ablaufs einer Schleife</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center"><code>while</code> und
+<code>until</code></h2>
+  <hr>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$i&nbsp;=&nbsp;0;<br><font color="#0000cc">while($i&nbsp;&lt;&nbsp;10)&nbsp;{</font><br>&nbsp;&nbsp;print&nbsp;"$i\n";<br>&nbsp;&nbsp;$i&nbsp;+=&nbsp;2;<br><font color="#0000cc">}</font><br><font color="#0000cc">until($i&nbsp;==&nbsp;5)&nbsp;{</font><br>&nbsp;&nbsp;print&nbsp;"$i\n";<br>&nbsp;&nbsp;$i&nbsp;--;<br><font color="#0000cc">}</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Bei der <code>while</code>-Schleife wird zuerst das Argument
+&uuml;berpr&uuml;ft. Falls dies <i>wahr</i> liefert, wird der
+Schleifenblock ausgef&uuml;hrt. Dies wiederholt sich so lange, bis das
+<code>while</code>-Argument <i>falsch</i> ist.
+  </p>
+  <p>
+
+Die Negation der <code>while</code>-Schleife ist die Konstruktion
+mit Hilfe von <code>until</code>. Hier wird der Schleifenk&ouml;rper
+so lange wiederholt bis das Argument von <code>until</code> den
+Wert <i>wahr</i> liefert.
+  </p>
+  <p>
+
+Obiges Programm liefert demzufolge die Ausgabe
+  </p>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>0<br>2<br>4<br>6<br>8<br>10<br>9<br>8<br>7<br>6<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_ctrl.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center"><code>for</code> und
+<code>foreach</code></h2>
+  <hr>
+  <p>
+
+Folgendes Programm schreibt die Zahlen von 1 bis 10 auf den
+Bildschirm:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br><font color="#0000cc">for(my&nbsp;$i&nbsp;=&nbsp;1;$i&nbsp;&lt;=&nbsp;10;$i++)&nbsp;{</font>&nbsp;print&nbsp;"$i\n";&nbsp;<font color="#0000cc">}</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Zuerst wird die Anweisung im 1.Argument von <code>for</code>
+ausgef&uuml;hrt. Anschlie&szlig;end wird das 2.Argument
+&uuml;berpr&uuml;ft. Liefert diese Abfrage eine wahre Aussage
+(<i>true</i>), so wird der Schleifenblock ausgef&uuml;hrt.
+Nach dem Block wird das 3.Argument von <code>for</code> ausgewertet
+und dann wieder das Argument Nummer 2 &uuml;berpr&uuml;ft. Dies
+wiederholt sich so lange, bis die Bedingung (Argument 2) nicht mehr
+erf&uuml;llt ist (Wert <i>falsch</i>). Dann f&auml;hrt das Programm
+in der Zeile nach dem Schleifenblock fort.
+  </p>
+  <p>
+
+Die <code>for</code>-Schleife ist eigentlich nur eine vereinfachte
+Schreibweise; obiges Beispielprogramm l&auml;&szlig;t sich auch
+wie folgt schreiben:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$i&nbsp;=&nbsp;1;<br><font color="#0000cc">while($i&nbsp;&lt;=&nbsp;10)&nbsp;{</font><br>&nbsp;&nbsp;print&nbsp;"$i\n";<br>&nbsp;&nbsp;$i++;<br><font color="#0000cc">}</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Anstatt der drei durch Semikolons getrennten Argumente, kann
+<code>for</code> auch eine Liste &uuml;bergeben werden, die
+dann sukzessive abgearbeitet wird. Aus Gr&uuml;nden der
+&Uuml;bersichtlichkeit sollte in so einem Falle aber an Stelle
+von <code>for</code> das &auml;quivalente <code>foreach</code>
+stehen. Die einzelnen Zeilen des folgenden Skripts leisten alle
+das gleiche: Sie geben die Zahlen von 1 bis 10 aus.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br><font color="#0000cc">for((1,2,3,4,5,6,7,8,9,10))&nbsp;{</font>&nbsp;print&nbsp;$_."\n"&nbsp;<font color="#0000cc">}</font><br><font color="#0000cc">foreach((1,2,3,4,5,6,7,8,9,10))&nbsp;{</font>&nbsp;print&nbsp;$_."\n"&nbsp;<font color="#0000cc">}</font><br><font color="#0000cc">foreach(1..10)&nbsp;{</font>&nbsp;print&nbsp;$_."\n"&nbsp;<font color="#0000cc">}</font><br><font color="#0000cc">foreach&nbsp;my&nbsp;$nr&nbsp;(1..10)&nbsp;{</font>&nbsp;print&nbsp;$nr."\n"&nbsp;<font color="#0000cc">}</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die dritte und vierte Zeile verwenden den Bereichsoperator
+(<i>range operator</i>) aus zwei Punkten: "<code>..</code>".
+Wird er, wie in
+diesem Falle, im Listenkontext benutzt, so liefert er eine Liste, die mit
+der ersten Zahl beginnt und mit der zweiten endet (ist der erste Operand
+gr&ouml;&szlig;er als der zweite, erh&auml;lt man eine leere Liste).
+Dies funktioniert auch mit Zeichenketten, wobei die Liste dann aus
+Strings besteht, die sich im alphabetischen Sinne vom ersten zum zweiten
+Operanden erstreckt.
+  </p>
+  <p>
+
+In der letzten Zeile sieht man, wie das gerade von <code>foreach</code>
+bearbeitete Listenelement einer Variablen zugewiesen werden kann. Wird
+keine solche Variable angegeben, so steht der aktuelle Listenwert
+in der speziellen Variablen <a href="perl_spevar.html#abs2"><code>$_</code></a>.
+  </p>
+<p align="right"><a href="perl_ctrl.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Bedingte Verzweigung mit <code>if</code>
+und <code>unless</code></h2>
+  <hr>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>for(my&nbsp;$i&nbsp;=&nbsp;1;$i&nbsp;&lt;=&nbsp;5;$i&nbsp;++)&nbsp;{<br>&nbsp;&nbsp;<font color="#0000cc">if&nbsp;&nbsp;&nbsp;&nbsp;($i&nbsp;&lt;&nbsp;3)&nbsp;&nbsp;{</font>&nbsp;print&nbsp;"($i)&nbsp;kleiner&nbsp;als&nbsp;3\n"&nbsp;<font color="#0000cc">}</font><br>&nbsp;&nbsp;<font color="#0000cc">elsif&nbsp;($i&nbsp;==&nbsp;4)&nbsp;{</font>&nbsp;print&nbsp;"($i)&nbsp;gleich&nbsp;4\n"&nbsp;<font color="#0000cc">}</font><br>&nbsp;&nbsp;<font color="#0000cc">elsif&nbsp;($i&nbsp;&gt;&nbsp;4)&nbsp;&nbsp;{</font>&nbsp;print&nbsp;"($i)&nbsp;gr&ouml;&szlig;er&nbsp;als&nbsp;4\n"&nbsp;<font color="#0000cc">}</font><br>&nbsp;&nbsp;<font color="#0000cc">else&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</font>&nbsp;print&nbsp;"($i)&nbsp;keine&nbsp;Bedingung&nbsp;erf&uuml;llt\n"&nbsp;<font color="#0000cc">}</font><br>&nbsp;&nbsp;<br>&nbsp;&nbsp;<font color="#0000cc">unless($i&nbsp;==&nbsp;2)&nbsp;{</font>&nbsp;print&nbsp;"[$i]&nbsp;ungleich&nbsp;2\n"&nbsp;<font color="#0000cc">}</font><br>}<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>(1)&nbsp;kleiner&nbsp;als&nbsp;3<br>[1]&nbsp;ungleich&nbsp;2<br>(2)&nbsp;kleiner&nbsp;als&nbsp;3<br>(3)&nbsp;keine&nbsp;Bedingung&nbsp;erf&uuml;llt<br>[3]&nbsp;ungleich&nbsp;2<br>(4)&nbsp;gleich&nbsp;4<br>[4]&nbsp;ungleich&nbsp;2<br>(5)&nbsp;gr&ouml;&szlig;er&nbsp;als&nbsp;4<br>[5]&nbsp;ungleich&nbsp;2<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Das Argument von <code>if</code> ist eine Bedingung,
+die entweder wahr (<i>true</i>) oder falsch (<i>false</i>) ist. Im Falle
+von "wahr" wird der Block nach <code>if</code> ausgef&uuml;hrt. Ist die 
+<code>if</code>-Bedingung falsch, so wird (falls vorhanden) das
+Argument des ersten <code>elsif</code> ausgewertet. Liefert auch
+dieses nicht den Wert <i>wahr</i>, kommt das n&auml;chste <code>elsif</code>
+an die Reihe; so lange bis entweder eine Bedingung wahr ist, keine
+Bedingungen mehr vorhanden sind oder ein abschlie&szlig;endes 
+<code>else</code> erreicht wird, dessen Block
+ausgef&uuml;hrt wird, falls kein anderer Block in Frage kommt.
+  </p>
+  <p>
+
+Im Gegensatz zu anderen Programmiersprachen wie z.B. C mu&szlig;
+der Block nach einem <code>if</code>, <code>elsif</code> oder
+<code>else</code> immer in geschweiften Klammern stehen; dadurch
+werden eventuelle Mehrdeutigkeiten vermieden.
+  </p>
+  <p>
+
+Das Gegenst&uuml;ck von <code>if</code> ist
+<code>unless</code>, dessen
+Block nur ausgef&uuml;hrt wird, wenn die Bedingung im Argument den Wert 
+<i>falsch</i> liefert.
+  </p>
+  <p>
+
+Eine Alternative zu einer <code>if</code>-<code>else</code>-Konstruktion
+ist die Verwendung des Operators "<code>?:</code>":
+  </p>
+  <blockquote>
+<code>
+$v == 1 ? print "v gleich 1" : print "v ungleich 1";
+</code>  </blockquote>
+<p align="right"><a href="perl_ctrl.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">Beeinflussen des Ablaufs einer Schleife</h2>
+  <hr>
+  <p>
+
+Mit Hilfe der Funktionen <code>next</code> und
+<code>last</code> l&auml;&szlig;t sich der Ablauf
+einer Schleife gezielt steuern. So kann man einzelne Durchl&auml;ufe
+&uuml;berspringen oder eine Schleife vorzeitig beenden.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>for(my&nbsp;$i&nbsp;=&nbsp;0;&nbsp;$i&nbsp;&lt;&nbsp;9;&nbsp;$i++)&nbsp;{&nbsp;print&nbsp;"$i&nbsp;"&nbsp;}<br>print&nbsp;"\n";<br><br>for(my&nbsp;$i&nbsp;=&nbsp;0;&nbsp;$i&nbsp;&lt;&nbsp;9;&nbsp;$i++)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;if($i&nbsp;==&nbsp;4)&nbsp;{&nbsp;<font color="#0000cc">next</font>&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;'4'&nbsp;&uuml;berspringen</font><br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"$i&nbsp;";<br>}<br>print&nbsp;"\n";<br><br>for(my&nbsp;$i&nbsp;=&nbsp;0;&nbsp;$i&nbsp;&lt;&nbsp;9;&nbsp;$i++)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;if($i&nbsp;==&nbsp;4)&nbsp;{&nbsp;<font color="#0000cc">last</font>&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;bei&nbsp;'4'&nbsp;abbrechen</font><br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"$i&nbsp;";<br>}<br>print&nbsp;"\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>0&nbsp;1&nbsp;2&nbsp;3&nbsp;4&nbsp;5&nbsp;6&nbsp;7&nbsp;8&nbsp;<br>0&nbsp;1&nbsp;2&nbsp;3&nbsp;5&nbsp;6&nbsp;7&nbsp;8&nbsp;<br>0&nbsp;1&nbsp;2&nbsp;3<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_ctrl.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_end.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_io.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

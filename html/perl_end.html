@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Programmablauf  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Programmablauf</h1>
+  <table align="center"><tr>
+  <td><a href="perl_arrfkt.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_ctrl.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Start</a></li>
+<li><a href="#abs2">Einflu&szlig;nahme auf Programm</a></li>
+<li><a href="#abs3">Ende</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Start</h2>
+  <hr>
+  <p>
+
+Der Perl-Code eines Programms ist zwar f&uuml;r einen (menschlichen)
+Programmierer mehr oder weniger gut lesbar, ein Mikroprozessor kann
+damit so aber nicht allzu viel anfangen. Daher mu&szlig; der Code vor
+der Ausf&uuml;hrung in die Sprache des Computers &uuml;bersetzt bzw.
+kompiliert werden. Im Falle von Perl wird das komplette Programm
+unmittelbar vor der Ausf&uuml;hrung in eine interne Form &uuml;bersetzt.
+Treten dabei keine Fehler auf, arbeitet der Perl-Interpreter
+normalerweise die einzelnen Befehle Schritt f&uuml;r Schritt ab.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>print&nbsp;"1\n";<br>print&nbsp;"2\n";<br>print&nbsp;"3\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>1<br>2<br>3<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Mit Hilfe der speziellen Subroutine <code>BEGIN</code> kann
+Programmcode
+bereits in der Kompilierungsphase ausgef&uuml;hrt werden um Einflu&szlig;
+auf die &Uuml;bersetzung des Rests des Programms zu nehmen. Mehrere
+<code>BEGIN</code>-Bl&ouml;cke werden in der Reihenfolge des Auftretens
+abgearbeitet.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>print&nbsp;"1\n";<br>print&nbsp;"2\n";<br><font color="#0000cc">BEGIN&nbsp;{&nbsp;print&nbsp;"BEGIN&nbsp;1\n"&nbsp;}</font><br>print&nbsp;"3\n";<br><font color="#0000cc">BEGIN&nbsp;{&nbsp;print&nbsp;"BEGIN&nbsp;2\n"&nbsp;}</font><br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>BEGIN&nbsp;1<br>BEGIN&nbsp;2<br>1<br>2<br>3<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_end.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Einflu&szlig;nahme auf Programm</h2>
+  <hr>
+  <p>
+
+Sogenannte Pragmas
+beeinflussen direkt die &Uuml;bersetzung eines
+Perl-Programms. So sorgt etwa das immer empfehlenswerte
+<code>use&nbsp;strict</code> f&uuml;r eine strengere Kontrolle
+der verwendeten Variablen. Pragmas werden durch
+<code>use</code>
+aktiviert und durch <code>no</code> deaktiviert.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br><font color="#0000cc">use&nbsp;strict;</font><br>$v&nbsp;=&nbsp;7;<br><br><font color="#0000cc">no&nbsp;strict;</font><br>$w&nbsp;=&nbsp;9;<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Global&nbsp;symbol&nbsp;"$v"&nbsp;requires&nbsp;explicit&nbsp;package&nbsp;name&nbsp;at&nbsp;./test.pl&nbsp;line&nbsp;4.<br>BEGIN&nbsp;not&nbsp;safe&nbsp;after&nbsp;errors--compilation&nbsp;aborted&nbsp;at&nbsp;./test.pl&nbsp;line&nbsp;6.<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Wie man an der Fehlermeldung erkennt, wird nur die Variable <code>$v</code>
+beanstandet, nicht aber <code>$w</code>.
+  </p>
+  <p>
+
+Neben Pragmas, die den Perl-Interpreter direkt beeinflussen, kann man
+mit Hilfe von <code>use</code> auch Module einbinden, die zus&auml;tzliche
+Variablen und Funktionen bereitstellen. Wie Module funktionieren und
+selbst entwickelt werden k&ouml;nnen ist unter
+"<a href="perl_modul.html">Module</a>"
+beschrieben.
+  </p>
+  <p>
+
+Eine weitere Verwendungsm&ouml;glichkeit von
+<code>use</code>
+ist die Forderung nach einer bestimmten Mindestversion des
+Perl-Interpreters.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><font color="#0000cc">use&nbsp;5.8.2;</font><br><br>print&nbsp;"Nur&nbsp;ab&nbsp;Perl&nbsp;5.8.2&nbsp;lauff&auml;hig\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Das obige Beispielprogramm l&auml;ft nur, wenn der verwendete Perl-Interpreter
+die Version 5.8.2 oder h&ouml;her hat; ansonsten erfolgt eine Fehlermeldung.
+  </p>
+<p align="right"><a href="perl_end.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Ende</h2>
+  <hr>
+  <p>
+
+Nach dem Ausf&uuml;hren des letzten Kommandos beendet der Perl-Interpreter
+normalerweise automatisch die Arbeit. Analog zu <code>BEGIN</code> gibt
+es die spezielle Subroutine <code>END</code>, deren Inhalt
+nach den letzten Befehlen des Programmtextes aufgerufen wird. Existieren
+mehrere <code>END</code>-Bl&ouml;cke, so werden sie in umgekehrter
+Reihenfolge abgearbeitet.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>print&nbsp;"1\n";<br>print&nbsp;"2\n";<br><font color="#0000cc">END&nbsp;{&nbsp;print&nbsp;"END&nbsp;1\n"&nbsp;}</font><br>print&nbsp;"3\n";<br><font color="#0000cc">END&nbsp;{&nbsp;print&nbsp;"END&nbsp;2\n"&nbsp;}</font><br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>1<br>2<br>3<br>END&nbsp;2<br>END&nbsp;1<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+M&ouml;chte man ein Programm an einer bestimmten Stelle gezielt
+beenden, so kann man hierf&uuml;r die Funktion
+<code>exit()</code>
+verwenden. Gibt man kein Argument an, so wird die Zahl 0 angenommen,
+was f&uuml;r einen "erfolgreichen" Programmabbruch steht. Will man
+anzeigen, da&szlig; das fr&uuml;he Programmende durch einen Fehler
+verursacht wurde, gibt man eine positive Zahl an. Die Verarbeitung
+dieses Wertes h&auml;ngt allerdings vom Betriebssystem ab.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>print&nbsp;"1\n";<br>print&nbsp;"2\n";<br><font color="#0000cc">exit&nbsp;0;</font><br>print&nbsp;"3\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>1<br>2<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Soll ein Programm bei Auftreten eines Fehlers kontrolliert beendet werden,
+so verwendet man besser die Funktion <code>die()</code>, bei
+der man einen Text angeben kann, der als Fehlermeldung ausgegeben wird.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br><font color="#0000cc">die&nbsp;"Es&nbsp;ist&nbsp;ein&nbsp;Fehler&nbsp;aufgetreten."</font><br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Es&nbsp;ist&nbsp;ein&nbsp;Fehler&nbsp;aufgetreten.&nbsp;at&nbsp;./test.pl&nbsp;line&nbsp;5.<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Schlie&szlig;t man den Fehlertext mit einem Zeilenvorschub
+("<code>\n</code>") ab, so unterbleibt die Ausgabe von
+Programmname und Zeilennummer.
+  </p>
+<p align="right"><a href="perl_end.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_arrfkt.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_ctrl.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

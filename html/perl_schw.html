@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Schwartz'sche Transformation  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Schwartz'sche Transformation</h1>
+  <table align="center"><tr>
+  <td><a href="perl_kompl.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_perl.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Einf&uuml;hrung</a></li>
+<li><a href="#abs2">Sortieren</a></li>
+<li><a href="#abs3">Effektive Sortierung</a></li>
+<li><a href="#abs4">Die Funktion <code>map()</code></a></li>
+<li><a href="#abs5">Die Transformation</a></li>
+<li><a href="#abs6">Geschwindigkeitsvergleich</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Einf&uuml;hrung</h2>
+  <hr>
+  <p>
+
+Diese Seite behandelt ein &auml;u&szlig;erst elegantes Sortierverfahren:
+die "Schwartz'sche Transformation" (nach
+<a href="http://www.stonehenge.com/merlyn/">Randal L. Schwartz</a>).
+Obwohl zun&auml;chst recht aufwendig aussehend, offenbahrt
+dieses Konstrukt ungeahnte M&ouml;glichkeiten, hat man es erst einmal
+verstanden.
+  </p>
+  <p>
+
+Im Grunde genommen handelt es sich nur um einen von vielen Wegen
+Daten zu sortieren. Allerdings ist es was Flexibilit&auml;t
+und Effizienz angeht, wohl allen anderen L&ouml;sungen
+&uuml;berlegen.
+Ein &auml;hnliches Verfahren, das auf demselben Prinzip basiert,
+ist unter der Bezeichnung "Decorate-Sort-Undecorate" (DSU) bekannt.
+  </p>
+<p align="right"><a href="perl_schw.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Sortieren</h2>
+  <hr>
+  <p>
+
+Zun&auml;chst ein paar Worte dazu, wie in Perl Daten sortiert
+werden. Um den internen Algorithmus braucht man sich normalerweise
+keine Gedanken machen. F&uuml;r den Benutzer bzw. Programmierer
+reduziert sich die Sortierung auf den Vergleich zweier
+Datenelemente - ist nichts anderes angegeben, d.h., ruft
+man einfach "<code>sort&nbsp;@liste</code>" auf, so
+erfolgt die Sortierung gem&auml;&szlig; ASCII-Code in aufsteigender
+Reihenfolge.
+  </p>
+  <p>
+
+Durch Angabe einer eigenen Subroutine l&auml;&szlig;t
+sich die Sortierung gezielt steuern. Die dort definierten Kommandos
+werden w&auml;hrend des Sortierens mehrfach aufgerufen, wobei jedesmal
+zwei Elemente (dargestellt durch <code>$a</code> und <code>$b</code>)
+miteinander verglichen werden. Ist der R&uuml;ckgabewert gleich 1, so gilt
+das erste Element (<code>$a</code>) als "gr&ouml;&szlig;er" im
+Sinne der gew&uuml;nschten Sortierung. Bei -1 geht Perl davon aus, da&szlig;
+<code>$b</code> "gr&ouml;&szlig;er" ist, bei 0 wird "Gleichheit"
+angenommen.
+  </p>
+  <p>
+
+Beispiele:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@liste&nbsp;=&nbsp;(&nbsp;41,&nbsp;37,&nbsp;10,&nbsp;30,&nbsp;127,&nbsp;512,&nbsp;111&nbsp;);<br><br>print&nbsp;"@liste\n\n";<br><br>my&nbsp;@sort_1&nbsp;=&nbsp;<font color="#0000cc">sort</font>&nbsp;@liste;<br>print&nbsp;"1)&nbsp;@sort_1&nbsp;&nbsp;(Standard)\n";<br><br>my&nbsp;@sort_2&nbsp;=&nbsp;<font color="#0000cc">sort&nbsp;{&nbsp;$a&nbsp;cmp&nbsp;$b&nbsp;}</font>&nbsp;@liste;<br>print&nbsp;"2)&nbsp;@sort_2&nbsp;&nbsp;(ASCII&nbsp;-&nbsp;aufsteigend)\n";<br><br>my&nbsp;@sort_3&nbsp;=&nbsp;<font color="#0000cc">sort&nbsp;{&nbsp;$a&nbsp;&lt;=&gt;&nbsp;$b&nbsp;}</font>&nbsp;@liste;<br>print&nbsp;"3)&nbsp;@sort_3&nbsp;&nbsp;(numerisch&nbsp;-&nbsp;aufsteigend)\n";<br><br>my&nbsp;@sort_4&nbsp;=&nbsp;<font color="#0000cc">sort&nbsp;{&nbsp;$b&nbsp;&lt;=&gt;&nbsp;$a&nbsp;}</font>&nbsp;@liste;<br>print&nbsp;"4)&nbsp;@sort_4&nbsp;&nbsp;(numerisch&nbsp;-&nbsp;absteigend)\n";<br><br>my&nbsp;@sort_5&nbsp;=<br>&nbsp;&nbsp;<font color="#0000cc">sort&nbsp;{&nbsp;substr($a,1,1)&nbsp;&lt;=&gt;&nbsp;substr($b,1,1)&nbsp;}</font>&nbsp;@liste;<br>print&nbsp;"5)&nbsp;@sort_5&nbsp;&nbsp;(2.Ziffer&nbsp;-&nbsp;numer.&nbsp;-&nbsp;aufst.)\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>41&nbsp;37&nbsp;10&nbsp;30&nbsp;127&nbsp;512&nbsp;111<br><br>1)&nbsp;10&nbsp;111&nbsp;127&nbsp;30&nbsp;37&nbsp;41&nbsp;512&nbsp;&nbsp;(Standard)<br>2)&nbsp;10&nbsp;111&nbsp;127&nbsp;30&nbsp;37&nbsp;41&nbsp;512&nbsp;&nbsp;(ASCII&nbsp;-&nbsp;aufsteigend)<br>3)&nbsp;10&nbsp;30&nbsp;37&nbsp;41&nbsp;111&nbsp;127&nbsp;512&nbsp;&nbsp;(numerisch&nbsp;-&nbsp;aufsteigend)<br>4)&nbsp;512&nbsp;127&nbsp;111&nbsp;41&nbsp;37&nbsp;30&nbsp;10&nbsp;&nbsp;(numerisch&nbsp;-&nbsp;absteigend)<br>5)&nbsp;10&nbsp;30&nbsp;111&nbsp;512&nbsp;41&nbsp;127&nbsp;37&nbsp;&nbsp;(2.Ziffer&nbsp;-&nbsp;numer.&nbsp;-&nbsp;aufst.)<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Am letzten dieser Beispiele kann man schon ein Problem erkennen:
+jedesmal, wenn zwei Daten miteinander verglichen werden, mu&szlig;
+die Funktion <code>substr()</code> ausgef&uuml;hrt werden. Dies
+kann bei gro&szlig;en Datens&auml;tzen dazu f&uuml;hren, da&szlig;
+die meiste Rechenzeit in Operationen auf einzelne Elemente
+verbraucht wird, denn jedes einzelne Datum wird i.a. w&auml;hrend
+der Sortierung mehr als einmal zu einem Vergleich herangezogen
+(wer es genauer wissen will: bei <i>n</i> Daten im Mittel
+<i>n</i><tt>log</tt><i>n</i>-mal).
+  </p>
+<p align="right"><a href="perl_schw.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Effektive Sortierung</h2>
+  <hr>
+  <p>
+
+Eine L&ouml;sung des oben beschriebenen Problems besteht darin, in
+einem ersten Schritt zun&auml;chst
+f&uuml;r jedes Element des Datensatzes die entsprechende Operation
+(hier: <code>substr()</code>) durchzuf&uuml;hren, anschlie&szlig;end
+eine Sortierung dieser tempor&auml;ren Daten vorzunehmen und
+schlie&szlig;lich von diesen  wieder zu den
+urspr&uuml;nglichen Daten zur&uuml;ckzukehren.
+  </p>
+  <p>
+
+Als Beispiel soll nun eine Datei dienen, aus deren Zeilen jeweils
+eine Zahl extrahiert werden mu&szlig;, die dann als Suchkriterium dient.
+Der Inhalt einer solchen Datei s&auml;he beispielhaft etwa so aus:
+  </p>
+<blockquote><table border="1" cellpadding="5"><tr><td>
+<code>&nbsp;oexkwch&lt;<font color="#0000cc">37</font>&gt;jy<br>&nbsp;yunq&lt;<font color="#0000cc">100</font>&gt;zmwi<br>&nbsp;ikbkwe&lt;<font color="#0000cc">545</font>&gt;bcljvbry&nbsp;<br>&nbsp;ojudnle&lt;<font color="#0000cc">818</font>&gt;tgum<br>&nbsp;gpmlxp&lt;<font color="#0000cc">972</font>&gt;lud<br></code></td></tr></table>
+</blockquote>
+  <p>
+
+Erzeugen kann man sich derartige Daten mit diesem Programm:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>srand;<br><br>sub&nbsp;zufall&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;$zeilen&nbsp;=&nbsp;shift;<br>&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;$s;<br>&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;@liste&nbsp;=&nbsp;();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;for(&nbsp;my&nbsp;$i=0;&nbsp;$i&lt;$zeilen;&nbsp;$i++&nbsp;)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$s&nbsp;=&nbsp;'';<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(&nbsp;my&nbsp;$j=0;&nbsp;$j&lt;rand(15);&nbsp;$j++&nbsp;)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$s&nbsp;.=&nbsp;chr(rand(26)+97);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$s&nbsp;.=&nbsp;'&lt;'.int(rand(1000)).'&gt;';<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(&nbsp;my&nbsp;$j=0;&nbsp;$j&lt;rand(15);&nbsp;$j++&nbsp;)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$s&nbsp;.=&nbsp;chr(rand(26)+97);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push(@liste,$s);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;return(@liste);<br>}<br><br>my&nbsp;@liste&nbsp;=&nbsp;zufall(5);<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Ein Ansatz zum Sortieren dieser Daten k&ouml;nnte so aussehen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>srand;<br>my&nbsp;@liste&nbsp;=&nbsp;zufall(5);&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;'sub&nbsp;zufall{...}':&nbsp;siehe&nbsp;oben</font><br><br><font color="#0000cc">sub&nbsp;by_number&nbsp;{</font><br>&nbsp;&nbsp;&nbsp;&nbsp;my($x,$y);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;($x)&nbsp;=&nbsp;(&nbsp;$a&nbsp;=~&nbsp;/&lt;(\d+)&gt;/&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;($y)&nbsp;=&nbsp;(&nbsp;$b&nbsp;=~&nbsp;/&lt;(\d+)&gt;/&nbsp;);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;$x&nbsp;&lt;=&gt;&nbsp;$y;<br><font color="#0000cc">}</font><br><br>my&nbsp;@ergebnis&nbsp;=&nbsp;<font color="#0000cc">sort&nbsp;by_number</font>&nbsp;@liste;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Dabei wird allerdings viel Rechenzeit durch die vielfache Auswertung der
+regul&auml;ren Ausdr&uuml;cke in <code>by_number</code> verbraucht.
+Schneller geht es, wenn man aus jedem Datum ein zweielementiges
+(anonymes) Array konstruiert, dessen eines Element das Datum selbst und das
+andere das Ergebnis des regul&auml;ren Ausdruckes (hier: die Zahl)
+ist.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>srand;<br>my&nbsp;@liste&nbsp;=&nbsp;zufall(5);&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;'sub&nbsp;zufall{...}':&nbsp;siehe&nbsp;oben</font><br><br>my&nbsp;@temp_1&nbsp;=&nbsp;();<br><br>foreach&nbsp;my&nbsp;$elem&nbsp;(@liste)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;push(@temp_1,<font color="#0000cc">[&nbsp;$elem,&nbsp;(&nbsp;$elem&nbsp;=~&nbsp;/&lt;(\d+)&gt;/&nbsp;)[0]&nbsp;]</font>);<br>}<br><br>my&nbsp;@temp_2&nbsp;=&nbsp;<font color="#0000cc">sort&nbsp;{&nbsp;$a-&gt;[1]&nbsp;&lt;=&gt;&nbsp;$b-&gt;[1]&nbsp;}</font>&nbsp;@temp_1;<br><br>my&nbsp;@ergebnis&nbsp;=&nbsp;();<br><br>foreach&nbsp;my&nbsp;$t&nbsp;(@temp_2)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;push(@ergebnis,&nbsp;<font color="#0000cc">$t-&gt;[0]</font>);<br>}<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Im obigen Skript wird in der ersten <code>foreach</code>-Schleife ein
+Array namens <code>@temp_1</code> aufgebaut, dessen Elemente
+jeweils Referenzen auf zweielementige anonyme Arrays sind. Diese
+zweielementigen Arrays enthalten unter dem Index 0 die urspr&uuml;ngliche
+Zeile und unter dem Index 1 die extrahierte Zahl.
+  </p>
+  <p>
+
+Beim <code>sort</code> sind nun die beiden zu vergleichenden Elemente
+in den Variablen <code>$a</code> und <code>$b</code> die Referenzen
+aus dem Array <code>@temp_1</code>. Auf die f&uuml;r die Sortierung
+benutzte Zahl (unter dem Index 1) wird dann durch <code>$a-&gt;[1]</code>
+bzw. <code>$b-&gt;[1]</code> zugegriffen. <code>&lt;=&gt;</code>
+sorgt dann wie gewohnt f&uuml;r die (numerische) Sortierung der
+beiden Zahlen.
+  </p>
+  <p>
+
+Danach befindet sich in <code>@temp_2</code> wiederum eine Liste
+aus Referenzen auf zweielementige anonyme Arrays, allerdings nun
+nach den jeweiligen Zahlen sortiert.
+  </p>
+  <p>
+
+In der abschlie&szlig;enden <code>foreach</code>-Schleife
+wird nun aus <code>@temp_2</code> jeweils das erste Element
+dereferenziert und in das Array <code>@ergebnis</code> gepackt.
+Dieses Array enth&auml;lt dann die urspr&uuml;nglichen Datenzeilen,
+nun aber gem&auml;&szlig; der enthaltenen Zahlen sortiert.
+  </p>
+<p align="right"><a href="perl_schw.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">Die Funktion <code>map()</code></h2>
+  <hr>
+  <p>
+
+Mit Hilfe von <code>map()</code> kann man auf einfache Art und Weise
+eine Operation auf alle Elemente einer Liste anwenden. <code>map()</code>
+erwartet entweder einen Ausdruck oder einen Programmblock, der dann
+nacheinander f&uuml;r jedes Arrayelement, auf das &uuml;ber <code>$_</code>
+zugegriffen wird, aufgerufen wird.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@liste&nbsp;=&nbsp;(&nbsp;1,&nbsp;2,&nbsp;3&nbsp;);<br><br>@liste&nbsp;=&nbsp;<font color="#0000cc">map&nbsp;{&nbsp;$_&nbsp;*&nbsp;$_&nbsp;}&nbsp;@liste</font>;<br>print&nbsp;join(",",@liste),"\n";<br><br>@liste&nbsp;=&nbsp;<font color="#0000cc">map&nbsp;sqrt($_),&nbsp;@liste</font>;<br>print&nbsp;join(",",@liste),"\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>1,4,9<br>1,2,3<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Zun&auml;chst wird jedes Element mit sich selbst multipliziert und
+die Ergebnisliste wieder in <code>@liste</code> gespeichert.
+Anschlie&szlig;end wird mit Hilfe der Funktion <code>sqrt()</code>
+jeweils die Quadratwurzel gezogen, wodurch sich wieder die
+urspr&uuml;nglichen Werte ergeben.
+  </p>
+<p align="right"><a href="perl_schw.html">[Seitenanfang]</a></p>
+  <a name="abs5"></a><hr>
+  <h2 align="center">Die Transformation</h2>
+  <hr>
+  <p>
+
+Die Schwartz'sche Transformation nutzt die M&ouml;glichkeiten der
+<code>map</code>-Funktion aus, um die ganze Sortierung in
+einer Befehlszeile unterzubringen und ohne explizit
+tempor&auml;re Arrays zu verwenden.
+  </p>
+  <p>
+
+Damit reduziert sich das letzte Sortierbeispiel auf diesen Code:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>srand;<br>my&nbsp;@liste&nbsp;=&nbsp;zufall(5);&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;'sub&nbsp;zufall{...}':&nbsp;siehe&nbsp;oben</font><br><br>my&nbsp;@ergebnis&nbsp;=&nbsp;<font color="#0000cc">map&nbsp;{&nbsp;$_-&gt;[0]&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sort&nbsp;{&nbsp;$a-&gt;[1]&nbsp;&lt;=&gt;&nbsp;$b-&gt;[1]&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map&nbsp;{&nbsp;[&nbsp;$_,&nbsp;(&nbsp;/&lt;(\d+)&gt;/&nbsp;)[0]&nbsp;]&nbsp;}</font>&nbsp;@liste;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Man beachte dabei, da&szlig; die letzten drei Zeilen des Skriptes
+nur ein Perl-Kommando darstellen,
+das sozusagen von hinten
+gelesen werden mu&szlig;: zuerst wird aus <code>@liste</code> ein
+Array aus Referenzen auf zweielementige Arrays erstellt. Dieses
+Array ist dann das Argument von <code>sort</code> und aus dessen
+R&uuml;ckgabewert wiederum wird das jeweils erste Element (mit dem
+Index 0) extrahiert. Das dabei entstehende Array wird schlie&szlig;lich
+<code>@ergebnis</code> zugewiesen.
+  </p>
+<p align="right"><a href="perl_schw.html">[Seitenanfang]</a></p>
+  <a name="abs6"></a><hr>
+  <h2 align="center">Geschwindigkeitsvergleich</h2>
+  <hr>
+  <p>
+
+Wie schon weiter oben erw&auml;hnt war das Hauptziel der Schwartz'schen
+Transformation eine Steigerung der Effizienz. Dies l&auml;&szlig;t sich
+mit Hilfe des Benchmark-Moduls, das der Perl-Distribution
+beiliegt, recht einfach &uuml;berpr&uuml;fen.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><font color="#0000cc">use&nbsp;Benchmark;</font><br><br>my&nbsp;$z&nbsp;=&nbsp;1000;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;L&auml;nge&nbsp;der&nbsp;zu&nbsp;sortierenden&nbsp;Liste</font><br>my&nbsp;$c&nbsp;=&nbsp;50;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;Anzahl&nbsp;der&nbsp;Durchl&auml;ufe</font><br><br>srand;<br>my&nbsp;@liste&nbsp;=&nbsp;zufall($z);&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;'sub&nbsp;zufall{...}':&nbsp;siehe&nbsp;oben</font><br><br><font color="#006600">###&nbsp;Einfache&nbsp;Sortierung</font><br><br>sub&nbsp;by_number&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;my($x,$y);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;($x)&nbsp;=&nbsp;(&nbsp;$a&nbsp;=~&nbsp;/&lt;(\d+)&gt;/&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;($y)&nbsp;=&nbsp;(&nbsp;$b&nbsp;=~&nbsp;/&lt;(\d+)&gt;/&nbsp;);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;$x&nbsp;&lt;=&gt;&nbsp;$y;<br>}<br><br><font color="#0000cc">timethese(</font>$c,&nbsp;{<br>&nbsp;&nbsp;"Einfache&nbsp;Sortierung"&nbsp;=&gt;&nbsp;sub&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;@sorted&nbsp;=&nbsp;sort&nbsp;by_number&nbsp;@liste<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<font color="#006600">)</font>;<br><br><font color="#006600">###&nbsp;Schwartz'sche&nbsp;Transformation</font><br><br><font color="#0000cc">timethese(</font>$c,&nbsp;{<br>&nbsp;&nbsp;"Schwartz'sche&nbsp;Trafo"&nbsp;=&gt;&nbsp;sub&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;@sorted&nbsp;=&nbsp;map&nbsp;{&nbsp;$_-&gt;[0]&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sort&nbsp;{&nbsp;$a-&gt;[1]&nbsp;&lt;=&gt;&nbsp;$b-&gt;[1]&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map&nbsp;{&nbsp;[$_,&nbsp;(&nbsp;/&lt;(\d+)&gt;/&nbsp;)[0]&nbsp;]}&nbsp;@liste<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<font color="#0000cc">)</font>;<br><br>print&nbsp;"($c&nbsp;Sortierungen&nbsp;von&nbsp;$z-elementigen&nbsp;Listen)\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Benchmark:&nbsp;timing&nbsp;50&nbsp;iterations&nbsp;of&nbsp;Einfache&nbsp;Sortierung...<br>Einfache&nbsp;Sortierung:&nbsp;15&nbsp;wallclock&nbsp;secs&nbsp;(14.07&nbsp;usr&nbsp;+&nbsp;&nbsp;0.04&nbsp;sys&nbsp;=&nbsp;14.11&nbsp;CPU)&nbsp;@&nbsp;&nbsp;3.54/s&nbsp;(n=50)<br>Benchmark:&nbsp;timing&nbsp;50&nbsp;iterations&nbsp;of&nbsp;Schwartz'sche&nbsp;Trafo...<br>Schwartz'sche&nbsp;Trafo:&nbsp;&nbsp;3&nbsp;wallclock&nbsp;secs&nbsp;(&nbsp;3.07&nbsp;usr&nbsp;+&nbsp;&nbsp;0.04&nbsp;sys&nbsp;=&nbsp;&nbsp;3.11&nbsp;CPU)&nbsp;@&nbsp;16.08/s&nbsp;(n=50)<br>(50&nbsp;Sortierungen&nbsp;von&nbsp;1000-elementigen&nbsp;Listen)<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Wie man sieht, ben&ouml;tigt die Schwartz'sche Transformation in diesem
+Falle nur etwa
+ein F&uuml;nftel der Rechenzeit im Vergleich zum einfachen
+"<code>sort&nbsp;by_number</code>".
+  </p>
+<p align="right"><a href="perl_schw.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_kompl.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_perl.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

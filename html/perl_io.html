@@ -1,0 +1,317 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Ein- und Ausgabe  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Ein- und Ausgabe</h1>
+  <table align="center"><tr>
+  <td><a href="perl_ctrl.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_file.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Terminal</a></li>
+<li><a href="#abs2">Dateien</a></li>
+<li><a href="#abs3">Pipes</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Terminal</h2>
+  <hr>
+  <p>
+
+Um Ausgaben auf die Benutzerschnittstelle zu schreiben, wird am
+einfachsten die Funktion <code>print</code> verwendet. Es gibt
+au&szlig;erdem noch die Funktion <code>printf</code>, die als
+Argument zun&auml;chst eine Zeichenkette erwartet, die das
+gew&uuml;nschte Ausgabeformat beschreibt, und anschlie&szlig;end
+die entsprechenden Variablen (im wesentlichen identisch zur
+Funktion <code>printf()</code> in C). Eine interaktive Eingabe
+kann &uuml;ber <code>&lt;STDIN&gt;</code>
+eingelesen werden.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>print&nbsp;"Name&nbsp;:&nbsp;";<br>my&nbsp;$name&nbsp;=&nbsp;<font color="#0000cc">&lt;STDIN&gt;</font>;<br><font color="#0000cc">chomp(</font>$name<font color="#0000cc">)</font>;<br><font color="#0000cc">printf(</font>"Hallo,&nbsp;%s&nbsp;!\n",$name<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Name&nbsp;:&nbsp;<b>Eike</b><br>Hallo,&nbsp;Eike&nbsp;!<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Hier wurde noch die Funktion <code>chomp()</code> benutzt; sie
+entfernt von der Zeichenkette im Argument den Zeilenvorschub
+"<code>\n</code>", mit dem die Eingabe von der Tastatur
+abgeschlossen wird.
+  </p>
+  <p>
+
+Bei der Zuweisung von <code>&lt;STDIN&gt;</code> wird (wie oben
+im skalaren Kontext) jeweils
+eine Zeile, d.h., bis zum n&auml;chsten Vorschub, eingelesen.
+  </p>
+  <p>
+
+Im Formatierungsstring von <code>printf</code> hat das Prozentzeichen
+"<code>%</code>" eine besondere Bedeutung, indem es ein Ausgabeformat
+einleitet. Die wichtigsten Formate zeigt folgende Tabelle:
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Format</th>
+    <th>Beschreibung</th>
+   </tr>
+   <tr align="center">
+    <td><code>%c</code></td>
+    <td>einzelnes Zeichen</td>
+   </tr>
+   <tr align="center">
+    <td><code>%s</code></td>
+    <td>Zeichenkette</td>
+   </tr>
+   <tr align="center">
+    <td><code>%d</code>, <code>%i</code></td>
+    <td>Ganzzahl</td>
+   </tr>
+   <tr align="center">
+    <td><code>%o</code></td>
+    <td>Oktalzahl</td>
+   </tr>
+   <tr align="center">
+    <td><code>%x</code></td>
+    <td>Hexadezimalzahl</td>
+   </tr>
+   <tr align="center">
+    <td><code>%f</code></td>
+    <td>Gleitkommazahl</td>
+   </tr>
+   <tr align="center">
+    <td><code>%e</code></td>
+    <td>wissenschaftliche Schreibweise</td>
+   </tr>
+   <tr align="center">
+    <td><code>%%</code></td>
+    <td>explizites Prozentzeichen</td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+Zwischen "<code>%</code>" und dem Formatzeichen kann die gew&uuml;nschte
+Ausgabebreite (nur vergr&ouml;&szlig;ern m&ouml;glich, also z.B. Auff&uuml;llen
+mit Leerzeichen) bzw. Genauigkeit angegeben werden:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>printf&nbsp;"<font color="#0000cc">%d</font>\n",12345;<br>printf&nbsp;"<font color="#0000cc">%7d</font>\n",12345;<br><br>printf&nbsp;"<font color="#0000cc">%4.0f</font>\n",123.45;<br>printf&nbsp;"<font color="#0000cc">%4.1f</font>\n",123.45;<br>printf&nbsp;"<font color="#0000cc">%4.3f</font>\n",123.45;<br><br>printf&nbsp;"<font color="#0000cc">%%%8s%%</font>\n","Hallo";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>12345<br>&nbsp;&nbsp;12345<br>&nbsp;123<br>123.5<br>123.450<br>%&nbsp;&nbsp;&nbsp;Hallo%<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_io.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Dateien</h2>
+  <hr>
+  <p>
+
+Will man Daten von einem File lesen, so mu&szlig; diese Datei
+erst ge&ouml;ffnet und ihr ein "Filehandle"
+zugewiesen werden.
+Anschlie&szlig;end kann &uuml;ber dieses Filehandle auf die
+Daten zugegriffen werden. Insbesondere beim Umgang mit
+Dateien (wie auch bei anderen Systemfunktionen) sollte
+immer anhand des R&uuml;ckgabewertes kontrolliert werden,
+ob der Aufruf erfolgreich war.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$rw&nbsp;=&nbsp;<font color="#0000cc">open(</font>FILE,"demo.dat"<font color="#0000cc">)</font>;<br>if(not&nbsp;defined($rw))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;die&nbsp;"Fehler&nbsp;beim&nbsp;&Ouml;ffnen&nbsp;der&nbsp;Datei:&nbsp;$!\n";<br>}<br>while(defined(my&nbsp;$i&nbsp;=&nbsp;<font color="#0000cc">&lt;FILE&gt;</font>))&nbsp;{&nbsp;print&nbsp;$i&nbsp;}<br><font color="#0000cc">close(</font>FILE<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die Funktion <code>open()</code> erwartet als erstes
+Argument das sogenannte Filehandle, das per Konvention aus 
+Gro&szlig;buchstaben besteht. Anschlie&szlig;end wird die zu &ouml;ffnende
+Datei angegeben.
+  </p>
+  <p>
+
+Obiges Programm ordnet &uuml;ber <code>&lt;FILE&gt;</code> der
+Variablen <code>$i</code> nacheinander jeweils eine Zeile der
+ge&ouml;ffneten Datei zu. Ist das Dateiende erreicht, kann keine
+Zuordnung mehr stattfinden, daher bleibt dann der Wert von
+<code>$i</code> undefiniert; dies wird durch die Funktion
+<code>defined()</code>&uuml;berpr&uuml;ft ("Lese solange Zeilen
+ein wie <code>$i</code> einen definierten Wert besitzt").
+Nach Beendigung des Lesevorgangs wird die Datei mit
+<code>close()</code>
+wieder geschlossen; fehlt diese Funktion, so werden bei Programmende
+automatisch alle noch offenen Files geschlossen.
+  </p>
+  <p>
+
+Im Falle eines Fehlers beim Dateizugriff ist der
+R&uuml;ckgabewert von <code>open()</code> nicht definiert,
+und die spezielle Variable <code>$!</code> enth&auml;lt die
+Fehlermeldung des Betriebssystems.
+  </p>
+  <p>
+
+K&uuml;rzer und einpr&auml;gsamer l&auml;&szlig;t sich
+die &Uuml;berpr&uuml;fung des R&uuml;ckgabewertes wie
+folgt schreiben:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code><font color="#0000cc">open(</font>FILE,"demo.dat"<font color="#0000cc">)<br>&nbsp;&nbsp;or&nbsp;die</font>&nbsp;"Fehler&nbsp;beim&nbsp;&Ouml;ffnen&nbsp;der&nbsp;Datei:&nbsp;$!\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Um eine Datei zum Schreiben zu &ouml;ffnen, mu&szlig; dies durch ein
+"<code>&gt;</code>" vor dem Dateinamen angegeben werden.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>open(LESEN,"alt.dat")<br>&nbsp;&nbsp;or&nbsp;die&nbsp;"Fehler&nbsp;beim&nbsp;&Ouml;ffnen&nbsp;von&nbsp;'alt.dat':&nbsp;$!\n";<br>open(SCHREIBEN,"<font color="#0000cc">&gt;</font>&nbsp;neu.dat")<br>&nbsp;&nbsp;or&nbsp;die&nbsp;"Fehler&nbsp;beim&nbsp;&Ouml;ffnen&nbsp;von&nbsp;'neu.dat':&nbsp;$!\n";<br><br>while(defined(my&nbsp;$i&nbsp;=&nbsp;&lt;LESEN&gt;))&nbsp;{&nbsp;<font color="#0000cc">print&nbsp;SCHREIBEN&nbsp;$i</font>&nbsp;}<br><br>close(LESEN);<br>close(SCHREIBEN)<br>&nbsp;&nbsp;or&nbsp;die&nbsp;"Fehler&nbsp;beim&nbsp;Schlie&szlig;en&nbsp;von&nbsp;'neu.dat':&nbsp;$!&nbsp;\n"<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Hier wird also der gesamte Inhalt von <code>alt.dat</code> gelesen
+und in die Datei <code>neu.dat</code> geschrieben. Zur Ausgabe auf
+ein File wird der Funktion <code>print</code> als erstes
+das Filehandle &uuml;bergeben.
+  </p>
+  <p>
+
+Beim Schreiben in eine Datei empfiehlt sich auch eine
+&Uuml;berpr&uuml;fung des R&uuml;ckgabewertes von
+<code>close()</code>, um sicherzugehen, da&szlig; der
+Schreibvorgang erfolgreich abgeschlossen wurde.
+  </p>
+  <p>
+
+Au&szlig;er den vom Programmierer definierten Filehandles gibt
+es drei Standard-Handles:
+  </p>
+  <ul>
+   <li>
+<i>STDIN</i>: Eingabe von Tastatur   </li>
+   <li>
+<i>STDOUT</i>: Ausgabe auf Terminal   </li>
+   <li>
+<i>STDERR</i>: Ausgabe von Fehlermeldungen (i.a. auch Terminal)   </li>
+  </ul>
+  <p>
+
+Das meist ohne Filehandle verwendete "<code>print</code>" ist also
+eigentlich nur eine
+Abk&uuml;rzung f&uuml;r "<code>print STDOUT</code>".
+  </p>
+  <p>
+
+Ebenso ist die Richtung des Datentransfers (Lesen oder Schreiben)
+an die entsprechenden Shell-Konventionen angelehnt. Zum Lesen
+einer Datei kann auch
+  </p>
+  <blockquote>
+<code>
+open(LESEN,"&lt; alt.dat");
+</code>  </blockquote>
+  <p>
+
+geschrieben werden.
+  </p>
+  <p>
+
+Will man Daten nur an die Daten eines bestehenden Files anh&auml;ngen,
+so schreibt man "<code>&gt;&gt;</code>" vor den Dateinamen:
+  </p>
+  <blockquote>
+<code>
+open(SCHREIBEN,"&gt;&gt; neu.dat");
+</code>  </blockquote>
+<p align="right"><a href="perl_io.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Pipes</h2>
+  <hr>
+  <p>
+
+Au&szlig;er mit Dateien kann ein Perl-Programm auch Daten direkt
+mit Programmen austauschen (sofern dies vom Betriebssystem - wie
+z.B. UNIX - unterst&uuml;tzt wird). Dies funktioniert mit Hilfe
+von sogenannten Pipes. Zur Markierung wird dabei das Pipe-Symbol
+(ein senkrechter Strich "<code>|</code>") verwendet.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>open(DATUM,"date&nbsp;<font color="#0000cc">|</font>");&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;date&nbsp;:&nbsp;Datumsfunktion</font><br>print&nbsp;&lt;DATUM&gt;;<br>close(DATUM)<br>&nbsp;&nbsp;or&nbsp;die&nbsp;"Fehler&nbsp;bei&nbsp;Ausf&uuml;hrung&nbsp;von&nbsp;'date'\n";<br><br>open(WORT,"<font color="#0000cc">|</font>&nbsp;wc&nbsp;&gt;&nbsp;wort.dat");&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;wc&nbsp;:&nbsp;Z&auml;hlprogramm</font><br>print&nbsp;WORT&nbsp;"eins&nbsp;zwei&nbsp;drei&nbsp;vier\n";<br>close(WORT)<br>&nbsp;&nbsp;or&nbsp;die&nbsp;"Fehler&nbsp;bei&nbsp;Ausf&uuml;hrung&nbsp;von&nbsp;'wc'\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Im ersten Teil des Programms wird unter UNIX der Befehl
+<code>date</code> ausgef&uuml;hrt und das Ergebnis an das
+Perl-Skript geliefert. <code>print</code> gibt somit
+Datum und Uhrzeit des Systems aus.
+  </p>
+  <p>
+
+Im zweiten Teil des Programms wird die Zeichenkette
+"<code>eins zwei drei vier</code>" an das Programm
+<code>wc</code> &uuml;bergeben, das dann die Zeichen, W&ouml;rter und Zeilen
+der Eingabe liest und das Ergebnis (1 Zeile, 4 W&ouml;rter,
+20 Zeichen) in die Datei <code>wort.dat</code> schreibt (das
+&Ouml;ffnen von Ein- und Ausgabepipes in einem Filehandle
+gleichzeitig ist nicht m&ouml;glich).
+  </p>
+  <p>
+
+Bei Pipes ist es wichtig, den R&uuml;ckgabewert von
+<code>close()</code> (und nicht den von <code>open()</code>)
+zu &uuml;berpr&uuml;fen, um festzustellen, ob das Kommando
+ausgef&uuml;hrt werden konnte.
+  </p>
+<p align="right"><a href="perl_io.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_ctrl.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_file.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Referenzen  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Referenzen</h1>
+  <table align="center"><tr>
+  <td><a href="perl_spevar.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_array.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Harte Referenzen</a></li>
+<li><a href="#abs2">"Call by Reference"</a></li>
+<li><a href="#abs3">Referenzen auf Unterprogramme</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Harte Referenzen</h2>
+  <hr>
+  <p>
+
+Sogenannte "harte" Referenzen sind skalare Gr&ouml;&szlig;en, die
+auf eine beliebige Variable "zeigen". Das Ziel kann dabei eine
+einfache skalare Variable sein, aber auch ein Array oder Hash oder
+auch ein Unterprogramm. Auch kann man eine Referenz auf eine
+Referenz erstellen.
+  </p>
+  <p>
+
+Beispiele:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$nr&nbsp;=&nbsp;42;<br>my&nbsp;$ref_nr&nbsp;=&nbsp;<font color="#0000cc">\$nr</font>;<br><br>my&nbsp;@planeten&nbsp;=&nbsp;(&nbsp;'Erde',&nbsp;'Mars',&nbsp;'Jupiter'&nbsp;);<br>my&nbsp;$ref_planeten&nbsp;=&nbsp;<font color="#0000cc">\@planeten</font>;<br><br>my&nbsp;%tiere&nbsp;=&nbsp;(&nbsp;'Tiger'&nbsp;=&gt;&nbsp;'Indien',&nbsp;'L&ouml;we'&nbsp;=&gt;&nbsp;'Afrika'&nbsp;);<br>my&nbsp;$ref_hash&nbsp;=&nbsp;<font color="#0000cc">\%tiere</font>;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Wie man sieht, wird eine Referenz einfach dadurch erzeugt, da&szlig;
+vor die zu referenzierende Variable ein Backslash ("<code>\</code>")
+gesetzt wird. Unabh&auml;ngig davon, von welchem Typ das referenzierte
+Objekt ist, ist die Referenz immer ein Skalar - sie besitzt
+also die Form <code>$</code><i>name</i>.
+  </p>
+  <p>
+
+Um von einer Referenz wieder zur&uuml;ck zur referenzierten
+Variablen zu kommen ("Dereferenzierung"), stellt man
+der Referenz das Symbol voran, das dem Typ des referenzierten
+Objekts entspricht.
+  </p>
+  <p>
+
+Beispiele:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$nr&nbsp;=&nbsp;42;<br>my&nbsp;$ref_nr&nbsp;=&nbsp;\$nr;<br>my&nbsp;$deref_nr&nbsp;=&nbsp;<font color="#0000cc">$$ref_nr</font>;<br><br>my&nbsp;@planeten&nbsp;=&nbsp;(&nbsp;'Erde',&nbsp;'Mars',&nbsp;'Jupiter'&nbsp;);<br>my&nbsp;$ref_planeten&nbsp;=&nbsp;\@planeten;<br>my&nbsp;@deref_planeten&nbsp;=&nbsp;<font color="#0000cc">@$ref_planeten</font>;<br><br>my&nbsp;%tiere&nbsp;=&nbsp;(&nbsp;'Tiger'&nbsp;=&gt;&nbsp;'Indien',&nbsp;'L&ouml;we'&nbsp;=&gt;&nbsp;'Afrika'&nbsp;);<br>my&nbsp;$ref_tiere&nbsp;=&nbsp;\%tiere;<br>my&nbsp;%deref_tiere&nbsp;=&nbsp;<font color="#0000cc">%$ref_tiere</font>;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Hier mu&szlig; man also den jeweiligen Datentyp beachten!
+  </p>
+  <p>
+
+(De-)Referenzierung kann auch beliebig mehrstufig angewandt
+werden:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$stern&nbsp;=&nbsp;'Sirius';<br><br>my&nbsp;$ref_ref_ref_stern&nbsp;=&nbsp;<font color="#0000cc">\\\</font>$stern;<br><br>$stern&nbsp;=&nbsp;<font color="#0000cc">$$$</font>$ref_ref_ref_stern;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Auch Elemente eines Arrays lassen sich (de-)referenzieren:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@zahlen&nbsp;=&nbsp;(&nbsp;'null',&nbsp;'eins',&nbsp;'zwei',&nbsp;'drei'&nbsp;);<br><br>my&nbsp;$ref_zahlen&nbsp;=&nbsp;<font color="#0000cc">\@zahlen</font>;<br>print&nbsp;<font color="#0000cc">$$ref_zahlen[2]</font>."\n";<br><br>my&nbsp;$ref_zwei&nbsp;=&nbsp;<font color="#0000cc">\$zahlen[2]</font>;<br>print&nbsp;<font color="#0000cc">$$ref_zwei</font>."\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Im ersten Teil wird hier eine Referenz auf das Array als Ganzes erstellt.
+Sie wird dann dereferenziert (<code>$$ref_zahlen</code>) und von dem Ergebnis
+(dem Array) das Element mit dem Index 2 ausgew&auml;hlt. Im zweiten Teil
+wird dagegen eine Referenz nur eines einzelnen Elements des Arrays erzeugt
+und wieder dereferenziert.
+  </p>
+<p align="right"><a href="perl_ref.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">"Call by Reference"</h2>
+  <hr>
+  <p>
+
+Bei dem Aufruf von Unterprogrammen unterscheidet man
+im wesentlichen zwei Typen, was die Behandlung der Argumente betrifft:
+"call by value"
+und "call by reference".
+  </p>
+  <p>
+
+Ersteres beschreibt den Mechanismus, den Perl f&uuml;r gew&ouml;hnliche
+Variablen benutzt, bei dem die Werte (<i>values</i>) der Argumente an
+das Unterprogramm &uuml;bergeben werden. Dies bedeutet, da&szlig; die
+lokalen Variablen, denen die Argumente zugewiesen werden, v&ouml;llig
+unabh&auml;ngig von den Variablen existieren, die die Argumente beim
+Aufruf bestimmen.
+  </p>
+  <p>
+
+Manchmal m&ouml;chte man aber eine Variable in einem Unterprogramm
+manipulieren, d.h., etwaige Operationen, die im Rumpf der Subroutine
+durchgef&uuml;hrt werden, sollen sich auch auf die Variablen im
+aufrufenden Programmteil auswirken. Eine M&ouml;glichkeit besteht darin,
+die manipulierten Variablen als R&uuml;ckgabewerte an den aufrufenden
+Programmteil zu &uuml;bergeben.
+  </p>
+  <p>
+
+Eleganter und effektiver geht es
+aber mit Referenzen ("<i>call by reference</i>").
+&Uuml;bergibt man eine Referenz als Argument,
+so zeigt die (lokale) Referenz auf die Variable im Argument und kann
+sie direkt bearbeiten.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>sub&nbsp;gross_1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;einfacher&nbsp;"call&nbsp;by&nbsp;value"</font><br>&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;$s&nbsp;=&nbsp;$_[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;$s&nbsp;=&nbsp;ucfirst($s);<br>}<br><br>sub&nbsp;gross_2&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;"call&nbsp;by&nbsp;value"&nbsp;mit&nbsp;R&uuml;ckgabewert</font><br>&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;$s&nbsp;=&nbsp;$_[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;$s&nbsp;=&nbsp;ucfirst($s);<br>&nbsp;&nbsp;&nbsp;&nbsp;return($s);<br>}<br><br>sub&nbsp;gross_3&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;&Uuml;bergabe&nbsp;einer&nbsp;Referenz</font><br>&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;$ref_s&nbsp;=&nbsp;$_[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;$$ref_s&nbsp;=&nbsp;ucfirst($$ref_s);<br>}<br><br>sub&nbsp;gross_4&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">###&nbsp;Sonderfall&nbsp;@_</font><br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000cc">$_[0]</font>&nbsp;=&nbsp;ucfirst(<font color="#0000cc">$_[0]</font>);<br>}<br><br>print&nbsp;"1)&nbsp;".(my&nbsp;$wort&nbsp;=&nbsp;'kamel')."&nbsp;-&gt;&nbsp;";<br>gross_1($wort);<br>print&nbsp;"$wort\n";<br><br>print&nbsp;"2)&nbsp;".($wort&nbsp;=&nbsp;'kamel')."&nbsp;-&gt;&nbsp;";<br>$wort&nbsp;=&nbsp;gross_2($wort);<br>print&nbsp;"$wort\n";<br><br>print&nbsp;"3)&nbsp;".($wort&nbsp;=&nbsp;'kamel')."&nbsp;-&gt;&nbsp;";<br>gross_3(<font color="#0000cc">\$wort</font>);<br>print&nbsp;"$wort\n";<br><br>print&nbsp;"4)&nbsp;".($wort&nbsp;=&nbsp;'kamel')."&nbsp;-&gt;&nbsp;";<br>gross_4($wort);<br>print&nbsp;"$wort\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>1)&nbsp;kamel&nbsp;-&gt;&nbsp;kamel<br>2)&nbsp;kamel&nbsp;-&gt;&nbsp;Kamel<br>3)&nbsp;kamel&nbsp;-&gt;&nbsp;Kamel<br>4)&nbsp;kamel&nbsp;-&gt;&nbsp;Kamel<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Wie man sieht, wirkt sich im ersten Aufruf die Manipulation in
+"<code>gross_1</code>" nicht auf die globale Variable "<code>$wort</code>"
+aus. "<code>gross_2</code>" zeigt, wie sich das Problem &uuml;ber
+den R&uuml;ckgabewert l&ouml;sen l&auml;&szlig;t. In
+"<code>gross_3</code>" wird eine Referenz &uuml;bergeben, mit
+Hilfe derer die globale Variable ver&auml;ndert werden kann.
+  </p>
+  <p>
+
+Das vierte Beispiel zeigt, da&szlig; das spezielle Array <code>@_</code>,
+das die Unterprogrammparameter enth&auml;lt, nicht wirklich aus
+Kopien der &uuml;bergebenen Variablen besteht. Ver&auml;ndert
+man die Elemente von <code>@_</code>, so wirkt sich dies auch auf die
+Variablen der Parameter im aufrufenden Programmteil aus. Dieser Trick
+sollte aber aus Gr&uuml;nden der &Uuml;bersichtlichkeit nicht
+unbedingt genutzt werden - er stammt aus der Zeit, als es
+in Perl noch keine Referenzen gab.
+  </p>
+<p align="right"><a href="perl_ref.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Referenzen auf Unterprogramme</h2>
+  <hr>
+  <p>
+
+Auch Referenzen auf Subroutinen sind m&ouml;glich:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>sub&nbsp;hallo&nbsp;{&nbsp;return&nbsp;"Hallo,&nbsp;$_[0]&nbsp;!"&nbsp;};<br><br>my&nbsp;$ref_sub&nbsp;=&nbsp;<font color="#0000cc">\&amp;hallo</font>;<br><br>print&nbsp;<font color="#0000cc">&amp;$ref_sub('Welt')</font>."\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Hallo,&nbsp;Welt&nbsp;!<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Bei der Bildung der Referenz ist darauf zu achten, da&szlig; sie
+durch Voranstellen eines Backslashes vor den Namen des Unterprogramms
+mit dem "<code>&amp;</code>" erfolgt. Es d&uuml;rfen dabei keine
+Klammern oder gar Argumente angeh&auml;ngt werden (in diesem Falle
+w&uuml;rde eine Referenz auf den R&uuml;ckgabewert der Routine
+gebildet werden). Auch darf das "<code>&amp;</code>" nicht weggelassen
+werden. Analog zur Dereferenzierung bei Variablen mu&szlig; der
+Typ des Objektes durch Angabe des entsprechenden Symbols (hier:
+"<code>&amp;</code>") vermerkt werden.
+  </p>
+  <p>
+
+Will man ein Unterprogramm nur &uuml;ber eine Referenz aufrufen,
+bietet sich eine sogenannte anonyme Subroutine an. Sie besitzt
+keinen eigenen Namen und liefert bei der
+Definition eine Referenz auf den Programmcode zur&uuml;ck.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$ref_sub&nbsp;=&nbsp;<font color="#0000cc">sub&nbsp;{</font>&nbsp;return&nbsp;"Hallo,&nbsp;$_[0]&nbsp;!"&nbsp;<font color="#0000cc">};</font><br><br>print&nbsp;<font color="#0000cc">&amp;$ref_sub('Welt')</font>."\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Man beachte hierbei zwei Dinge: zum einen hat das Unterprogramm, wie
+schon erw&auml;hnt, keinen Namen. Daher folgt unmittelbar auf das
+Schl&uuml;sselwort "<code>sub</code>" die Definition in
+geschweiften Klammern. Au&szlig;erdem darf nicht &uuml;bersehen werden,
+da&szlig; es sich hierbei um eine Zuweisung handelt, die durch
+ein Semikolon abgeschlossen werden mu&szlig; (es sei denn, diese
+Zeile steht beispielsweise am Ende eines Blocks).
+  </p>
+  <p>
+
+Referenzen k&ouml;nnen genauso wie andere skalare Gr&ouml;&szlig;en
+als R&uuml;ckgabewerte von Subroutinen auftreten; d.h., ein
+Unterprogramm kann eine Referenz auf ein anderes Unterprogramm
+liefern.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>sub&nbsp;master&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;$ref_sub;<br>&nbsp;&nbsp;&nbsp;&nbsp;$ref_sub&nbsp;=&nbsp;sub&nbsp;{&nbsp;print&nbsp;"Hallo&nbsp;!\n"&nbsp;};<br>&nbsp;&nbsp;&nbsp;&nbsp;return(<font color="#0000cc">$ref_sub</font>);<br>}<br><br>my&nbsp;$ref_hallo&nbsp;=&nbsp;master();<br><br>&amp;$ref_hallo;<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Hallo&nbsp;!<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Ein besonderer Fall in diesem Zusammenhang sind sogenannte
+"Closures".
+Dabei betrachtet man Unterprogramme mit lokalen Variablen (deklariert
+durch <code>my</code>). Die genannten lokalen Variablen werden bei
+der Definition und Zuweisung zu einer Referenz sozusagen mit
+eingeschlossen.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>sub&nbsp;hallo&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000cc">my&nbsp;$planet</font>&nbsp;=&nbsp;$_[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;$ref&nbsp;=&nbsp;sub&nbsp;{&nbsp;print&nbsp;"Hallo,&nbsp;<font color="#0000cc">$planet</font>&nbsp;!\n"&nbsp;};<br>&nbsp;&nbsp;&nbsp;&nbsp;return($ref);<br>}<br><br>my&nbsp;$ref_erde&nbsp;=&nbsp;hallo('Erde');<br>my&nbsp;$ref_mars&nbsp;=&nbsp;hallo('Mars');<br><br>&amp;$ref_erde;<br>&amp;$ref_mars;<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Hallo,&nbsp;Erde&nbsp;!<br>Hallo,&nbsp;Mars&nbsp;!<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Das Bemerkenswerte daran ist, da&szlig; zu dem Zeitpunkt, an dem
+die anonyme Subroutine ausgef&uuml;hrt wird (hier: am Ende des
+Skripts), eigentlich der G&uuml;ltigkeitsbereich der lokalen
+Variablen <code>$planet</code> schon l&auml;ngst verlassen
+worden ist. Dennoch "erinnern" sich noch beide Referenzen
+an den lokalen Wert, der zum Zeitpunkt ihrer Zuweisung g&uuml;ltig war.
+  </p>
+<p align="right"><a href="perl_ref.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_spevar.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_array.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

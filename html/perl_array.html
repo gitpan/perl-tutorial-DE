@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Mehrdimensionale Arrays  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Mehrdimensionale Arrays</h1>
+  <table align="center"><tr>
+  <td><a href="perl_ref.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_kompl.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Allgemeines</a></li>
+<li><a href="#abs2">Wie es nicht geht</a></li>
+<li><a href="#abs3">Verwendung von Referenzen</a></li>
+<li><a href="#abs4">Anonyme Arrays</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Allgemeines</h2>
+  <hr>
+  <p>
+
+Ein Beispiel f&uuml;r ein zweidimensionales Array ist eine sogenannte
+Matrix. Dabei handelt es sich zun&auml;chst einfach um eine
+Anordnung von Zahlen (oder Variablen oder Termen oder...) in einem Feld, wobei
+jeder Eintrag durch zwei Kennziffern (<i>Indizes</i>) bestimmt ist.
+  </p>
+  <p>
+
+Beispiel einer <i>2x3</i>-Matrix
+(2&nbsp;Zeilen, 3&nbsp;Spalten):
+  </p>
+<blockquote><table border="1" bgcolor="#cccccc" cellpadding="5"><tr><td>
+  <table border="0"><tr>
+    <td><b>A</b>=</td>
+    <td><font size="+4">(</font></td>
+    <td><table border="0"><tr><td><tt>a  b  c</tt></td></tr>
+                        <tr><td><tt>d  e  f</tt></td></tr></table></td>
+    <td><font size="+4">)</font></td>
+  </tr></table>
+</td></tr></table></blockquote>
+  <p>
+
+Um eine einzelne Variable zu beschreiben, setzt man Zeile und Spalte
+als Index an den Namen der Matrix, z.B.:
+  </p>
+<blockquote><table border="1" bgcolor="#cccccc" cellpadding="5"><tr><td>
+  <table cellpadding="-20">
+    <tr>
+      <td rowspan="2"><b>A</b></td>
+      <td>&nbsp;</td><td rowspan="2">= b</td>
+    </tr><tr>
+      <td><font size="-1">1,2</font></td>
+    </tr>
+  </table>
+</td></tr></table></blockquote>
+  <p>
+
+Will man nun ein Perl-Programm schreiben, das mit Matrizen
+arbeiten soll, mu&szlig; man sich &uuml;berlegen, wie man sie geeignet
+speichert. Da Arrays ein geordnetes <b>ein</b>dimensionales
+(<b>ein</b>&nbsp;Index) Schema darstellen, lie&szlig;e sich
+eine Matrix wohl aus der Kombination von Arrays repr&auml;sentieren.
+  </p>
+<p align="right"><a href="perl_array.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Wie es nicht geht</h2>
+  <hr>
+  <p>
+
+Die einfachste Idee scheint zu sein, die Zeilen jeweils in einzelnen
+Arrays zu speichern und dann diese Zeilen-Arrays in ein Matrix-Array
+einzusetzen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@zeile_1&nbsp;=&nbsp;(&nbsp;'a',&nbsp;'b',&nbsp;'c'&nbsp;);<br>my&nbsp;@zeile_2&nbsp;=&nbsp;(&nbsp;'d',&nbsp;'e',&nbsp;'f'&nbsp;);<br><br>my&nbsp;<font color="#0000cc">@matrix&nbsp;=&nbsp;(&nbsp;@zeile_1,&nbsp;@zeile_2&nbsp;)</font>;&nbsp;&nbsp;<font color="#006600">#&nbsp;6-elementiges&nbsp;Array</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Obiger Code erzeugt keineswegs eine zweidimensionale Matrix in
+<code>@matrix</code>. In der letzten Zeile werden n&auml;mlich
+zuerst die beiden Zeilen-Arrays <code>@zeile_1</code> und
+<code>@zeile_2</code> als Listen dargestellt, die
+dann vor der Zuweisung zu einer
+6-elementigen Liste vereinigt
+werden. Die letzte Zeile des obigen Programms ist also &auml;quivalent zu:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>my&nbsp;<font color="#0000cc">@matrix&nbsp;=&nbsp;(&nbsp;'a',&nbsp;'b',&nbsp;'c',&nbsp;'d',&nbsp;'e',&nbsp;'f'&nbsp;)</font>;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die Ursache f&uuml;r dieses Verhalten liegt darin begr&uuml;ndet,
+da&szlig; Arrays in Perl grunds&auml;tzlich nur skalare Gr&ouml;&szlig;en
+enthalten, aber keine Arrays oder Hashes (sie werden, wie oben beschrieben,
+vorher umgewandelt).
+  </p>
+<p align="right"><a href="perl_array.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Verwendung von Referenzen</h2>
+  <hr>
+  <p>
+
+Einen Ausweg aus dem Dilemma bieten Referenzen, da sie skalare
+Variablen sind, aber auf beliebige Datentypen (so auch Arrays)
+"zeigen" k&ouml;nnen.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@zeile_1&nbsp;=&nbsp;(&nbsp;'a',&nbsp;'b',&nbsp;'c'&nbsp;);<br>my&nbsp;@zeile_2&nbsp;=&nbsp;(&nbsp;'d',&nbsp;'e',&nbsp;'f'&nbsp;);<br><br>my&nbsp;<font color="#0000cc">$ref_zeile_1&nbsp;=&nbsp;\@zeile_1</font>;<br>my&nbsp;<font color="#0000cc">$ref_zeile_2&nbsp;=&nbsp;\@zeile_2</font>;<br><br>my&nbsp;<font color="#0000cc">@matrix&nbsp;=&nbsp;(&nbsp;$ref_zeile_1,&nbsp;$ref_zeile_2&nbsp;)</font>;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Nun enth&auml;lt das Array <code>@matrix</code> zwei (skalare) Elemente,
+die ihrerseits jeweils eine Referenz auf ein Zeilen-Array sind.
+  </p>
+  <p>
+
+Wie kann man nun auf die einzelnen Matrixelemente zugreifen?
+Die Elemente <code>$matrix[0]</code> und <code>$matrix[1]</code>
+enthalten jeweils eine Referenz auf ein Array, so da&szlig; nach
+der Dereferenzierung die Zeilen-Arrays zur Verf&uuml;gung stehen.
+  </p>
+  <p>
+
+An dieser Stelle sei noch einmal darauf hingewiesen, da&szlig; in Perl
+Array-Indizes &uuml;blicherweise bei 0 anfangen. Man sollte nicht die
+Variable <code>$[</code> auf 
+1 setzen, um bei 1 mit der Z&auml;hlung zu
+beginnen, sondern besser die Elemente oder Zeilen-Arrays gezielt an die
+Positionen 1,2,... der jeweiligen Arrays schreiben. Der Einfachheit
+halber wird in den Beispielen hier darauf verzichtet,
+so da&szlig; zu beachten ist, da&szlig; von den Matrix-Indizes
+immer jeweils 1 zu subtrahieren ist, um die Array-Indizes zu erhalten.
+  </p>
+  <p>
+
+Ein ausf&uuml;hrliches Beispiel sieht dann so aus:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@zeile_1&nbsp;=&nbsp;(&nbsp;'a',&nbsp;'b',&nbsp;'c'&nbsp;);<br>my&nbsp;@zeile_2&nbsp;=&nbsp;(&nbsp;'d',&nbsp;'e',&nbsp;'f'&nbsp;);<br><br>my&nbsp;$ref_zeile_1&nbsp;=&nbsp;\@zeile_1;<br>my&nbsp;$ref_zeile_2&nbsp;=&nbsp;\@zeile_2;<br><br>my&nbsp;@matrix&nbsp;=&nbsp;(&nbsp;$ref_zeile_1,&nbsp;$ref_zeile_2&nbsp;);<br><br>my&nbsp;<font color="#0000cc">$ref_1&nbsp;=&nbsp;$matrix[0]</font>;<br><font color="#0000cc">@zeile_1&nbsp;=&nbsp;@$ref_1</font>;<br><br>my&nbsp;<font color="#0000cc">$ref_2&nbsp;=&nbsp;$matrix[1]</font>;<br><font color="#0000cc">@zeile_2&nbsp;=&nbsp;@$ref_2</font>;<br><br>print&nbsp;"1)&nbsp;@zeile_1\n";<br>print&nbsp;"2)&nbsp;@zeile_2\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>1)&nbsp;a&nbsp;b&nbsp;c<br>2)&nbsp;d&nbsp;e&nbsp;f<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Der Zugriff l&auml;&szlig;t sich nat&uuml;rlich auch kompakter
+programmieren:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>my&nbsp;@matrix&nbsp;=&nbsp;(&nbsp;$ref_zeile_1,&nbsp;$ref_zeile_2&nbsp;);<br><br>print&nbsp;"1)&nbsp;<font color="#0000cc">@{$matrix[0]}</font>\n";<br>print&nbsp;"2)&nbsp;<font color="#0000cc">@{$matrix[1]}</font>\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Wegen der Pr&auml;zedenzregeln m&uuml;ssen bei den Dereferenzierungen
+hier geschweifte Klammern gesetzt werden (ansonsten w&uuml;rde Perl
+zuerst versuchen, <code>$matrix</code> zu dereferenzieren und erst
+dann dort das Element mit dem entsprechenden Index suchen).
+  </p>
+  <p>
+
+Mit Hilfe dieses Mechanismus lassen sich auch gezielt einzelne
+Matrixelemente auslesen oder mit Werten besetzen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@zeile_1&nbsp;=&nbsp;(&nbsp;'a',&nbsp;'b',&nbsp;'c'&nbsp;);<br>my&nbsp;@zeile_2&nbsp;=&nbsp;(&nbsp;'d',&nbsp;'e',&nbsp;'f'&nbsp;);<br>my&nbsp;$ref_zeile_1&nbsp;=&nbsp;\@zeile_1;<br>my&nbsp;$ref_zeile_2&nbsp;=&nbsp;\@zeile_2;<br>my&nbsp;@matrix&nbsp;=&nbsp;(&nbsp;$ref_zeile_1,&nbsp;$ref_zeile_2&nbsp;);<br><br>print&nbsp;"Matrix(1,2)&nbsp;=&nbsp;<font color="#0000cc">${$matrix[0]}[1]</font>\n";<br><br><font color="#0000cc">${$matrix[1]}[2]</font>&nbsp;=&nbsp;'x';<br>print&nbsp;"1)&nbsp;@{$matrix[0]}\n";<br>print&nbsp;"2)&nbsp;@{$matrix[1]}\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Matrix(1,2)&nbsp;=&nbsp;b<br>1)&nbsp;a&nbsp;b&nbsp;c<br>2)&nbsp;d&nbsp;e&nbsp;x<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Eine alternative Schreibweise f&uuml;r den Zugriff auf ein
+einzelnes Element bietet der Pfeil-Operator
+"<code>-&gt;</code>" (nicht zu verwechseln mit "<code>=&gt;</code>"
+als Kommaersatz):
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>print&nbsp;"Matrix(1,2)&nbsp;=&nbsp;<font color="#0000cc">$matrix[0]-&gt;[1]</font>\n";<br><br><font color="#0000cc">$matrix[1]-&gt;[2]</font>&nbsp;=&nbsp;'x';<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Und auch dies l&auml;&szlig;t sich noch verk&uuml;rzen, da Perl
+zwischen zwei aufeinander folgenden Klammern (eckig oder geschweift)
+automatisch einen Pfeil-Operator setzt. Dadurch l&auml;&szlig;t sich
+eine sehr intuitive und &uuml;bersichtliche Schreibweise erreichen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>print&nbsp;"Matrix(1,2)&nbsp;=&nbsp;<font color="#0000cc">$matrix[0][1]</font>\n";<br><br><font color="#0000cc">$matrix[1][2]</font>&nbsp;=&nbsp;'x';<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_array.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">Anonyme Arrays</h2>
+  <hr>
+  <p>
+
+Wie der Name schon vermuten l&auml;&szlig;t, handelt es sich dabei um
+Arrays, die keinen eigenen Variablennamen besitzen. Die einzige
+M&ouml;glichkeit, auf den Inhalt zuzugreifen, besteht in einer
+Referenz auf dieses Array. Erzeugen kann man ein solches Array, indem
+man bei einer Liste eckige anstelle von runden Klammern verwendet.
+Der R&uuml;ckgabewert ist dann eine Referenz auf diese Liste.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@array&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;(&nbsp;10,&nbsp;20,&nbsp;30,&nbsp;40&nbsp;);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;normales&nbsp;Array</font><br>my&nbsp;$ref_array&nbsp;=&nbsp;<font color="#0000cc">[</font>&nbsp;10,&nbsp;20,&nbsp;30,&nbsp;40&nbsp;<font color="#0000cc">]</font>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;anonymes&nbsp;Array</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Da ein solches anonymes Array eine Referenz liefert, kann man daraus
+direkt mehrdimensionale Felder erstellen. Die weiter oben als Beispiel
+verwendete Matrix lie&szlig;e sich dann auch so erzeugen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@matrix&nbsp;=&nbsp;(&nbsp;<font color="#0000cc">[</font>&nbsp;'a',&nbsp;'b',&nbsp;'c'&nbsp;<font color="#0000cc">]</font>,&nbsp;<font color="#0000cc">[</font>&nbsp;'d',&nbsp;'e',&nbsp;'f'&nbsp;<font color="#0000cc">]</font>&nbsp;);<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Noch einmal zur Erinnerung: w&uuml;rde man hier runde statt eckige
+Klammern verwenden, erhielte man ein einfaches 6-elementiges Array
+in <code>@matrix</code>.
+  </p>
+  <p>
+
+Auf die Matrixeintr&auml;ge kann hier genauso zugegriffen werden
+wie weiter oben bei den benannten Arrays beschrieben.
+  </p>
+  <p>
+
+Ein Beispiel, wie man die gesamte Matrix ausgeben kann:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@matrix&nbsp;=&nbsp;(&nbsp;[&nbsp;'a',&nbsp;'b',&nbsp;'c'&nbsp;],&nbsp;[&nbsp;'d',&nbsp;'e',&nbsp;'f'&nbsp;]&nbsp;);<br><br>foreach&nbsp;my&nbsp;$ref_zeile&nbsp;(@matrix)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;my&nbsp;$spalte&nbsp;(@$ref_zeile)&nbsp;{&nbsp;print&nbsp;"$spalte&nbsp;"&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"\n";<br>}<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>a&nbsp;b&nbsp;c&nbsp;<br>d&nbsp;e&nbsp;f&nbsp;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Da eine solche zweidimensionale Datenstruktur letztlich auf
+(eindimensionalen) Arrays beruht, kann man sie mit Hilfe bekannter
+Funktionen wie <code>push()</code> oder <code>pop()</code>
+dynamisch ver&auml;ndern. So l&auml;&szlig;t sich die oben
+definierte Matrix beliebig bearbeiten:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@matrix&nbsp;=&nbsp;(&nbsp;[&nbsp;'a',&nbsp;'b',&nbsp;'c'&nbsp;],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;'d',&nbsp;'e',&nbsp;'f'&nbsp;]&nbsp;);<br><br>pop(&nbsp;@{$matrix[1]}&nbsp;);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;'f'&nbsp;entfernen</font><br>unshift(&nbsp;@{$matrix[0]},&nbsp;'M'&nbsp;);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;'M'&nbsp;einf&uuml;gen</font><br><br>push(@matrix,&nbsp;[&nbsp;'g',&nbsp;'h',&nbsp;'i'&nbsp;]&nbsp;);&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;neue&nbsp;3.Zeile</font><br><br>foreach&nbsp;my&nbsp;$ref_zeile&nbsp;(@matrix)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;my&nbsp;$spalte&nbsp;(@$ref_zeile)&nbsp;{&nbsp;print&nbsp;"$spalte&nbsp;"&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"\n";<br>}<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>M&nbsp;a&nbsp;b&nbsp;c&nbsp;<br>d&nbsp;e&nbsp;<br>g&nbsp;h&nbsp;i<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_array.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_ref.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_kompl.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

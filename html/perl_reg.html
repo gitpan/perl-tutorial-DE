@@ -1,0 +1,909 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Regul&auml;re Ausdr&uuml;cke  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Regul&auml;re Ausdr&uuml;cke</h1>
+  <table align="center"><tr>
+  <td><a href="perl_suche.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_suche2.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Einfache Zeichensuche</a></li>
+<li><a href="#abs2">Zeichenklassen</a></li>
+<li><a href="#abs3">Wiederholungen</a></li>
+<li><a href="#abs4">Gruppierung</a></li>
+<li><a href="#abs5">Alternativen</a></li>
+<li><a href="#abs6">Ankerpunkte</a></li>
+<li><a href="#abs7">Umgebung eines Musters</a></li>
+<li><a href="#abs8">Kommentare</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Einfache Zeichensuche</h2>
+  <hr>
+  <p>
+
+Wir fangen mit dem einfachsten Beispiel an: Die Suche nach einem bestimmten
+Zeichen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"Demo-Zeichenkette";<br><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">e</font>/)&nbsp;{&nbsp;print&nbsp;"wahr\n"&nbsp;}&nbsp;else&nbsp;{&nbsp;print&nbsp;"falsch\n"&nbsp;}<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Hier ist der regul&auml;re Ausdruck nur der Buchstabe "<code>e</code>"
+und der Operator "<code>=~</code>" veranla&szlig;t eine Suche nach
+diesem Zeichen in dem String <code>$t</code>. Diese Suche beginnt immer am
+Anfang einer Zeichenkette, so da&szlig; sie schon beim zweiten Zeichen
+erfolgreich ist (<code>D<u>e</u>mo-Zeichenkette</code>); die Ausgabe
+des Programms ist also "<code>wahr</code>".
+  </p>
+  <p>
+
+Anstelle eines Zeichens k&ouml;nnen auch beliebig viele gesetzt werden - gesucht
+wird dann nach dieser Folge von Zeichen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br>if("Leder"&nbsp;&nbsp;=~&nbsp;/<font color="#0000cc">ede</font>/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if("Eder"&nbsp;&nbsp;&nbsp;=~&nbsp;/<font color="#0000cc">ede</font>/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if("Gerade"&nbsp;=~&nbsp;/<font color="#0000cc">ede</font>/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;3</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Dieses Skript liefert nur in dem ersten Test "<code>wahr</code>",
+ansonsten immer "<code>falsch</code>", da der regul&auml;re
+Ausdruck "<code>ede</code>" genau
+passen mu&szlig;. D.h., es wird hier auf Gro&szlig;- und Kleinschreibung
+geachtet
+(Test&nbsp;2) und der Ausdruck mu&szlig; so wie er definiert ist in der
+Zeichenkette auftreten - es gen&uuml;gt nicht, da&szlig; die Buchstaben
+"<code>e</code>", "<code>d</code>" und "<code>e</code>"
+irgendwo im durchsuchten String stehen (Test&nbsp;3).
+  </p>
+  <p>
+
+Zu beachten ist, da&szlig; nicht nach jedem Zeichen einfach gesucht werden kann
+wie im obigen Beispiel, da einige in regul&auml;ren Ausdr&uuml;cken besondere
+Bedeutung haben. Es handelt sich dabei um
+  </p>
+  <blockquote>
+<code>
+ . ? * + ^ $ | \ ( ) [ {
+</code>  </blockquote>
+  <p>
+
+sowie um das Zeichen, das als "Klammer" um den regul&auml;ren
+Ausdruck verwendet wird (meistens der Schr&auml;gstrich
+"<code>/</code>"). Will man nach diesen Symbolen suchen, so
+mu&szlig; man einen Backslash ("<code>\</code>") voranstellen:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br>if("1...3"&nbsp;&nbsp;&nbsp;&nbsp;=~&nbsp;/<font color="#0000cc">\.\.</font>/)&nbsp;&nbsp;&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if("/usr/bin"&nbsp;=~&nbsp;/<font color="#0000cc">\/</font>usr<font color="#0000cc">\/</font>/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if("/usr/bin"&nbsp;=~&nbsp;<font color="#0000cc">m#</font>/usr/<font color="#0000cc">#</font>)&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;3</font><br>if('??\$'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=~&nbsp;/<font color="#0000cc">\\\$</font>/)&nbsp;&nbsp;&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;4</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Diese Tests liefern alle "<code>wahr</code>". Wie man beim Vergleich von
+Test&nbsp;2 und Test&nbsp;3 sieht, ist es beim Testen von
+UNIX-Pfadnamen oft sinnvoll, die Schr&auml;gstrich-Klammerung zu ersetzen, um
+allzuviele Backslashes zu vermeiden.
+Man beachte im Test&nbsp;4 noch die einfachen Anf&uuml;hrungsstriche, die
+verhindern, da&szlig; im String aus <code>\$</code> ein einfaches <code>$</code>
+wird.
+  </p>
+  <p>
+
+F&uuml;r einige h&auml;ufig gebrauchte Zeichen, die sich schlecht direkt
+darstellen lassen, gibt es besondere Symbole (siehe auch unter
+<a href="perl_kon.html#abs2">Stringkonstanten</a>):
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Zeichen</th>
+    <th>Bedeutung</th>
+   </tr>
+   <tr>
+    <td><code>\n</code></td>
+    <td>neue Zeile</td>
+   </tr>
+   <tr>
+    <td><code>\r</code></td>
+    <td>Wagenr&uuml;cklauf</td>
+   </tr>
+   <tr>
+    <td><code>\f</code></td>
+    <td>Seitenvorschub</td>
+   </tr>
+   <tr>
+    <td><code>\t</code></td>
+    <td>Tabulator</td>
+   </tr>
+   <tr>
+    <td><code>\a</code></td>
+    <td>Signalton</td>
+   </tr>
+   <tr>
+    <td><code>\e</code></td>
+    <td>Escape</td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+Au&szlig;erdem lassen sich auch alle Zeichen durch ihren ASCII-Code (in oktaler
+Darstellung) schreiben, indem man dem 3-stelligen Code einen Backslash voranstellt
+(so ist beispielweise "<code>\101</code>" &auml;quivalent zum Buchstaben
+"<code>A</code>"). Anmerkung: es m&uuml;ssen immer drei Ziffern
+sein - also notfalls vorne mit einer oder zwei Nullen auff&uuml;llen.
+  </p>
+  <p>
+
+Eine ganz besondere Bedeutung hat in regul&auml;ren Ausdr&uuml;cken der Punkt
+"<code>.</code>": er steht normalerweise f&uuml;r jedes beliebige
+Zeichen mit Ausnahme des Zeilenvorschubs "<code>\n</code>".
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"1.Spalte\t2.Spalte";&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;mit&nbsp;Tabulatorzeichen&nbsp;\t</font><br><br>if($t&nbsp;=~&nbsp;/e<font color="#0000cc">\t</font>2/)&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">\t\t</font>/)&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if($t&nbsp;=~&nbsp;/p<font color="#0000cc">...</font>e/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;3</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Test&nbsp;1 ergibt "<code>wahr</code>", da die Suche in der Mitte von
+<code>$t</code> erfolgreich ist. Test&nbsp;2 dagegen liefert
+"<code>falsch</code>" (keine zwei aufeinanderfolgenen Tabulatoren
+in <code>$t</code>).
+Test&nbsp;3 wiederum verl&auml;uft erfolgreich - er findet einen
+zum regul&auml;ren Ausdruck passenden Substring
+(<code>1.S<u>palte</u>\t2.Spalte</code>).
+  </p>
+<p align="right"><a href="perl_reg.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Zeichenklassen</h2>
+  <hr>
+  <p>
+
+Bisweilen m&ouml;chte man nicht nur nach einem bestimmten Zeichen suchen
+(beispielsweise dem Buchstaben "a"), sondern nach einem
+Zeichen, das einer Gruppe angeh&ouml;rt (z.B. nach einem "Vokal", d.h.,
+nach einem Buchstaben aus der Menge
+{<code>a</code>,<code>e</code>,<code>i</code>,<code>o</code>,<code>u</code>}).
+  </p>
+  <p>
+
+Eine solche Klasse kann mit Hilfe der eckigen Klammern
+("<code>[...]</code>")
+definiert werden. Damit wird dann im Vorgabestring nach einem Symbol aus dieser
+Klasse gesucht.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"Computer";<br><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">[aeiou]</font>/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">[xyz]</font>/)&nbsp;&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;2</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Hier liefert nur Test&nbsp;1 "<code>wahr</code>"
+("<code>o</code>" aus der Klasse "<code>[aeiou]</code>"
+in "<code>C<u>o</u>mputer</code>" gefunden);
+die zweite Suche aber schl&auml;gt fehl (weder "<code>x</code>" noch
+"<code>y</code>" noch "<code>z</code>" kommen in
+"<code>Computer</code>" vor).
+  </p>
+  <p>
+
+Auch in Zeichenklassen mu&szlig; (wie bei einfachen Symbolen in regul&auml;ren
+Ausdr&uuml;cken) darauf geachtet werden, da&szlig; einige Zeichen eine
+besondere Bedeutung haben:
+  </p>
+  <blockquote>
+<code>
+ ^ - ] \ $
+</code>  </blockquote>
+  <p>
+
+Ben&ouml;tigt man eines dieser Zeichen explizit innerhalb einer Zeichenklasse,
+so mu&szlig; man einen Backslash voranstellen.
+  </p>
+  <p>
+
+Hier sei speziell die Wirkung von Zirkumflex ("<code>^</code>")
+und Minuszeichen ("<code>-</code>") f&uuml;r Zeichenklassen beschrieben.
+Ersterer bedeutet (wenn er unmittelbar
+nach der &ouml;ffnenden Klammer ("<code>[</code>") steht) soviel wie
+"alle Zeichen au&szlig;er ...". Das Minus wird verwendet, um eine Reihe
+aufeinanderfolgender (im Sinne des verwendeten Zeichensatzes) Symbole
+abk&uuml;rzend darzustellen
+(z.B. alle Kleinbuchstaben durch "<code>[a-z]</code>").
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;'Ist&nbsp;"1"&nbsp;prim&nbsp;?';<br><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">[0-9]</font>/)&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">["']</font>/)&nbsp;&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">[^A-Z]</font>/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;3</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die Ausgabe ist jeweils "<code>wahr</code>". Im ersten Test wird die Zahl
+<code>1</code> als Mitglied der Klasse der Ziffern <code>0-9</code> erkannt.
+Test&nbsp;2 ist erfolgreich beim ersten Auftreten von doppelten
+Anf&uuml;hrungszeichen vor der <code>1</code> (die einfachen
+Anf&uuml;hrungszeichen
+in der Defintion <code>$t&nbsp;=&nbsp;...</code> geh&ouml;ren ja nicht zu
+<code>$t</code>). Im dritten Test schlie&szlig;lich wird das 
+"<code>s</code>" in "<code>I<u>s</u>t</code>"
+gefunden, da es das erste Zeichen ist, das nicht zur Klasse der
+Gro&szlig;buchstaben geh&ouml;rt.
+  </p>
+  <p>
+
+F&uuml;r einige oft verwendete Zeichenklassen gibt es abk&uuml;rzende
+Schreibweisen:
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Zeichen</th>
+    <th>Entsprechung</th>
+    <th>Bedeutung</th>
+   </tr>
+   <tr>
+    <td><code>\d</code></td>
+    <td><code>[0-9]</code></td>
+    <td>Ziffer</td>
+   </tr>
+   <tr>
+    <td><code>\D</code></td>
+    <td><code>[^0-9]</code></td>
+    <td>Gegenst&uuml;ck zu <code>\d</code></td>
+   </tr>
+   <tr>
+    <td><code>\w</code></td>
+    <td><code>[a-zA-Z_0-9]</code></td>
+    <td>Buchstabe, Unterstrich oder Ziffer</td>
+   </tr>
+   <tr>
+    <td><code>\W</code></td>
+    <td><code>[^a-zA-Z_0-9]</code></td>
+    <td>Gegenst&uuml;ck zu <code>\w</code></td>
+   </tr>
+   <tr>
+    <td><code>\s</code></td>
+    <td><code>[ \t\n\f\r]</code></td>
+    <td>Leerzeichen</td>
+   </tr>
+   <tr>
+    <td><code>\S</code></td>
+    <td><code>[^ \t\n\f\r]</code></td>
+    <td>Gegenst&uuml;ck zu <code>\s</code></td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+(zur Erinnerung: <code>\t</code>, <code>\n</code>, <code>\f</code> und
+<code>\r</code> stehen f&uuml;r <i>Tabulator</i>, <i>neue Zeile</i>,
+<i>Seitenvorschub</i> und <i>Wagenr&uuml;cklauf</i>.)
+  </p>
+  <p>
+
+Ein Sonderfall ist das Zeichen "<code>\b</code>", das innerhalb
+einer Klasse f&uuml;r einen R&uuml;ckschritt (<i>backspace</i>) steht.
+Au&szlig;erhalb einer Zeichenklasse besitzt "<code>\b</code>" aber
+eine v&ouml;llig andere Bedeutung, wie wir sp&auml;ter sehen werden.
+  </p>
+  <p>
+
+Diese Abk&uuml;rzungen k&ouml;nnen wiederum in Klassen verwendet werden.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;'Eine&nbsp;Zahl:&nbsp;-3.6209';<br><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">[-\d.]</font>/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die Klasse "<code>[-\d.]</code>" veranla&szlig;t die Suche nach
+dem ersten
+Auftreten eines der Symbole aus der Menge {<code>-</code>,<code>0</code>,<code>1</code>,<code>2</code>,<code>3</code>,<code>4</code>,<code>5</code>,<code>6</code>,<code>7</code>,<code>8</code>,<code>9</code>,<code>.</code>} (hier
+wird das Minuszeichen zuerst gefunden).
+  </p>
+  <p>
+
+Anmerkungen: Das
+Minuszeichen besitzt hier keine Sonderbedeutung (wie in
+"<code>[a-z]</code>"), da es am Anfang der Klasse steht. Beim Punkt
+kann in Zeichenklassen auf das Voranstellen eines Backslashes verzichtet werden.
+  </p>
+  <p>
+
+Selbstverst&auml;ndlich k&ouml;nnen einfache Zeichensuche und Zeichenklassen
+in regul&auml;ren Ausdr&uuml;cken miteinander
+kombiniert werden. Beispiel:
+Suche nach einem Teilstring, der eine Versionsnummer beschreibt.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;'Hier&nbsp;ist&nbsp;Perl&nbsp;5.002&nbsp;installiert.';<br><br>if($t&nbsp;=~&nbsp;/Perl&nbsp;<font color="#0000cc">[1-5]\.\d\d\d</font>/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_reg.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Wiederholungen</h2>
+  <hr>
+  <p>
+
+Besonders flexibel werden regul&auml;re Ausdr&uuml;cke durch die
+M&ouml;glichkeit nach dem mehrfachen Auftreten von Zeichen zu suchen (wobei
+"mehrfach" auch "keinmal" einschlie&szlig;t).
+  </p>
+  <p>
+
+Dies erfolgt im allgemeinsten Falle durch die Angabe eines Zahlenbereichs in
+geschweiften Klammern. So bedeutet beispielsweise "<code>{2,5}</code>",
+da&szlig; das vorangehende Symbol 2, 3, 4 oder 5-mal auftreten darf.
+  </p>
+  <p>
+
+Ein Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"A----Z";<br><br>if($t&nbsp;=~&nbsp;/-<font color="#0000cc">{1,3}</font>/)&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/-<font color="#0000cc">{2,6}</font>/)&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if($t&nbsp;=~&nbsp;/-<font color="#0000cc">{5,10}</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;3</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Test&nbsp;1 gibt den Wert "<code>wahr</code>" aus. Hier ist das
+gefundene Muster (in der Variablen <code>$&amp;</code>) von besonderem
+Interesse: es werden
+drei Minuszeichen ausgegeben. Darin erkennt man eine wichtige Eigenschaft
+der Suche nach mehrfachen Zeichen: Perl versucht, m&ouml;glichst viele davon
+zu finden. Dies sehen wir auch im zweiten Test: hier wird die Maximalzahl von
+vier Minuszeichen als gefundener Substring ausgegeben. Dagegen liefert der
+Test&nbsp;3 den Wert "<code>falsch</code>", da die Bedingung nicht einmal
+durch die kleinste Zahl (5) erf&uuml;llt werden kann.
+  </p>
+  <p>
+
+Da solche Mehrfachsuchen sehr h&auml;ufig in Perl benutzt werden, gibt es einige
+Abk&uuml;rzungen, die die Schreibarbeit vereinfachen (und auch zur
+&Uuml;bersichtlichkeit beitragen):
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Abk&uuml;rzung</th>
+    <th>Entsprechung</th>
+    <th>Bedeutung</th>
+   </tr>
+   <tr>
+    <td><code>{</code><i>n</i><code>}</code></td>
+    <td><code>{</code><i>n</i><code>,</code><i>n</i><code>}</code></td>
+    <td>genau <i>n</i>-mal</td>
+   </tr>
+   <tr>
+    <td><code>{</code><i>n</i><code>,}</code></td>
+    <td>&nbsp;</td>
+    <td>mindestens <i>n</i>-mal</td>
+   </tr>
+   <tr>
+    <td><code>?</code></td>
+    <td><code>{</code><i>0</i><code>,</code><i>1</i><code>}</code></td>
+    <td>h&ouml;chstens einmal</td>
+   </tr>
+   <tr>
+    <td><code>+</code></td>
+    <td><code>{</code><i>1</i><code>,}</code></td>
+    <td>mindestens einmal</td>
+   </tr>
+   <tr>
+    <td><code>*</code></td>
+    <td><code>{</code><i>0</i><code>,}</code></td>
+    <td>beliebig oft</td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+Beispiele:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"xxxAzz";<br><br>if($t&nbsp;=~&nbsp;/x<font color="#0000cc">{2}</font>/)&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/x<font color="#0000cc">{2,}</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if($t&nbsp;=~&nbsp;/z<font color="#0000cc">+</font>/)&nbsp;&nbsp;&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;3</font><br>if($t&nbsp;=~&nbsp;/B<font color="#0000cc">?</font>/)&nbsp;&nbsp;&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;4</font><br>if($t&nbsp;=~&nbsp;/xAy<font color="#0000cc">*</font>/)&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;5</font><br>if($t&nbsp;=~&nbsp;/x<font color="#0000cc">*</font>z<font color="#0000cc">+</font>/)&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;6</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die Variable <code>$t</code> besteht alle Tests erfolgreich; die folgende
+Liste zeigt, an welchen Stellen jeweils der regul&auml;re Ausdruck pa&szlig;t
+(Perl sucht hier immer die gr&ouml;&szlig;tm&ouml;gliche L&ouml;sung):
+  </p>
+  <ul>
+   <li>
+Test 1: <code><u>xx</u>xAzz</code>
+      (genau zwei aufeinanderfolgende "<code>x</code>")   </li>
+   <li>
+Test 2: <code><u>xxx</u>Azz</code>
+      (mindestens zwei aufeinanderfolgende "<code>x</code>")   </li>
+   <li>
+Test 3: <code>xxxA<u>zz</u></code>
+      (mindestens ein "<code>z</code>")   </li>
+   <li>
+Test 4: <code>xxxAzz</code>
+      ("<code>B</code>" wird 0-mal "gefunden" - daher auch hier "<code>wahr</code>")   </li>
+   <li>
+Test 5: <code>xx<u>xA</u>zz</code>
+      ("<code>x</code>" gefolgt von "<code>A</code>" evt. gefolgt von "<code>y</code>")   </li>
+   <li>
+Test 6: <code>xxxA<u>zz</u></code>
+      (beliebig viele "<code>x</code>" gefolgt von mindestens einem "<code>z</code>")   </li>
+  </ul>
+  <p>
+
+Wie man in Test&nbsp;5 sieht, bezieht sich ein Sonderzeichen
+zur Mehrfachsuche nur auf das direkt davor stehende Zeichen (im Beispiel
+also nur auf das "<code>y</code>"), nicht aber auf andere
+Symbole weiter vorne.
+  </p>
+  <p>
+
+Wenn gesagt wird, da&szlig; Perl die gr&ouml;&szlig;tm&ouml;gliche L&ouml;sung
+sucht, so ist dies eigentlich nicht ganz richtig; man sollte genauer sagen: die
+l&auml;ngste L&ouml;sung, die sich bei der Suche ab dem Startpunkt des vorgegebenen
+Strings ergibt. Eine Suche beginnt immer vor dem ersten Zeichen der zu durchsuchenden
+Zeichenkette. Wird, von dieser Startposition ausgehend, eine L&ouml;sung gefunden,
+so wird die Suche (erfolgreich) abgebrochen, auch wenn es vielleicht weiter
+hinten noch eine l&auml;ngere L&ouml;sung g&auml;be. Bei einem Fehlschlag beginnt
+eine erneute Suche ein Zeichen weiter hinten; dieses Verfahren wiederholt sich
+so lange, bis eine L&ouml;sung gefunden oder das Ende des Strings erreicht wird.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"aa==aaaa";<br><br>if($t&nbsp;=~&nbsp;/a<font color="#0000cc">*</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/=<font color="#0000cc">*</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if($t&nbsp;=~&nbsp;/=<font color="#0000cc">+</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;3</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+In Test&nbsp;1 bietet Perl als gefundenen Substring "<code>aa</code>"
+("<code><u>aa</u>==aaaa</code>") an, obwohl die L&ouml;sung
+"<code>aaaa</code>" ("<code>aa==<u>aaaa</u></code>")
+l&auml;nger w&auml;re.
+Ein scheinbar paradoxes Verhalten zeigt Test&nbsp;2: hier ist die L&ouml;sung
+leer! Die Erkl&auml;rung daf&uuml;r ist, da&szlig; von der
+Startposition ausgehend eine L&ouml;sung gefunden wurde 
+(0-mal "<code>=</code>") und dann die Suche abgebrochen wird.
+Test&nbsp;3 schlie&szlig;lich gibt "<code>==</code>" aus, da
+ja hier mindestens ein "<code>=</code>" gefunden werden mu&szlig;.
+  </p>
+  <p>
+
+Die Problematik, da&szlig; Perl immer versucht, eine m&ouml;glichst gro&szlig;e
+L&ouml;sung zu finden, wurde schon angesprochen. Dies ist bisweilen
+unerw&uuml;nscht; daher gibt es seit Perl&nbsp;5 auch eine Variante, um
+eine m&ouml;glichst <i>kurze</i> L&ouml;sung zu suchen. Dies geschieht,
+indem einfach ein Fragezeichen angeh&auml;ngt wird. Die entsprechenden
+Kombinationen sehen dann so aus:
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Quantifizierer</th>
+    <th>Bedeutung</th>
+   </tr>
+   <tr>
+    <td><code>{</code><i>n</i><code>,</code><i>m</i><code>}?</code></td>
+    <td>mindestens <i>n</i>-mal, h&ouml;chstens <i>m</i>-mal</td>
+   </tr>
+   <tr>
+    <td><code>{</code><i>n</i><code>}?</code></td>
+    <td>genau <i>n</i>-mal (&auml;quivalent zu <code>{</code><i>n</i><code>}</code>)</td>
+   </tr>
+   <tr>
+    <td><code>{</code><i>n</i><code>,}?</code></td>
+    <td>mindestens <i>n</i>-mal</td>
+   </tr>
+   <tr>
+    <td><code>??</code></td>
+    <td>h&ouml;chstens einmal</td>
+   </tr>
+   <tr>
+    <td><code>+?</code></td>
+    <td>mindestens einmal</td>
+   </tr>
+   <tr>
+    <td><code>*?</code></td>
+    <td>beliebig oft</td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+Ein Beispiel, das den Unterschied zwischen minimaler und maximaler Suche
+verdeutlicht:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"mmmmm";<br><br>if($t&nbsp;=~&nbsp;/m<font color="#0000cc">+</font>/)&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/m<font color="#0000cc">+?</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if($t&nbsp;=~&nbsp;/m<font color="#0000cc">*?</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;3</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Der erste Test gibt "<code>mmmmm</code>" als (maximale) L&ouml;sung aus,
+w&auml;hrend
+Test&nbsp;2 nur "<code>m</code>" (die minimale L&ouml;sung) liefert.
+Der dritte Test schlie&szlig;lich bietet als L&ouml;sung gar einen
+leeren String an (0-mal "<code>m</code>").
+  </p>
+  <p>
+
+Es sei hier noch erw&auml;hnt, da&szlig; beispielweise "<code>m*?</code>"
+keinesfalls immer automatisch null Zeichen bedeuten mu&szlig; wie man nach dem
+obigen Beispiel vielleicht zun&auml;chst glauben mag.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"AmmmAmmmA";<br><br>if($t&nbsp;=~&nbsp;/Am<font color="#0000cc">*?</font>A/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/A.<font color="#0000cc">+</font>A/)&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if($t&nbsp;=~&nbsp;/A.<font color="#0000cc">+?</font>A/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;3</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Hier enth&auml;lt der gefundene Substring im Test&nbsp;1 drei
+"<code>m</code>" ("<code><u>AmmmA</u>mmmA</code>"). Lehrreich
+ist auch der Vergleich der beiden anderen Tests: maximale L&ouml;sung in
+Test&nbsp;2 ("<code><u>AmmmAmmmA</u></code>") und minimale
+L&ouml;sung in Test&nbsp;3 ("<code><u>AmmmA</u>mmmA</code>").
+  </p>
+<p align="right"><a href="perl_reg.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">Gruppierung</h2>
+  <hr>
+  <p>
+
+Im Abschnitt zur Mehrfachsuche wirkte eine entsprechende Anweisung immer
+nur auf das eine unmittelbar davor stehende Zeichen. Mit Hilfe von
+Klammern ("<code>(...)</code>") k&ouml;nnen auch l&auml;ngere
+Ausdr&uuml;cke mehrfach gesucht werden.
+  </p>
+  <p>
+
+Dazu ein Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"1.030303";<br><br>if($t&nbsp;=~&nbsp;/03{2,3}/)&nbsp;&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">(</font>03<font color="#0000cc">)</font>{2,3}/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;2</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Test&nbsp;1 liefert hier "<code>falsch</code>" (es wird nach einer
+"<code>0</code>" gefolgt von 2 oder 3 "<code>3</code>"en
+gesucht). Erfolgreich dagegen verl&auml;uft Test&nbsp;2: er findet
+"<code>030303</code>" (l&auml;ngste L&ouml;sung).
+  </p>
+  <p>
+
+Klammern bewirken auch noch einen Nebeneffekt: Derjenige Substring, der auf
+das Muster der ersten Klammer pa&szlig;t, wird in die Variable <code>$1</code>
+geschrieben, der zweite Substring in <code>$2</code>, usw. Zur Festlegung der
+Reihenfolge der Klammern z&auml;hlt die jeweils &ouml;ffnende Klammer (dies
+ist wichtig bei ineinander verschachtelten Klammerpaaren).
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"Breite:&nbsp;7.5&nbsp;m";<br><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">(</font>\w+<font color="#0000cc">)</font>:&nbsp;<font color="#0000cc">(</font>[\d.]+&nbsp;m<font color="#0000cc">)</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }<br><br>print&nbsp;"\$1:&nbsp;<font color="#0000cc">$1</font>\n";<br>print&nbsp;"\$2:&nbsp;<font color="#0000cc">$2</font>\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Auch dieser recht kompliziert aussehende regul&auml;re Ausdruck l&auml;&szlig;t
+sich einfach aufl&ouml;sen:
+  </p>
+  <ul>
+   <li>
+"<code>(\w+)</code>" sucht nach mindestens einem
+      alphanumerischen Zeichen und speichert ggf. den gefundenen Substring
+      in der Variablen <code>$1</code>.
+     </li>
+   <li>
+anschlie&szlig;end wird nach Doppelpunkt und Leerzeichen gesucht
+     </li>
+   <li>
+"<code>([\d.]+ m)</code>" sucht nach mindestens einem
+      Zeichen aus der Gruppe "Ziffern und Punkt" gefolgt von einem
+      Leerzeichen und dem Buchstaben "<code>m</code>"; das Ergebnis
+      landet ggf. in <code>$2</code>.
+     </li>
+  </ul>
+  <p>
+
+Somit enth&auml;lt schlie&szlig;lich <code>$1</code> den Wert
+"<code>Breite</code>" und <code>$2</code> den Wert
+"<code>7.5 m</code>". Da alle Bedingungen der
+Suche erf&uuml;llt sind, ergibt sich nat&uuml;rlich der Gesamtwert
+"<code>wahr</code>".
+  </p>
+  <p>
+
+M&ouml;chte man den Nebeneffekt der Zuweisung von <code>$1</code>,
+<code>$2</code>,
+<code>$3</code>,... verhindern, f&uuml;gt man nach der &ouml;ffnenden Klammer
+"<code>?:</code>" ein.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"a&nbsp;b";<br><br>$t&nbsp;=~&nbsp;/(.)\s(.)/;<br>print&nbsp;"\$1:&nbsp;$1\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;gibt&nbsp;'a'&nbsp;aus</font><br><br>$t&nbsp;=~&nbsp;/<font color="#0000cc">(?:</font>.<font color="#0000cc">)</font>\s(.)/;<br>print&nbsp;"\$1:&nbsp;$1\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;gibt&nbsp;'b'&nbsp;aus</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Im ersten Test werden sowohl <code>$1</code> (mit "<code>a</code>") als auch
+<code>$2</code> (mit "<code>b</code>") belegt. Im zweiten Test dagegen findet
+bei der ersten Klammer keine Zuweisung statt und der Inhalt der zweiten
+Klammer ("<code>b</code>") wird in <code>$1</code> geschrieben.
+  </p>
+  <p>
+
+Es ist sogar m&ouml;glich, schon innerhalb des regul&auml;ren Ausdrucks auf
+vorher im String gefundene Teilstrings zuzugreifen. So findet sich der
+Wert der ersten Klammer in <code>\1</code>, der der zweiten Klammer in
+<code>\2</code>, usw. Die Zuordnung ist identisch zu der von <code>$1</code>,
+<code>$2</code>, usw., allerdings d&uuml;rfen die "Backslash-Variablen"
+nur innerhalb des Suchmusters und die "Dollar-Variablen" nur
+au&szlig;erhalb verwendet werden.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"abc--defg-h----ijk";<br><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">(</font>.{2}<font color="#0000cc">)</font>.+?<font color="#0000cc">\1</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }<br>print&nbsp;"\$1:&nbsp;<font color="#0000cc">$1</font>\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Der regul&auml;re Ausdruck sucht nach genau zwei gleichen Zeichen, die aber
+ansonsten beliebig gew&auml;hlt sein k&ouml;nnen, gefolgt von einer m&ouml;glichst
+kurzen Zeichenkette aus mindestens einem Symbol gefolgt von dem Zeichenpaar,
+das in der ersten Klammer gefunden wurde. Der gefundene Substring lautet
+dann "<code>--defg-h--</code>" und <code>$1</code> enth&auml;lt
+wie erwartet "<code>--</code>".
+  </p>
+  <p>
+
+Die Verwendung von <code>\1</code>, <code>\2</code>, usw. kann zu Problemen
+f&uuml;hren, wenn sich daran eine Suche nach Ziffern anschlie&szlig;t; eine
+m&ouml;gliche L&ouml;sung ist die Benutzung von Klammern des Typs
+"<code>(?:...)</code>":
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"12--456--12";<br><br>if($t&nbsp;=~&nbsp;/(--)\d+?<font color="#0000cc">\112</font>/)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/(--)\d+?<font color="#0000cc">(?:\1)12</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;2</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Hier schl&auml;gt Test&nbsp;1 fehl, da "<code>\112</code>" als
+Oktal-Code interpretiert wird (Zeichen "<code>J</code>"). Die
+zus&auml;tzliche Klammer
+in Test&nbsp;2 sorgt f&uuml;r die korrekte L&ouml;sung
+("<code>--456--12</code>").
+  </p>
+<p align="right"><a href="perl_reg.html">[Seitenanfang]</a></p>
+  <a name="abs5"></a><hr>
+  <h2 align="center">Alternativen</h2>
+  <hr>
+  <p>
+
+Wie man bei der Suche nach einzelnen Zeichen eine Auswahl vorgeben kann, haben
+wir im Abschnitt zu den Zeichenklassen gesehen. Nat&uuml;rlich m&ouml;chte man
+diese M&ouml;glichkeit auch bei l&auml;ngeren Ausdr&uuml;cken zur Verf&uuml;gung
+haben. Dazu wird der senkrechte Strich ("<code>|</code>") verwendet, der die
+einzelnen Alternativen voneinander trennt.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"Perl";<br><br>if($t&nbsp;=~&nbsp;/FORTRAN<font color="#0000cc">|</font>C<font color="#0000cc">|</font>Pascal<font color="#0000cc">|</font>Perl/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Bei der Suche werden die Alternativen von links beginnend durchprobiert bis
+ein passendes Muster gefunden wurde (hier: "<code>Perl</code>").
+  </p>
+  <p>
+
+Bei komplexeren Ausdr&uuml;cken m&uuml;ssen meist Klammern gesetzt werden, damit
+klar ist, welche Teile zu den Alternativen geh&ouml;ren und welche nicht.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"1997";<br><br>if($t&nbsp;=~&nbsp;/1996<font color="#0000cc">|</font>97<font color="#0000cc">|</font>98/)&nbsp;&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }<br>if($t&nbsp;=~&nbsp;/19<font color="#0000cc">(</font>96<font color="#0000cc">|</font>97<font color="#0000cc">|</font>98<font color="#0000cc">)</font>/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Beide Tests sind zwar erfolgreich, liefern aber unterschiedliche Ergebnisse
+in <code>$&amp;</code> ("<code>97</code>" bzw.
+"<code>1997</code>")
+  </p>
+<p align="right"><a href="perl_reg.html">[Seitenanfang]</a></p>
+  <a name="abs6"></a><hr>
+  <h2 align="center">Ankerpunkte</h2>
+  <hr>
+  <p>
+
+Ankerpunkte bieten die M&ouml;glichkeit festzulegen, da&szlig; der gesuchte
+Substring an einer bestimmten Stelle in der vorgegebenen Zeichenkette
+auftreten mu&szlig;.
+  </p>
+  <p>
+
+Soll nach einem Muster nur am Beginn eines Strings gesucht werden, so setze
+man einen Zirkumflex ("<code>^</code>") oder
+"<code>\A</code>" an den Beginn des regul&auml;ren Ausdrucks.
+Solange die untersuchte Zeichenkette keinen Zeilenvorschub enth&auml;lt
+verhalten sich die beiden Ankerpunkte identisch (mehr hierzu im Abschnitt
+zu den Optionen von regul&auml;ren Ausdr&uuml;cken).
+  </p>
+  <p>
+
+Analog erfolgt die Suche am Ende eines Strings: hier sind die Symbole, die am
+Ende des regul&auml;ren Ausdrucks stehen, das Dollar-Zeichen
+("<code>$</code>") bzw. "<code>\Z</code>". Auch diese
+Ankerpunkte unterscheiden sich nicht in ihrer Wirkung solange keine
+Zeilenvorsch&uuml;be vorhanden sind.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"abrakadabra";<br><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">^</font>abra/)&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/abra<font color="#0000cc">$</font>/)&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">^</font>kada/)&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;3</font><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">^</font>abra<font color="#0000cc">$</font>/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }    <font color="#006600">#&nbsp;Test&nbsp;4</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Test&nbsp;1 findet den passenden Substring am Anfang
+von <code>$t</code> (<code><u>abra</u>kadabra</code>),
+w&auml;hrend Test&nbsp;2
+am Ende f&uuml;ndig wird (<code>abrakad<u>abra</u></code>).
+Die Suche in Test&nbsp;3 dagegen bleibt erfolglos; es ist zwar ein
+Substring "<code>kada</code>" vorhanden, der steht aber nicht wie gefordert am Anfang von
+<code>$t</code>. Auch Test&nbsp;4 liefert "<code>falsch</code>"; auch wenn
+"<code>abra</code>" sowohl am Anfang als auch am Ende von <code>$</code>t steht, so
+sind dies doch zwei verschiedene Substrings.
+  </p>
+  <p>
+
+Man beachte, da&szlig; diese Ankerpunkte gewisserma&szlig;en eine  h&ouml;here
+Priorit&auml;t besitzen als beispielsweise das Alternativ-Symbol ("<code>|</code>"):
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"Mein&nbsp;Computer";<br><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">^</font>Rechner<font color="#0000cc">|</font>Computer<font color="#0000cc">$</font>/)&nbsp;&nbsp;&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }  <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">^(</font>Rechner<font color="#0000cc">|</font>Computer<font color="#0000cc">)$</font>/)&nbsp;{ print&nbsp;"wahr\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }  <font color="#006600">#&nbsp;Test&nbsp;2</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Test&nbsp;1 liefert den Wert "<code>wahr</code>", da er "<code>Computer</code>" am
+Ende von <code>$t</code> findet ("Suche nach '<code>Rechner</code>' am Anfang oder '<code>Computer</code>'
+am Ende"). Test&nbsp;2 dagegen gibt die Antwort "<code>falsch</code>",
+da hier der Suchauftrag lautet: "Suche nach '<code>Rechner</code>' oder '<code>Computer</code>', die
+sich von Anfang bis Ende des Strings erstrecken".
+  </p>
+  <p>
+
+Weitere Ankerpunkte k&ouml;nnen Wortgrenzen sein. Dabei ist eine solche Grenze
+definiert als der Punkt zwischen einem Zeichen aus der Klasse <code>\w</code>
+und einem aus <code>\W</code>. Eine solche Wortgrenze wird durch "<code>\b</code>"
+dargestellt (dabei handelt es sich nicht um ein Zeichen an sich, sondern den Raum
+zwischen zwei Symbolen!). Das Gegenst&uuml;ck zu "<code>\b</code>" ist
+"<code>\B</code>" (Ankerpunkt inner- oder au&szlig;erhalb eines Wortes).
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"Der&nbsp;ASCII-Code";<br><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">\b</font>[A-Z]/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/<font color="#0000cc">\B</font>[A-Z]/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;2</font><br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Im Test&nbsp;1 wird nach dem ersten Gro&szlig;buchstaben an einer
+Wortgrenze gesucht; hier wird das "D" ("<u>D</u>er ASCII-Code")
+gefunden, auch wenn es hier nicht (am Anfang des Strings) nach einem Zeichen
+aus <code>\W</code> steht,
+da Anfang und Ende eine entsprechende Sonderbehandlung erfahren. Test&nbsp;2
+dagegen sucht nach einem Gro&szlig;buchstaben innerhalb eines Wortes; die
+L&ouml;sung lautet hier "S" ("Der A<u>S</u>CII-Code").
+  </p>
+<p align="right"><a href="perl_reg.html">[Seitenanfang]</a></p>
+  <a name="abs7"></a><hr>
+  <h2 align="center">Umgebung eines Musters</h2>
+  <hr>
+  <p>
+
+Insbesondere bei der vorausschauenden und zur&uuml;ckblickenden Suche
+gab es im Laufe der einzelnen Perl-5-Versionen einige Erweiterungen.
+  </p>
+  <p>
+
+Man kann damit den Erfolg einer Mustersuche davon abh&auml;ngig machen,
+ob nicht nur das gesuchte Muster selbst pa&szlig;t, sondern auch die
+Umgebung, d.h. die Zeichen davor und dahinter, mit ber&uuml;cksichtigen.
+So kann man etwa sagen: "Suche den Teilstring
+'Regen', aber nur, wenn er nicht von 'wurm' gefolgt wird."
+  </p>
+  <p>
+
+Folgende Klammerausdr&uuml;cke stehen zur Verf&uuml;gung:
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Ausdruck</th>
+    <th>Bedeutung</th>
+    <th>Erl&auml;uterung</th>
+   </tr>
+   <tr>
+    <td><code>(?=...)</code></td>
+    <td>positive Vorausschau</td>
+    <td>nur dann erfolgreich, wenn ... folgt</td>
+   </tr>
+   <tr>
+    <td><code>(?!...)</code></td>
+    <td>negative Vorausschau</td>
+    <td>nur dann erfolgreich, wenn ... nicht folgt</td>
+   </tr>
+   <tr>
+    <td><code>(?&lt;=...)</code></td>
+    <td>positive R&uuml;ckschau</td>
+    <td>nur dann erfolgreich, wenn ... vorangeht</td>
+   </tr>
+   <tr>
+    <td><code>(?&lt;!...)</code></td>
+    <td>negative R&uuml;ckschau</td>
+    <td>nur dann erfolgreich, wenn ... nicht vorangeht</td>
+   </tr>
+  </table>
+  </blockquote>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"Bandwurm&nbsp;Regenwurm&nbsp;Regenschirm&nbsp;Regenschauer";<br><br>if($t&nbsp;=~&nbsp;/Regen<font color="#0000cc">(?=scha)</font>\w+/)&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;1</font><br>if($t&nbsp;=~&nbsp;/Regen<font color="#0000cc">(?!wurm)</font>\w+/)&nbsp;&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;2</font><br>if($t&nbsp;=~&nbsp;/\w+<font color="#0000cc">(?&lt;=Regen)</font>wurm/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;3</font><br>if($t&nbsp;=~&nbsp;/\w+<font color="#0000cc">(?&lt;!Regen)</font>wurm/)&nbsp;{ print&nbsp;"wahr&nbsp;($&amp;)\n" }&nbsp;else&nbsp;{ print&nbsp;"falsch\n" }   <font color="#006600">#&nbsp;Test&nbsp;4</font><br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>wahr&nbsp;(Regenschauer)<br>wahr&nbsp;(Regenschirm)<br>wahr&nbsp;(Regenwurm)<br>wahr&nbsp;(Bandwurm)<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Hierbei ist unbedingt zu beachten, da&szlig; der Teilstring, der zu den
+Ausdr&uuml;cken in einer der Klammern geh&ouml;rt, nicht Bestandteil
+der L&ouml;sungsvariablen <code>$&amp;</code> ist (er geh&ouml;rt nicht
+zum gefundenen
+Muster, sondern stellt nur eine Bedingung an die Umgebung dar). Im obigen
+Beispiel werden die vollst&auml;ndigen W&ouml;rter nur deswegen
+ausgegeben, weil die jeweiligen Worth&auml;lften auf das zus&auml;tzliche Muster
+"<code>\w+</code>" passen.
+  </p>
+<p align="right"><a href="perl_reg.html">[Seitenanfang]</a></p>
+  <a name="abs8"></a><hr>
+  <h2 align="center">Kommentare</h2>
+  <hr>
+  <p>
+
+Um bei komplexen regul&auml;ren Ausdr&uuml;cken die &Uuml;bersicht zu
+behalten, k&ouml;nnen Kommentare in Klammern wie diesen
+"<code>(?#...)</code>" eingef&uuml;gt werden.
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;"Wasserfall";<br><br>if($t&nbsp;=~&nbsp;/((.)\2)<font color="#0000cc">(?#&nbsp;suche&nbsp;zwei&nbsp;gleiche&nbsp;Zeichen)</font>/)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;"\$1:&nbsp;$1\n";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;gibt&nbsp;'ss'&nbsp;aus</font><br>}<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Man beachte, da&szlig; hier "<code>\2</code>" verwendet werden mu&szlig;,
+um das Zeichen, das auf "<code>.</code>" pa&szlig;t, zu verwenden, da der
+Punkt nach der <i>zweiten &ouml;ffnenden</i> Klammer steht.
+  </p>
+<p align="right"><a href="perl_reg.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_suche.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_suche2.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

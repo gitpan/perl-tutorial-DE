@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Konstanten  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Konstanten</h1>
+  <table align="center"><tr>
+  <td><a href="perl_internet.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_var.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Zahlen</a></li>
+<li><a href="#abs2">Zeichenketten</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Zahlen</h2>
+  <hr>
+  <p>
+
+In Perl k&ouml;nnen Zahlen sowohl als
+Ganzzahlen (<i>integer</i>) als auch
+als Gleitkommazahlen
+(<i>floating-point</i>) dargestellt werden. Die interne Darstellung
+h&auml;ngt von Betriebssystem und Compiler ab (z.B. <i>long</i>
+bzw. <i>double</i>). Um gro&szlig;e Ganzzahlen &uuml;bersichtlicher
+zu schreiben, k&ouml;nnen beliebige Unterstriche "<code>_</code>" 
+eingef&uuml;gt werden.
+Bei Gleitkommazahlen ist zu beachten, da&szlig; sie mit einem Punkt
+("<code>.</code>") anstelle des im deutschen Sprachraums &uuml;blichen
+Kommas geschrieben werden. Au&szlig;erdem ist auch die wissenschaftliche
+Schreibweise aus Mantisse und Exponent getrennt durch den Buchstaben
+"<code>e</code>" oder "<code>E</code>" m&ouml;glich.
+  </p>
+  <p>
+
+Beispiele:
+  </p>
+  <blockquote>
+  <table border="0" cellpadding="5">
+   <tr>
+    <td>
+     <table border="1" cellpadding="6">
+      <tr>
+       <th>Ganzzahlen</th>
+      </tr>
+      <tr>
+       <td>
+        <table border="0" cellpadding="1">
+         <tr>
+          <td><code>42</code></td>
+         </tr>
+         <tr>
+          <td><code>-9</code></td>
+         </tr>
+         <tr>
+          <td><code>1000000</code></td>
+         </tr>
+         <tr>
+          <td><code>1_000_000</code></td>
+         </tr>
+        </table>
+       </td>
+      </tr>
+     </table>
+    </td>
+    <td>
+     <table border="1" cellpadding="6">
+      <tr>
+       <th>Gleitkommazahlen</th>
+      </tr>
+      <tr>
+       <td>
+        <table border="0" cellpadding="1">
+         <tr>
+          <td><code>3.141</code></td>
+         </tr>
+         <tr>
+          <td><code>-0.005</code></td>
+         </tr>
+         <tr>
+          <td><code>1.5e-3 = 0.0015</code></td>
+         </tr>
+         <tr>
+          <td><code>2E4 = 20000</code></td>
+         </tr>
+        </table>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+Zahlen werden als Oktal- bzw.
+Hexadezimalzahlen betrachtet, wenn sie
+mit einer Null ("<code>0</code>") bzw. "<code>0x</code>" beginnen.
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="6">
+   <tr>
+    <th>dezimal</th>
+    <th>oktal</th>
+    <th>hexadezimal</th>
+   </tr>
+   <tr align="center">
+    <td><code>20</code></td>
+    <td><code>024</code></td>
+    <td><code>0x14</code></td>
+   </tr>
+   <tr align="center">
+    <td><code>-63</code></td>
+    <td><code>-077</code></td>
+    <td><code>-0x3f</code></td>
+   </tr>
+  </table>
+  </blockquote>
+<p align="right"><a href="perl_kon.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Zeichenketten</h2>
+  <hr>
+  <p>
+
+Zeichenketten (<i>strings</i>) bestehen aus
+einer Aneinanderreihung von beliebig
+vielen einzelnen Zeichen (Buchstaben, Ziffern, Sonderzeichen). Bei der
+Definition einer Zeichenkette in Perl ist auf die Einklammerung des
+Strings zu achten. Verwendet man einfache Anf&uuml;hrungszeichen
+<code>'...'</code>, so wird die Kette im wesentlichen so gespeichert,
+wie sie geschrieben ist. Setzt man sie dagegen in doppelte
+Anf&uuml;hrungszeichen <code>"..."</code>, findet u.U. eine Ersetzung
+bestimmter Sonderzeichen statt.
+  </p>
+  <p>
+
+Beispiel (Hinweis: die Option "<code>-l</code>" bewirkt hier nach jedem
+<code>print</code>-Befehl einen automatischen Zeilenvorschub):
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w&nbsp;-l<br><br>print&nbsp;<font color="#0000cc">'Hallo'</font>;<br>print&nbsp;<font color="#0000cc">'Rock&nbsp;\'n\'&nbsp;Roll'</font>;<br>print&nbsp;<font color="#0000cc">'C:\\DATA'</font>;<br>print&nbsp;<font color="#0000cc">'Hello,&nbsp;world&nbsp;!\n'</font>;<br>print&nbsp;<font color="#0000cc">"Hello,&nbsp;world&nbsp;!\n"</font>;<br>print&nbsp;<font color="#0000cc">'A\102\x43'</font>;<br>print&nbsp;<font color="#0000cc">"A\102\x43"</font>;<br>print&nbsp;<font color="#0000cc">"\"Max\""</font>;<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Hallo<br>Rock&nbsp;'n'&nbsp;Roll<br>C:\DATA<br>Hello,&nbsp;world&nbsp;!\n<br>Hello,&nbsp;world&nbsp;!<br><br>A\102\x43<br>ABC<br>"Max"<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Bei einfachen Anf&uuml;hrungszeichen wird mit zwei Ausnahmen jedes
+Zeichen so in die Zeichenkette &uuml;bernommen, wie es geschrieben 
+wird. Will man ein Apostroph einbauen, so mu&szlig; es durch
+einen Backslash "<code>\</code>" markiert werden. Um schlie&szlig;lich
+einen solchen Backslash zu verwenden, wird er doppelt geschrieben.
+  </p>
+  <p>
+
+Steht ein String in doppelten Anf&uuml;hrungszeichen, so k&ouml;nnen
+Sonderzeichen, die sich nicht direkt durch ein Symbol darstellen lassen,
+mit Hilfe eines Backslash erzeugt werden.
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Zeichen</th>
+    <th>Bedeutung</th>
+   </tr>
+   <tr>
+    <td><code>\"</code></td>
+    <td>doppeltes Anf&uuml;hrungszeichen <code>"</code></td>
+   </tr>
+   <tr>
+    <td><code>\\</code></td>
+    <td>Backslash <code>\</code></td>
+   </tr>
+   <tr>
+    <td><code>\n</code></td>
+    <td>neue Zeile (<i>newline</i>)</td>
+   </tr>
+   <tr>
+    <td><code>\r</code></td>
+    <td>Wagenr&uuml;cklauf (<i>return</i>)</td>
+   </tr>
+   <tr>
+    <td><code>\f</code></td>
+    <td>neue Seite (<i>form feed</i>)</td>
+   </tr>
+   <tr>
+    <td><code>\t</code></td>
+    <td>horizontaler Tabulator</td>
+   </tr>
+   <tr>
+    <td><code>\v</code></td>
+    <td>vertikaler Tabulator</td>
+   </tr>
+   <tr>
+    <td><code>\b</code></td>
+    <td>R&uuml;ckschritt (<i>backspace</i>)</td>
+   </tr>
+   <tr>
+    <td><code>\a</code></td>
+    <td>akustisches Signal</td>
+   </tr>
+   <tr>
+    <td><code>\e</code></td>
+    <td>Escape</td>
+   </tr>
+   <tr>
+    <td><code>\102</code></td>
+    <td>oktaler Zeichencode (hier f&uuml;r 'B')</td>
+   </tr>
+   <tr>
+    <td><code>\x43</code></td>
+    <td>hexadezimaler Zeichencode (hier f&uuml;r 'C')</td>
+   </tr>
+   <tr>
+    <td><code>\cC</code></td>
+    <td>Control-Zeichen (hier: 'Ctrl-C' bzw. 'Strg-C')</td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+Au&szlig;erdem gibt es noch Ausdr&uuml;cke, die die Gro&szlig;- und
+Kleinschreibung beeinflussen:
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Zeichen</th>
+    <th>Bedeutung</th>
+   </tr>
+   <tr>
+    <td><code>\l</code></td>
+    <td>n&auml;chster Buchstabe klein</td>
+   </tr>
+   <tr>
+    <td><code>\u</code></td>
+    <td>n&auml;chster Buchstabe gro&szlig;</td>
+   </tr>
+   <tr>
+    <td><code>\L</code></td>
+    <td>Buchstaben bis <code>\E</code> klein</td>
+   </tr>
+   <tr>
+    <td><code>\U</code></td>
+    <td>Buchstaben bis <code>\E</code> gro&szlig;</td>
+   </tr>
+   <tr>
+    <td><code>\E</code></td>
+    <td>(siehe <code>\L</code> und <code>\U</code>)</td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+Beispiele:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w&nbsp;-l<br><br>print&nbsp;"<font color="#0000cc">\L</font>HAUS";<br>print&nbsp;"<font color="#0000cc">\u</font>regenwurm";<br>print&nbsp;"<font color="#0000cc">\U</font>auTo<font color="#0000cc">\E\L</font>BAhn<font color="#0000cc">\E</font>";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>haus<br>Regenwurm<br>AUTObahn<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_kon.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_internet.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_var.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Zeichenketten  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Zeichenketten</h1>
+  <table align="center"><tr>
+  <td><a href="perl_math.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_arrfkt.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Operatoren</a></li>
+<li><a href="#abs2">Vergleiche</a></li>
+<li><a href="#abs3">Funktionen</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Operatoren</h2>
+  <hr>
+  <p>
+
+Zeichenketten lassen sich mit Hilfe des Operators "<code>.</code>"
+verkn&uuml;pfen und mit "<code>x</code>" vervielfachen.
+  </p>
+  <p>
+
+Beispiel :
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$x&nbsp;=&nbsp;"A";<br>my&nbsp;$y&nbsp;=&nbsp;".";<br><br>my&nbsp;<font color="#0000cc">$c&nbsp;=&nbsp;$x.$y</font>;<br>print&nbsp;"$c\n";<br><br><font color="#0000cc">$c&nbsp;=&nbsp;$c&nbsp;x&nbsp;2</font>;<br>print&nbsp;"$c\n";<br><br><font color="#0000cc">$c&nbsp;.=&nbsp;"*"</font>;<br>print&nbsp;"$c\n";<br><br><font color="#0000cc">$c&nbsp;=&nbsp;$c&nbsp;x&nbsp;3</font>;<br>print&nbsp;"$c\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>A.<br>A.A.<br>A.A.*<br>A.A.*A.A.*A.A.*<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_string.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Vergleiche</h2>
+  <hr>
+  <p>
+
+Hier sind "gr&ouml;&szlig;er" bzw. "kleiner" im Sinne einer
+Ordnung gem&auml;&szlig; einer Zeichentabelle (ASCII, Unicode) zu verstehen
+und nicht etwa als L&auml;ngenvergleich.
+  </p>
+  <ul>
+   <li>
+"<code>eq</code>"  liefert <i>wahr</i> bei Gleichheit   </li>
+   <li>
+"<code>ne</code>"  liefert <i>wahr</i> bei Ungleichheit   </li>
+   <li>
+"<code>gt</code>"  liefert <i>wahr</i>, falls linkes Argument 
+                         gr&ouml;&szlig;er als rechtes Argument   </li>
+   <li>
+"<code>lt</code>"  liefert <i>wahr</i>, falls linkes Argument
+                         kleiner als rechtes Argument   </li>
+   <li>
+"<code>ge</code>"  liefert <i>wahr</i>, falls linkes Argument 
+                         gr&ouml;&szlig;er oder gleich rechtem Argument   </li>
+   <li>
+"<code>le</code>"  liefert <i>wahr</i>, falls linkes Argument 
+                         kleiner oder gleich rechtem Argument   </li>
+   <li>
+"<code>cmp</code>" liefert -1, 0 oder 1 je nachdem, ob das linke Argument 
+                         kleiner, gleich oder gr&ouml;&szlig;er als
+                         das rechte Argument ist   </li>
+  </ul>
+  <p>
+
+<b>Achtung:</b> Diese Vergleiche gelten nur im String-Kontext,
+d.h., wenn zwei Zeichenketten verglichen werden. Zum 
+<a href="perl_math.html#abs2">Vergleich von Zahlen</a>
+sehen die Operatoren anders aus.
+  </p>
+<p align="right"><a href="perl_string.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Funktionen</h2>
+  <hr>
+  <ul>
+   <li>
+<code>substr()</code>
+          <p>
+
+      Mit Hilfe von <code>substr()</code> lassen sich Teilstrings aus
+      Zeichenketten extrahieren. Die Argumente sind der zu untersuchende
+      String, die Startposition (beginnend bei 0) sowie die L&auml;nge
+      des gew&uuml;nschten Teilstrings. L&auml;&szlig;t man das letzte
+      Argument weg, so erstreckt sich der Teilstrings bis zum Ende
+      der vorgegebenen Zeichenkette.
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;'Kalender';<br>print&nbsp;<font color="#0000cc">substr($t,1,4)</font>."\n";<br>print&nbsp;<font color="#0000cc">substr($t,5)</font>."\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>alen<br>der<br></code></td></tr></table>
+</td></tr></table>
+    <p>
+    </p>
+   </li>
+   <li>
+<code>lc()</code> und
+              <code>uc()</code>
+          <p>
+
+      Diese Funktionen ersetzen <i>alle</i> Buchstaben in einem String durch die
+      zugeh&ouml;rigen Klein- (<code>lc</code>, <i>lower case</i>) bzw.
+      Gro&szlig;buchstaben (<code>uc</code>, <i>upper case</i>).
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;'Perl';<br>print&nbsp;<font color="#0000cc">lc($t)</font>."\n";<br>print&nbsp;<font color="#0000cc">uc($t)</font>."\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>perl<br>PERL<br></code></td></tr></table>
+</td></tr></table>
+    <p>
+    </p>
+   </li>
+   <li>
+<code>lcfirst()</code> und
+              <code>ucfirst()</code>
+          <p>
+
+      Im Gegensatz zu <code>lc</code> verwandelt <code>lcfirst</code> nur
+      den <i>ersten</i> Buchstaben in einen Kleinbuchstaben (sofern er nicht bereits
+      klein geschrieben ist). Analog setzt <code>ucfirst</code> nur den
+      <i>ersten</i> Buchstaben in Gro&szlig;schrift.
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;'PERL';<br>print&nbsp;<font color="#0000cc">lcfirst($t)</font>."\n";<br>$t&nbsp;=&nbsp;'perl';<br>print&nbsp;<font color="#0000cc">ucfirst($t)</font>."\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>pERL<br>Perl<br></code></td></tr></table>
+</td></tr></table>
+    <p>
+    </p>
+   </li>
+   <li>
+<code>chop()</code>
+          <p>
+
+      Hiermit wird das letzte Zeichen vom &uuml;bergebenen String
+      entfernt und als Funktionswert zur&uuml;ckgegeben.
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$t&nbsp;=&nbsp;'Perl';<br><font color="#0000cc">chop($t)</font>;<br>print&nbsp;$t;<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Per<br></code></td></tr></table>
+</td></tr></table>
+    <p>
+
+      Oft wird <code>chop()</code> dazu verwendet, den Zeilenvorschub
+      am Ende einer Zeile abzuschneiden; hierf&uuml;r eignet sich jedoch
+      <code>chomp()</code> besser.
+          </p>
+   </li>
+   <li>
+<code>chomp()</code>
+          <p>
+
+      Standardm&auml;&szlig;ig entfernt <code>chomp()</code> einen
+      Zeilenvorschub ("<code>\n</code>") vom Ende eines Strings, sofern
+      ein solcher
+      vorhanden ist, und gibt die Anzahl der abgeschnittenen Zeichen
+      zur&uuml;ck. <code>chomp()</code> sollte insbesondere dann
+      gegen&uuml;ber <code>chop()</code> bevorzugt werden, wenn nicht ganz
+      sicher ist, ob die Zeichenkette am Ende einen Zeilenvorschub besitzt
+      oder nicht.
+          </p>
+    <p>
+
+      Genaugenommen entfernt <code>chomp()</code> am Ende eines Strings
+      die Zeichenkette, die in der Variablen "<code>$/</code>" steht
+      (Standardwert: "<code>\n</code>"). Ist "<code>$/</code>" leer,
+      so werden alle Zeilenvorsch&uuml;be abgeschnitten.
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$string&nbsp;=&nbsp;"Hallo\n";<br><font color="#0000cc">chomp($string)</font>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;Abschneiden&nbsp;von&nbsp;\n</font><br><br>$string&nbsp;=&nbsp;"Hallo";<br><font color="#0000cc">chomp($string)</font>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;keine&nbsp;&Auml;nderung&nbsp;von&nbsp;$string</font><br><br><font color="#0000cc">$/&nbsp;=&nbsp;'lo'</font>;<br>$string&nbsp;=&nbsp;"Hallo";<br><font color="#0000cc">chomp($string)</font>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;$string&nbsp;ist&nbsp;nun&nbsp;"Hal"</font><br><br><font color="#0000cc">$/&nbsp;=&nbsp;''</font>;<br>$string&nbsp;=&nbsp;"Hallo\n\n\n";<br><font color="#0000cc">chomp($string)</font>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;Entfernen&nbsp;aller&nbsp;\n</font><br></code></td></tr></table>
+</td></tr></table>
+    <p>
+    </p>
+   </li>
+   <li>
+<code>length()</code>
+          <p>
+
+      Hiermit wird die L&auml;nge einer Zeichenkette ermittelt
+      (einschlie&szlig;lich aller Sonderzeichen).
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$zeile&nbsp;=&nbsp;"Anzahl\tPreis\n";<br>print&nbsp;<font color="#0000cc">length($zeile)</font>."\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>13<br></code></td></tr></table>
+</td></tr></table>
+    <p>
+    </p>
+   </li>
+   <li>
+<code>join()</code>
+          <p>
+
+      Das erste Argument ist hierbei eine Zeichenkette, die zwischen
+      die nachfolgenden Strings beim Aneinanderh&auml;ngen gesetzt wird.
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$zeile&nbsp;=&nbsp;<font color="#0000cc">join('-','a','b','c','d')</font>;<br>print&nbsp;$zeile."\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>a-b-c-d<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+   <li>
+<code>split()</code>
+          <p>
+
+      Hiermit kann eine Zeichenkette an bestimmten Stellen aufgetrennt
+      werden. Die jeweilige Trennstelle gibt ein Suchmuster im ersten
+      Argument an (siehe <a href="perl_reg.html">Regul&auml;re
+      Ausdr&uuml;cke</a>).
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$zeile&nbsp;=&nbsp;"a-b-c-d";<br>my&nbsp;@a&nbsp;=&nbsp;<font color="#0000cc">split(/-/,$zeile)</font>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;Anzahl&nbsp;der&nbsp;Elemente</font><br><br>print&nbsp;"@a\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>a&nbsp;b&nbsp;c&nbsp;d<br></code></td></tr></table>
+</td></tr></table>
+    <p>
+
+      Um die Anzahl der
+      Teilstrings zu begrenzen, kann als drittes Argument noch
+      eine Zahl angegeben werden, die die maximale Anzahl der
+      gebildeten St&uuml;cke darstellt.
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$zeile&nbsp;=&nbsp;"a-b-c-d";<br>my&nbsp;@a&nbsp;=&nbsp;<font color="#0000cc">split(/-/,$zeile,2)</font>;<br><br>print&nbsp;"@a\n";<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>a&nbsp;b-c-d<br></code></td></tr></table>
+</td></tr></table>
+    <p>
+
+      In diesem Beispiel enth&auml;lt <code>@a</code> am Ende nur die
+      beiden Elemente "<code>a</code>" und "<code>b-c-d</code>".
+          </p>
+   </li>
+   <li>
+<code>chr()</code>
+          <p>
+
+      Mit <code>chr()</code> kann man Zeichen &uuml;ber ihre Position
+      im verwendeten Zeichensatz darstellen. Im folgenden Beispiel
+      wird der Anfang des Alphabets im ASCII-Zeichensatz ausgegeben:
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>print&nbsp;<font color="#0000cc">chr(65)</font>.<font color="#0000cc">chr(66)</font>.<font color="#0000cc">chr(67)</font>."\n";<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+   <li>
+<code>ord()</code>
+          <p>
+
+      Die Umkehrung der obigen Funktion <code>chr()</code> ist
+      <code>ord()</code>: Sie gibt die Position des ersten &uuml;bergebenen
+      Zeichens in der Zeichensatztabelle aus. Das n&auml;chste Beispiel
+      zeigt die ASCII-Codes der ersten Buchstaben des Alphabets:
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>print&nbsp;<font color="#0000cc">ord('A')</font>.'&nbsp;'.<font color="#0000cc">ord('B')</font>.'&nbsp;'.<font color="#0000cc">ord('C')</font>."\n";<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+  </ul>
+<p align="right"><a href="perl_string.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_math.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_arrfkt.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

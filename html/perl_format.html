@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Formate  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Formate</h1>
+  <table align="center"><tr>
+  <td><a href="perl_file.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_suche.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Einf&uuml;hrung</a></li>
+<li><a href="#abs2">Definition eines Formats</a></li>
+<li><a href="#abs3">Musterzeile</a></li>
+<li><a href="#abs4">Variablenzeile</a></li>
+<li><a href="#abs5">Spezielle Variablen</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Einf&uuml;hrung</h2>
+  <hr>
+  <p>
+
+Eine einfache M&ouml;glichkeit, Protokolle oder Tabellen &uuml;bersichtlich
+auszugeben, bieten sogenannte Formate. Dort k&ouml;nnen beispielsweise
+Spalten einer Tabelle definiert werden; jeweils mit Breite und Positionierung
+des Eintrags (rechts-, linksb&uuml;ndig
+oder zentriert). Au&szlig;erdem
+kann ein Seitenkopf definiert werden, der bei Ausgaben, die sich &uuml;ber
+mehrere Seiten erstrecken, auf jeder einzelnen Seite vor den eigentlichen
+Daten ausgedruckt wird.
+  </p>
+  <p>
+
+Um Daten formatiert auszugeben, mu&szlig; der Befehl <code>write</code>
+(optional mit einem Filehandle) benutzt werden. Es k&ouml;nnen f&uuml;r jedes
+Filehandle unabh&auml;ngig voneinander Formate definiert werden.
+  </p>
+<p align="right"><a href="perl_format.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Definition eines Formats</h2>
+  <hr>
+  <p>
+
+Das Schema einer Formatdefinition sieht wie folgt aus:
+  </p>
+  <blockquote>
+
+<code>format</code> <i>Name</i> <code>=</code><br>
+<i>Musterzeile</i><br>
+<i>Variablenzeile</i><br>
+<code>.</code>
+  </blockquote>
+  <p>
+
+Im einfachsten Falle ist der Name eines Formats gleich
+dem Namen des Filehandles,
+f&uuml;r das das Format verwendet werden soll (Standardwert: 
+<code>STDOUT</code>). Will man einer Formatdefiniton einen anderen Namen
+geben, so kann die entsprechende Zuordnung von Formatname und aktuellem
+Filehandle durch Setzen der Variablen <a href="#abs5">$~</a> geschehen.
+  </p>
+  <p>
+
+Um bei mehrseitigen Dokumenten jeweils automatisch einen Seitenkopf
+ausgeben zu lassen, kann ein spezielles Format hierf&uuml;r definiert
+werden. Der Name wird gebildet durch das Anh&auml;ngen von
+"<code>_TOP</code>" an das Filehandle (Standardwert:
+<code>STDOUT_TOP</code>).
+Alternativ dazu kann eine beliebiger Name durch Setzen von
+<a href="#abs5">$^</a> verwendet werden.
+Ansonsten erfolgt die Definition vollkommen analog zu der eines normalen
+Formats. 
+  </p>
+  <p>
+
+Die Musterzeile enth&auml;lt die Definitionen der einzelnen Felder,
+in die dann sp&auml;ter die Werte der Variablen der darauffolgenden Zeile
+eingetragen werden. 
+Es d&uuml;rfen mehrere Muster- und Variablenzeilen angegeben werden; allerdings
+ist darauf zu achten, da&szlig; sie immer paarweise auftreten (jede
+Variablenliste "f&uuml;llt" die dar&uuml;berstehende Musterzeile).
+  </p>
+  <p>
+
+Au&szlig;erdem k&ouml;nnen noch &uuml;berall Kommentarzeilen
+eingef&uuml;gt werden, die mit einem "<code>#</code>" beginnen.
+  </p>
+  <p>
+
+Die Definitionen von Formaten d&uuml;rfen an beliebiger Stelle im Programmcode
+stehen (wie Unterprogramme). 
+  </p>
+<p align="right"><a href="perl_format.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Musterzeile</h2>
+  <hr>
+  <p>
+
+Jede dieser Zeilen bestimmt Felder in der Ausgabe, in die
+dann Variablenwerte (festgelegt in der jeweils darauffolgenden
+Zeile) eingesetzt werden sollen.
+  </p>
+  <p>
+
+Ein normales Feld besteht aus einem "<code>@</code>" gefolgt von
+null oder mehr Positionierungszeichen eines Typs:
+  </p>
+  <dl>
+   <dt>
+"<code>&lt;</code>" (linksb&uuml;ndig)   </dt>
+   <dt>
+"<code>|</code>" (zentriert)   </dt>
+   <dt>
+"<code>&gt;</code>" (rechtsb&uuml;ndig)   </dt>
+  </dl>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$v&nbsp;=&nbsp;12;<br><br>write;<br><br>format&nbsp;STDOUT&nbsp;=<br><font color="#006600">#&nbsp;&nbsp;&nbsp;&nbsp;eine&nbsp;Spalte,&nbsp;vierstellig,&nbsp;zentriert</font><br><font color="#0000cc">@|||</font><br>$v<br>.<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>&nbsp;12<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Eine mehrzeilige Ausgabe von Zeichenketten wird durch Felder bewerkstelligt,
+die mit einem "<code>^</code>" beginnen. Dabei wird dann dort, wo das
+Feld in der Formatdefinition zum ersten Mal erscheint, ein m&ouml;glichst
+gro&szlig;er Teil des Ausgabestrings dargestellt. Beim zweiten Auftreten
+wird ggf. dann ein Teil des Restes dargestellt, usw. (Achtung: in der
+Zeichenkette wird dabei sukzessive der jeweils dargestellte Teil entfernt,
+d.h., der Wert der Stringvariablen &auml;ndert sich u.U. bei jedem
+<code>write</code>).
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$text&nbsp;=&nbsp;"Dies&nbsp;ist&nbsp;ein&nbsp;Beispiel&nbsp;daf&uuml;r,&nbsp;wie&nbsp;in&nbsp;einem&nbsp;";<br>$text&nbsp;.=&nbsp;"Format&nbsp;mehrzeilige&nbsp;Textbeitr&auml;ge&nbsp;dargestellt&nbsp;";<br>$text&nbsp;.=&nbsp;"werden&nbsp;k&ouml;nnen.";<br><br>write;<br><br>format&nbsp;STDOUT&nbsp;=<br>#&nbsp;&nbsp;&nbsp;&nbsp;bis&nbsp;zu&nbsp;drei&nbsp;Zeilen&nbsp;Text<br><font color="#0000cc">^&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</font><br>$text<br><font color="#0000cc">^&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</font><br>$text<br><font color="#0000cc">^&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&nbsp;...</font><br>$text<br>.<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Dies&nbsp;ist&nbsp;ein&nbsp;Beispiel&nbsp;daf&uuml;r,<br>wie&nbsp;in&nbsp;einem&nbsp;Format<br>mehrzeilige&nbsp;Textbeitr&auml;ge&nbsp;...<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Oft wei&szlig; man vorher nicht, wie lang der Text wird. Um unn&ouml;tige
+Leerzeilen zu vermeiden, setzt man einfach in die entsprechende Musterzeile
+eine Tilde ("<code>~</code>").
+Will man einen l&auml;ngeren Text auf jeden Fall komplett ausgeben, so kann
+man dies durch zwei aufeinanderfolgende Tilden ("<code>~~</code>") in
+einer Musterzeile erreichen. In diesem Falle wird die Ausgabe dieser Zeile
+so oft wiederholt bis die Zeichenkette in der dazugeh&ouml;renden
+Stringvariable vollst&auml;ndig dargestellt ist.
+Schlie&szlig;lich kann ein Text in seiner nat&uuml;rlichen
+Zeilenaufteilung in ganzer L&auml;nge ausgegeben werden, indem der
+Stringvariablen in der Musterzeile das Feld "<code>@*</code>"
+zugeordnet wird.
+  </p>
+  <p>
+
+Eine besondere Art der Positionierung bietet das "<code>#</code>". Nach
+einem "<code>@</code>" bewirkt es eine rechtsb&uuml;ndige Darstellung,
+wobei bei der Ausgabe einer Zahl ein optionaler Dezimalpunkt
+ber&uuml;cksichtigt wird. Nach einem "<code>^</code>" wird ein so
+markiertes Feld nur dann
+dargestellt, wenn die dazugeh&ouml;rende Variable definiert ist.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$v&nbsp;=&nbsp;117.127;<br>my&nbsp;$w&nbsp;=&nbsp;undef;<br>write;<br><br>format&nbsp;STDOUT&nbsp;=<br><font color="#0000cc">Betrag:&nbsp;@###.##&nbsp;EUR&nbsp;(^###)</font><br>$v,&nbsp;$w<br>.<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Betrag:&nbsp;&nbsp;117.13&nbsp;EUR&nbsp;(&nbsp;&nbsp;&nbsp;&nbsp;)<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_format.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">Variablenzeile</h2>
+  <hr>
+  <p>
+
+Eine Zeile dieser Art legt fest, welche Variablenwerte in die jeweils
+vorangegangene Musterzeile eingetragen werden sollen.
+  </p>
+  <p>
+
+Dies kann einfach durch eine durch Kommata getrennte Liste sein; aber es
+ist auch m&ouml;glich, Arrays (die mehrere Felder der Musterzeile
+abdecken) oder gar ganze Ausdr&uuml;cke anzugeben, die dann beim
+Aufruf des Formats (via <code>write</code>) abgearbeitet werden.
+Die Variablenliste kann &uuml;ber mehrere Zeilen ausgedehnt werden, indem
+geschweifte Klammern ("<code>{...}</code>") verwendet werden.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@datum&nbsp;=&nbsp;(6,1,1997);<br><br>my&nbsp;$x&nbsp;=&nbsp;12;<br><br>write;<br><br>format&nbsp;STDOUT&nbsp;=<br><font color="#006600">#&nbsp;&nbsp;&nbsp;&nbsp;Datumsdarstellung</font><br>Datum:&nbsp;@&gt;.@&gt;.@&gt;&gt;&gt;<br><font color="#0000cc">@datum</font><br><font color="#006600">#&nbsp;&nbsp;&nbsp;Potenzen&nbsp;von&nbsp;$a</font><br>@&gt;&gt;&gt;&gt;&nbsp;@&gt;&gt;&gt;&gt;&nbsp;@&gt;&gt;&gt;&gt;<br><font color="#0000cc">{<br>&nbsp;&nbsp;&nbsp;$x,<br>&nbsp;&nbsp;&nbsp;$x*$x,<br>&nbsp;&nbsp;&nbsp;$x*$x*$x<br>}</font><br>.<br></code></td></tr></table>
+</td></tr></table>
+<table align="center" bgcolor="#66cc66" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ccffcc" border="0" cellpadding="5" width="100%">
+<tr><td><code>Datum:&nbsp;&nbsp;6.&nbsp;1.1997<br>&nbsp;&nbsp;&nbsp;12&nbsp;&nbsp;&nbsp;144&nbsp;&nbsp;1728<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_format.html">[Seitenanfang]</a></p>
+  <a name="abs5"></a><hr>
+  <h2 align="center">Spezielle Variablen</h2>
+  <hr>
+  <p>
+
+Wenn man statt der Kurzbezeichnungen sprechende Namen benutzen m&ouml;chte,
+so kann kann man dies mit Hilfe des Standard-Moduls
+<code>English</code>
+erreichen, indem man am Programmanfang "<code>use&nbsp;English;</code>"
+schreibt. Dann k&ouml;nnen auch die in Klammern stehenden Bezeichnungen
+verwendet werden.
+  </p>
+  <ul>
+   <li>
+<code>$~</code> (<code>$FORMAT_NAME</code>)    <p>
+
+      Name des aktuellen Formats
+          </p>
+   </li>
+   <li>
+<code>$^</code> (<code>$FORMAT_TOP_NAME</code>)    <p>
+
+      Name des aktuellen Seitenkopfes
+          </p>
+   </li>
+   <li>
+<code>$%</code> (<code>$FORMAT_PAGE_NUMBER</code>)    <p>
+
+      Aktuelle Seitenzahl
+          </p>
+   </li>
+   <li>
+<code>$=</code> (<code>$FORMAT_LINES_PER_PAGE</code>)    <p>
+
+      Anzahl der Zeilen pro Seite
+          </p>
+   </li>
+   <li>
+<code>$-</code> (<code>$FORMAT_LINES_LEFT</code>)    <p>
+
+      Anzahl der restlichen Zeilen auf der aktuellen Seite
+          </p>
+   </li>
+   <li>
+<code>$^L</code> (<code>$FORMAT_FORMFEED</code>)    <p>
+
+      Zeichenkette, die vor jedem Seitenkopf ausgegeben wird (z.B.
+      Seitenvorschub auf einem Drucker).
+          </p>
+   </li>
+   <li>
+<code>$:</code> (<code>$FORMAT_LINE_BREAK_CHARACTERS</code>)    <p>
+
+      Liste von Zeichen, an deren Stelle in einem String dieser
+      getrennt werden darf (zur Aufsplittung bei Ausgabe von l&auml;ngeren
+      Texten &uuml;ber mehrere Zeilen)
+          </p>
+   </li>
+  </ul>
+<p align="right"><a href="perl_format.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_file.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_suche.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Dateien und Verzeichnisse  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Dateien und Verzeichnisse</h1>
+  <table align="center"><tr>
+  <td><a href="perl_io.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_format.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Zeitstempel einer Datei</a></li>
+<li><a href="#abs2">Eigenschaften von Dateien</a></li>
+<li><a href="#abs3">Globbing</a></li>
+<li><a href="#abs4">Verzeichnisse</a></li>
+<li><a href="#abs5">Dateifunktionen</a></li>
+  </ul>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Zeitstempel einer Datei</h2>
+  <hr>
+  <p>
+
+Mit einer Datei sind i.a. Zeit- bzw. Datumsangaben verkn&uuml;pft,
+mit deren Hilfe man beispielsweise herausfinden kann, wann
+der Inhalt einer Datei zum letzten Mal ver&auml;ndert wurde.
+Allerdings h&auml;ngt es stark vom Filesystem (und damit vom
+Betriebssystem) ab, welche Zeitangaben mit einer Datei
+gespeichert werden und welche nicht.
+  </p>
+  <p>
+
+Das urspr&uuml;nglich unter UNIX entwickelte Perl erm&ouml;glicht
+den Zugriff auf die dort bekannten drei Zeitstempel:
+  </p>
+  <ul>
+   <li>
+<b>Zugriffszeit</b> (<i>atime</i>): Hier wird
+    festgehalten, wann zum letzten Male auf den Inhalt einer
+    Datei zugegriffen wurde.   </li>
+   <li>
+<b>Modifikationsszeit</b> (<i>mtime</i>): Dieser
+    Zeitstempel wird jedesmal aktualisiert, wenn der Inhalt
+    einer Datei ver&auml;ndert wird.   </li>
+   <li>
+<b>&Auml;nderungszeit</b> (<i>ctime</i>): Hiermit
+    werden Ver&auml;nderungen von Dateieigenschaften
+    (Gr&ouml;&szlig;e, Zugriffsrechte,...) markiert.   </li>
+  </ul>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Zeitstempel</th>
+    <th>Dateiattribut</th>
+    <th>Funktion</th>
+    <th>ver&auml;nderbar durch<br> <a href="#abs5"><code>utime()</code></a>?</th>
+   </tr>
+   <tr align="center">
+    <td><i>atime</i></td>
+    <td><code>-A</code></td>
+    <td><code>stat[8]</code></td>
+    <td>ja</td>
+   </tr>
+   <tr align="center">
+    <td><i>mtime</i></td>
+    <td><code>-M</code></td>
+    <td><code>stat[9]</code></td>
+    <td>ja</td>
+   </tr>
+   <tr align="center">
+    <td><i>ctime</i></td>
+    <td><code>-C</code></td>
+    <td><code>stat[10]</code></td>
+    <td>nein</td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+Sowohl die Dateiattributoperatoren "<code>-A</code>",
+"<code>-M</code>" und "<code>-C</code>" als auch die Funktion
+<code>stat()</code> erwarten
+entweder ein Filehandle oder einen Dateinamen als Argument. Allerdings
+unterscheiden sich die R&uuml;ckgabewerte insofern, als da&szlig;
+erstere die Zeiten in Einheiten von Tagen in Bezug auf den Start
+des aufrufenden Programms (genauer: des Inhalts der speziellen
+Variable <code>$^T</code> bzw. <code>$BASETIME</code>) ausgeben,
+w&auml;hrend <code>stat()</code>
+im Listenkontext in den Elementen 8 bis 10 jeweils den entsprechenden
+Zeitpunkt in Sekunden seit der "Epoche" (1.1.1970, 00:00 GMT)
+enth&auml;lt.
+  </p>
+  <p>
+
+Anwendungsbeipiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$alter&nbsp;=&nbsp;(<font color="#0000cc">-M</font>&nbsp;"test.pl");&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;Gleitkommazahl!</font><br>print&nbsp;"Letzte&nbsp;&Auml;nderung&nbsp;vor&nbsp;$alter&nbsp;Tagen\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Es sei noch einmal darauf hingewiesen, da&szlig; obiges f&uuml;r UNIX-artige
+Systeme gilt - bei anderen Betriebssystemen sollte man in der jeweiligen
+Dokumentation nachsehen, welche Bedeutung die R&uuml;ckgabewerte
+der genannten Operatoren bzw. <code>stat()</code> dort haben.
+  </p>
+<p align="right"><a href="perl_file.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Eigenschaften von Dateien</h2>
+  <hr>
+  <p>
+
+Neben den bereits erl&auml;uterten Zeitangaben gibt es
+noch eine Reihe weiterer Dateieigenschaften, die mit Hilfe
+von Dateiattributoperatoren abgefragt werden k&ouml;nnen. Die
+folgende Liste enth&auml;lt nur die wichtigsten davon:
+  </p>
+  <ul>
+   <li>
+<code>-r</code> File kann gelesen werden   </li>
+   <li>
+<code>-w</code> File kann beschrieben/ver&auml;ndert werden   </li>
+   <li>
+<code>-x</code> Ausf&uuml;hrbares Programm   </li>
+   <li>
+<code>-e</code> Datei existiert   </li>
+   <li>
+<code>-z</code> Datei hat die L&auml;nge Null   </li>
+   <li>
+<code>-s</code> R&uuml;ckgabe der Dateil&auml;nge   </li>
+   <li>
+<code>-f</code> File ist einfache Datei   </li>
+   <li>
+<code>-d</code> File ist ein Verzeichnis   </li>
+   <li>
+<code>-l</code> File ist ein symbolischer Link   </li>
+  </ul>
+  <p>
+
+Anwendungsbeipiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>if(<font color="#0000cc">-r</font>&nbsp;"test.pl")&nbsp;{&nbsp;print&nbsp;"lesbar\n"&nbsp;}&nbsp;<br>else&nbsp;{&nbsp;print&nbsp;"nicht&nbsp;lesbar\n"&nbsp;}<br><br>print&nbsp;"L&auml;nge&nbsp;ist&nbsp;:&nbsp;".(<font color="#0000cc">-s</font>&nbsp;"test.pl")."\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Die ebenfalls schon erw&auml;hnte Funktion <code>stat()</code>
+liefert im Listenkontext eine Reihe von Dateieigenschaften auf
+einmal zur&uuml;ck:
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Index</th>
+    <th>Eigenschaft</th>
+   </tr>
+   <tr align="center">
+    <td>0</td>
+    <td>Ger&auml;tenummer des Filesystems</td>
+   </tr>
+   <tr align="center">
+    <td>1</td>
+    <td>Inode-Nummer</td>
+   </tr>
+   <tr align="center">
+    <td>2</td>
+    <td>Zugriffsrechte</td>
+   </tr>
+   <tr align="center">
+    <td>3</td>
+    <td>Anzahl der Hardlinks</td>
+   </tr>
+   <tr align="center">
+    <td>4</td>
+    <td>Benutzer-ID des Dateieigent&uuml;mers</td>
+   </tr>
+   <tr align="center">
+    <td>5</td>
+    <td>Gruppen-ID der Datei</td>
+   </tr>
+   <tr align="center">
+    <td>6</td>
+    <td>Ger&auml;teidentifikation</td>
+   </tr>
+   <tr align="center">
+    <td>7</td>
+    <td>Dateigr&ouml;&szlig;e (in Bytes)</td>
+   </tr>
+   <tr align="center">
+    <td>8</td>
+    <td><i>atime</i></td>
+   </tr>
+   <tr align="center">
+    <td>9</td>
+    <td><i>mtime</i></td>
+   </tr>
+   <tr align="center">
+    <td>10</td>
+    <td><i>ctime</i></td>
+   </tr>
+   <tr align="center">
+    <td>11</td>
+    <td>Bevorzugte Blockgr&ouml;&szlig;e f&uuml;r Datentransfer</td>
+   </tr>
+   <tr align="center">
+    <td>12</td>
+    <td>Anzahl der allozierten Bl&ouml;cke</td>
+   </tr>
+  </table>
+  </blockquote>
+  <p>
+
+Da die Funktion <code>stat()</code> direkt die UNIX-Systemfunktion
+<code>stat()</code> abbildet, gilt obige Tabelle unter anderen
+Betriebssystemen u.U. nur mit Einschr&auml;nkungen.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$datei&nbsp;=&nbsp;"test.pl";<br>my&nbsp;@a&nbsp;=&nbsp;<font color="#0000cc">stat($datei)</font>;<br><br>print&nbsp;"Die&nbsp;Datei&nbsp;'$datei'&nbsp;ist&nbsp;<font color="#0000cc">$a[7]</font>&nbsp;Bytes&nbsp;gro&szlig;.\n";<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_file.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Globbing</h2>
+  <hr>
+  <p>
+
+In einer UNIX-Shell gibt es die M&ouml;glichkeit, eine Liste von
+Files zu erhalten, indem man ein Muster vorgibt, das Platzhalter
+wie <code>*</code> oder <code>?</code> enth&auml;lt. So liefert
+  </p>
+  <blockquote>
+<code>
+ls -1 *.html
+</code>  </blockquote>
+  <p>
+
+eine einspaltige (die Option hinter "<code>ls</code>" ist die Ziffer "1") Liste aller Files, die auf <code>.html</code> enden.
+  </p>
+  <p>
+
+Einen analogen Mechanismus gibt es in Perl durch die Funktion
+<code>glob()</code> sowie den sog.
+Rhombus-Operator
+"<code>&lt;&gt;</code>". Obiges Shell-Beispiel
+l&auml;&szlig;t sich dann wie folgt implementieren:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>foreach&nbsp;my&nbsp;$filename&nbsp;(<font color="#0000cc">glob("*.html")</font>)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;$filename."\n"<br>}<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Oder auch:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>foreach&nbsp;my&nbsp;$filename&nbsp;(<font color="#0000cc">&lt;*.html&gt;</font>)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;$filename."\n"<br>}<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Man kann auch die File-Liste direkt an ein Array &uuml;bergeben:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;@fileliste&nbsp;=&nbsp;<font color="#0000cc">glob("*.html")</font>;<br>foreach&nbsp;my&nbsp;$filename&nbsp;(@fileliste)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;$filename."\n"<br>}<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Selbst Variablen k&ouml;nnen im Dateimuster verwendet werden:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>my&nbsp;$pfad&nbsp;=&nbsp;'perl';<br>my&nbsp;@fileliste&nbsp;=&nbsp;<font color="#0000cc">&lt;$pfad/*.html&gt;</font>;<br>foreach&nbsp;my&nbsp;$filename&nbsp;(@fileliste)&nbsp;{&nbsp;print&nbsp;$filename."\n"&nbsp;}<br><br>my&nbsp;$muster&nbsp;=&nbsp;'*.html';<br>@fileliste&nbsp;=&nbsp;<font color="#0000cc">&lt;${muster}&gt;</font>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;Spezialfall</font><br>foreach&nbsp;my&nbsp;$filename&nbsp;(@fileliste)&nbsp;{&nbsp;print&nbsp;$filename."\n"&nbsp;}<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Im obigen Beispiel mu&szlig; im zweiten Teil
+<code>&lt;${muster}&gt;</code> anstelle von 
+<code>&lt;$muster&gt;</code> stehen, da hier eine Variable alleine
+im Rhombus-Operator steht.
+  </p>
+  <p>
+
+Wer es etwas genauer wissen will: in einem Ausdruck wie
+<code>&lt;$muster&gt;</code> wird <code>$muster</code> als
+"indirektes Filehandle" betrachtet. Damit kann man beispielsweise
+Filehandles als Parameter an
+<a href="perl_sub.html">Unterprogramme</a> &uuml;bergeben.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br>open(FILE,'test.dat')<br>&nbsp;&nbsp;or&nbsp;die&nbsp;"Kann&nbsp;Datei&nbsp;nicht&nbsp;lesen:&nbsp;$!\n";<br>print_file(\*FILE);<br>close(FILE);<br><br>sub&nbsp;print_file&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;my&nbsp;$handle&nbsp;=&nbsp;$_[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;while(<font color="#0000cc">&lt;$handle&gt;</font>)&nbsp;{&nbsp;print&nbsp;}<br>}<br></code></td></tr></table>
+</td></tr></table>
+<p align="right"><a href="perl_file.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">Verzeichnisse</h2>
+  <hr>
+  <p>
+
+&Auml;hnlich wie man Dateien zum Lesen &ouml;ffnen kann, lassen sich
+auch Verzeichnisse behandeln, um auf die Dateinamen des Ordnerinhalts
+zugreifen zu k&ouml;nnen.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><br><font color="#0000cc">opendir(</font>DIR,"perl"<font color="#0000cc">)</font>;<br>while(my&nbsp;$datei&nbsp;=&nbsp;<font color="#0000cc">readdir(</font>DIR<font color="#0000cc">)</font>)&nbsp;{&nbsp;print&nbsp;$datei."\n"&nbsp;}<br><font color="#0000cc">closedir(</font>DIR<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Mit <code>opendir()</code> wird dabei das
+Verzeichnis ge&ouml;ffnet.
+Das erste Argument ist hierbei das sog. "Directoryhandle", dessen
+Name analog zu den Filehandles aus Gro&szlig;buchstaben
+bestehen sollte. Die Funktion <code>readdir()</code>
+liefert dann die einzelnen Eintr&auml;ge des Ordners.
+<code>closedir()</code>
+schlie&szlig;lich beendet den Zugriff auf das Verzeichnis.
+  </p>
+  <p>
+
+Das aktuelle Verzeichnis kann plattformunabh&auml;ngig mit Hilfe
+der Funktion <code>cwd()</code> des Standard-Moduls
+<code>Cwd</code> bestimmt werden.
+  </p>
+  <p>
+
+Beispiel:
+  </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br><br>use&nbsp;strict;<br><font color="#0000cc">use&nbsp;Cwd</font>;<br><br>my&nbsp;$akt_verz&nbsp;=&nbsp;<font color="#0000cc">cwd()</font>;<br>print&nbsp;"aktuelles&nbsp;Verzeichnis&nbsp;:&nbsp;$akt_verz\n";<br></code></td></tr></table>
+</td></tr></table>
+  <p>
+
+Ein Verzeichniswechsel ist durch die Funktion
+<code>chdir()</code> m&ouml;glich.
+Dies ist allerdings abh&auml;ngig vom Betriebssystem, unter dem Perl
+gerade l&auml;uft, wobei insbesondere auf das Zeichen zu achten ist,
+das Datei-/Verzeichnisnamen im Pfad voneinander trennt.
+  </p>
+  <p>
+
+Als Beispiel seien hier UNIX und das "klassische" MacOS
+gegen&uuml;bergestellt:
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>&nbsp;</th>
+    <th>UNIX</th>
+    <th>MacOS Classic</th>
+   </tr>
+   <tr>
+    <td>Pfad-Trennzeichen</td>
+    <td><code>/</code></td>
+    <td><code>:</code></td>
+   </tr>
+   <tr>
+    <td>Wechseln in h&ouml;heres Verzeichnis</td>
+    <td><code>chdir('..');</code></td>
+    <td><code>chdir('::');</code></td>
+   </tr>
+   <tr>
+    <td>&Ouml;ffnen des aktuellen Verzeichnisses</td>
+    <td><code>opendir(ABC,'.');</code></td>
+    <td><code>opendir(ABC,':');</code></td>
+   </tr>
+  </table>
+  </blockquote>
+<p align="right"><a href="perl_file.html">[Seitenanfang]</a></p>
+  <a name="abs5"></a><hr>
+  <h2 align="center">Dateifunktionen</h2>
+  <hr>
+  <p>
+
+Zum Arbeiten mit Dateien gibt es folgende Funktionen; abh&auml;ngig
+vom Betriebssystem stehen nicht immer alle zur Verf&uuml;gung (z.B. gibt
+es keine Hard Links auf der klassischen Macintosh-Plattform):
+  </p>
+  <ul>
+   <li>
+&Auml;nderung des Namens: <code>rename()</code><table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br><font color="#0000cc">rename(</font>"alter_name","neuer_name"<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+   <li>
+L&ouml;schen einer Datei: <code>unlink()</code><table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br><font color="#0000cc">unlink(</font>"dateiname"<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+   <li>
+Erzeugen eines Verzeichnisses: <code>mkdir()</code><table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br>my&nbsp;$permissions&nbsp;=&nbsp;0777;<br><font color="#0000cc">mkdir(</font>"dirname",$permissions<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+   <li>
+L&ouml;schen eines (leeren) Verzeichnisses: <code>rmdir()</code><table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br><font color="#0000cc">rmdir(</font>"dirname"<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+   <li>
+Hard Link erzeugen: <code>link()</code><table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br><font color="#0000cc">link(</font>"filename","linkname"<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+   <li>
+Soft Link erzeugen: <code>symlink()</code><table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br><font color="#0000cc">symlink(</font>"filename","linkname"<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+   <li>
+&Auml;ndern der Zugriffsrechte: <code>chmod()</code><table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br>my&nbsp;$permissions&nbsp;=&nbsp;0755;<br><font color="#0000cc">chmod(</font>$permissions,"prog_1","prog_2","prog_3"<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+   <li>
+&Auml;ndern des Besitzers: <code>chown()</code><table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br>my&nbsp;$uid&nbsp;=&nbsp;4987;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;Benutzer-ID</font><br>my&nbsp;$gid&nbsp;=&nbsp;33;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;Gruppen-ID</font><br><font color="#0000cc">chown(</font>$uid,$gid,"datei"<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+   <li>
+&Auml;ndern der Zeitdaten: <code>utime()</code><table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br>my&nbsp;$atime&nbsp;=&nbsp;812_000_000;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;letzter&nbsp;Zugriff</font><br>my&nbsp;$mtime&nbsp;=&nbsp;822_000_000;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#006600">#&nbsp;letzte&nbsp;Inhalts&auml;nderung</font><br><font color="#0000cc">utime(</font>$atime,$mtime,"datei"<font color="#0000cc">)</font>;<br></code></td></tr></table>
+</td></tr></table>
+    <p>
+
+      Die Zeiten sind hierbei in Sekunden seit dem 1.1.1970
+      anzugeben. Die aktuelle Systemzeit kann &uuml;ber den
+      Operator <code>time</code> abgefragt werden:
+          </p>
+<table align="center" bgcolor="#ffcc99" border="0" cellpadding="2" width="80%"><tr><td>
+<table bgcolor="#ffffcc" border="0" cellpadding="10" width="100%">
+<tr><td><code>#!/usr/local/bin/perl&nbsp;-w<br>use&nbsp;strict;<br><br>print&nbsp;"Seit&nbsp;dem&nbsp;1.1.1970&nbsp;sind&nbsp;";<br>print&nbsp;<font color="#0000cc">time</font>;<br>print&nbsp;"&nbsp;Sekunden&nbsp;vergangen.\n";<br></code></td></tr></table>
+</td></tr></table>
+   </li>
+  </ul>
+<p align="right"><a href="perl_file.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_io.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_format.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>

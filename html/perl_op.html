@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <link rel="SHORTCUT ICON" href="../bilder//pl.ico">
+  <title>Operatoren  </title>
+ </head>
+ <body bgcolor="#ffffff">
+  <hr>
+  <h1 align="center">Operatoren</h1>
+  <table align="center"><tr>
+  <td><a href="perl_var.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_math.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+
+  <ul>
+<li><a href="#abs1">Zuweisung</a></li>
+<li><a href="#abs2">Bit-Operatoren</a></li>
+<li><a href="#abs3">Logik-Operatoren</a></li>
+<li><a href="#abs4">Priorit&auml;ten</a></li>
+  </ul>
+  <hr>
+  <p>
+
+Die folgenden Abschnitte beinhalten einen &Uuml;berblick &uuml;ber die
+wichtigsten Operatoren in Perl. F&uuml;r eine vollst&auml;ndige Liste
+sei auf entsprechende <a href="perl_perldoc.html">Dokumentation</a>
+hingewiesen.
+  </p>
+  <a name="abs1"></a><hr>
+  <h2 align="center">Zuweisung</h2>
+  <hr>
+  <p>
+
+Die Zuweisung eines Wertes zu einer Variablen geschieht durch das
+"<code>=</code>"-Zeichen.
+Wie in C gibt es in Perl eine verk&uuml;rzte Schreibweise f&uuml;r
+Operationen, die den Wert <i>einer</i> Variablen ver&auml;ndern.
+So kann z.B. eine <a href="perl_math.html#abs1">Multiplikation</a>
+statt  </p>
+  <blockquote>
+<code>$i = $i * 5;</code>  </blockquote>
+  <p>
+auch  </p>
+  <blockquote>
+<code>$i *= 5;</code>  </blockquote>
+  <p>
+geschrieben werden.  </p>
+<p align="right"><a href="perl_op.html">[Seitenanfang]</a></p>
+  <a name="abs2"></a><hr>
+  <h2 align="center">Bit-Operatoren</h2>
+  <hr>
+  <ul>
+   <li>
+"<code>&amp;</code>"   bitweises UND   </li>
+   <li>
+"<code>|</code>"   bitweises ODER   </li>
+   <li>
+"<code>^</code>"   bitweises XOR (exklusives ODER)   </li>
+   <li>
+"<code>~</code>"   bitweises Komplement   </li>
+   <li>
+"<code>&lt;&lt;</code>"  bitweise Verschiebung des linken Arguments um eine
+                         (Ganz-) Zahl (rechtes Argument) nach links   </li>
+   <li>
+"<code>&gt;&gt;</code>"  bitweise Verschiebung des linken Arguments um eine
+                         (Ganz-) Zahl (rechtes Argument) nach rechts   </li>
+  </ul>
+<p align="right"><a href="perl_op.html">[Seitenanfang]</a></p>
+  <a name="abs3"></a><hr>
+  <h2 align="center">Logik-Operatoren</h2>
+  <hr>
+  <ul>
+   <li>
+"<code>!</code>"   logisches NOT   </li>
+   <li>
+"<code>&amp;&amp;</code>"  logisches UND   </li>
+   <li>
+"<code>||</code>"  logisches ODER   </li>
+   <li>
+"<code>not</code>" logisches NOT   </li>
+   <li>
+"<code>and</code>" logisches UND   </li>
+   <li>
+"<code>or</code>"  logisches ODER   </li>
+   <li>
+"<code>xor</code>" logisches XOR (exklusives ODER)   </li>
+  </ul>
+  <p>
+
+Anmerkung : die Operatoren "<code>not</code>",
+"<code>and</code>" und "<code>or</code>" besitzen die gleiche
+Funktionalit&auml;t wie die entprechenden symbolischen Operatoren
+"<code>!</code>", "<code>&amp;&amp;</code>" und
+"<code>||</code>", aber eine andere Priorit&auml;t.
+  </p>
+<p align="right"><a href="perl_op.html">[Seitenanfang]</a></p>
+  <a name="abs4"></a><hr>
+  <h2 align="center">Priorit&auml;ten</h2>
+  <hr>
+  <p>
+
+Hier nun eine Tabelle mit allen Perl-Operatoren, geordnet von der 
+h&ouml;chsten Priorit&auml;t abw&auml;rts mit Angabe der jeweiligen 
+Assoziativit&auml;t:
+  </p>
+  <blockquote>
+  <table border="1" cellpadding="5">
+   <tr>
+    <th>Assoziativit&auml;t</th>
+    <th>Operator</th>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td>Terme (Variablen, geklammerte Ausdr&uuml;cke,...)</td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code>-&gt;</code></td>
+   </tr>
+   <tr>
+    <td>-</td>
+    <td><code><a href="perl_math.html#abs1">++</a>&nbsp;<a href="perl_math.html#abs1">--</a></code></td>
+   </tr>
+   <tr>
+    <td>rechts</td>
+    <td><code><a href="perl_math.html#abs1">**</a></code></td>
+   </tr>
+   <tr>
+    <td>rechts</td>
+    <td><code><a href="#abs3">!</a>&nbsp;<a href="#abs2">~</a>&nbsp;\&nbsp;<a href="perl_math.html#abs1">+</a>&nbsp;<a href="perl_math.html#abs1">-</a></code>&nbsp;(un&auml;r)</td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code>=~&nbsp;!~</code></td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code><a href="perl_math.html#abs1">*</a>&nbsp;<a href="perl_math.html#abs1">/</a>&nbsp;<a href="perl_math.html#abs1">%</a>&nbsp;<a href="perl_string.html#abs1">x</a></code></td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code><a href="perl_string.html#abs1">.</a>&nbsp;<a href="perl_math.html#abs1">+</a>&nbsp;<a href="perl_math.html#abs1">-</a></code>&nbsp;(bin&auml;r)</td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code><a href="#abs2">&lt;&lt;</a>&nbsp;<a href="#abs2">&gt;&gt;</a></code></td>
+   </tr>
+   <tr>
+    <td>-</td>
+    <td>un&auml;re Operatoren wie etwa Funktionen mit einem Argument</td>
+   </tr>
+   <tr>
+    <td>-</td>
+    <td><code><a href="perl_math.html#abs2">&lt;</a>&nbsp;<a href="perl_math.html#abs2">&gt;</a>&nbsp;<a href="perl_math.html#abs2">&lt;=</a>&nbsp;<a href="perl_math.html#abs2">&gt;=</a>&nbsp;<a href="perl_string.html#abs2">lt</a>&nbsp;<a href="perl_string.html#abs2">gt</a>&nbsp;<a href="perl_string.html#abs2">le</a>&nbsp;<a href="perl_string.html#abs2">ge</a></code></td>
+   </tr>
+   <tr>
+    <td>-</td>
+    <td><code><a href="perl_math.html#abs2">==</a>&nbsp;<a href="perl_math.html#abs2">!=</a>&nbsp;<a href="perl_math.html#abs2">&lt;=&gt;</a>&nbsp;<a href="perl_string.html#abs2">eq</a>&nbsp;<a href="perl_string.html#abs2">ne</a>&nbsp;<a href="perl_string.html#abs2">cmp</a></code></td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code><a href="#abs2">&amp;</a></code></td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code><a href="#abs2">|</a>&nbsp;<a href="#abs2">^</a></code></td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code><a href="#abs3">&amp;&amp;</a></code></td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code><a href="#abs3">||</a></code></td>
+   </tr>
+   <tr>
+    <td>-</td>
+    <td><code>..</code></td>
+   </tr>
+   <tr>
+    <td>rechts</td>
+    <td><code>?:</code></td>
+   </tr>
+   <tr>
+    <td>rechts</td>
+    <td><code><a href="#abs1">=</a>&nbsp;<a href="#abs1">+=</a>&nbsp;<a href="#abs1">-=</a>&nbsp;<a href="#abs1">*=</a>&nbsp;usw.</code></td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code>,&nbsp;=&gt;</code></td>
+   </tr>
+   <tr>
+    <td>-</td>
+    <td>Listenoperatoren</td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code><a href="#abs3">not</a></code></td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code><a href="#abs3">and</a></code></td>
+   </tr>
+   <tr>
+    <td>links</td>
+    <td><code><a href="#abs3">or</a>&nbsp;<a href="#abs3">xor</a></code></td>
+   </tr>
+  </table>
+  </blockquote>
+<p align="right"><a href="perl_op.html">[Seitenanfang]</a></p>
+  <hr>
+  <table align="center"><tr>
+  <td><a href="perl_var.html">  <img src="../bilder//perl_links.gif" alt="[ vorherige Seite ]" width="43" height="30" border="0"></a></td>
+  <td><a href="../perl-tutorial.html">  <img src="../bilder//perl_titel.gif" alt="[ Titelseite ]" width="81" height="22" border="0"></a></td>
+  <td><a href="perl_inhalt.html">  <img src="../bilder//perl_inhalt.gif" alt="[ Inhalt ]" width="57" height="22" border="0"></a></td>
+  <td><a href="perl_index.html">  <img src="../bilder//perl_index.gif" alt="[ Index ]" width="54" height="22" border="0"></a></td>
+  <td><a href="perl_math.html">  <img src="../bilder//perl_rechts.gif" alt="[ n&auml;chste Seite ]" width="43" height="30" border="0"></a></td>
+  </tr></table>
+  <hr>
+  <table width="100%"><tr>
+    <td align="left"><i>Autor: 
+       <a href="mailto:Eike.Grote@web.de">Eike&nbsp;Grote</a></i>
+    </td>
+    <td align="right"><i>Version: 2.0 (24.2.2005)</i>
+    </td>
+  </tr></table>
+ </body>
+</html>
